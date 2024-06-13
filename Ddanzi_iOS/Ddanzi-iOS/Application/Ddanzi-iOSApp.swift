@@ -1,6 +1,6 @@
 import SwiftUI
 
-@main
+//@main
 struct DdanziIOSApp: App {
     var body: some Scene {
         WindowGroup {
