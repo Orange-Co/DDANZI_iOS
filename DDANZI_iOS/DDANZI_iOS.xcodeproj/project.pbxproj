@@ -24,6 +24,7 @@
 		369C63DB2C1A7E320021E2E0 /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 369C63D22C1A7E320021E2E0 /* Pretendard-ExtraBold.otf */; };
 		369C63DC2C1A7E320021E2E0 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 369C63D32C1A7E320021E2E0 /* Pretendard-SemiBold.otf */; };
 		369C63DF2C1A84DD0021E2E0 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63DE2C1A84DD0021E2E0 /* Fonts.swift */; };
+		369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E02C1A8D760021E2E0 /* UIView+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		369C63D22C1A7E320021E2E0 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
 		369C63D32C1A7E320021E2E0 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		369C63DE2C1A84DD0021E2E0 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		369C63E02C1A8D760021E2E0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +277,7 @@
 		369C63DD2C1A7E5E0021E2E0 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				369C63E02C1A8D760021E2E0 /* UIView+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */,
 				369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */,
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
+				369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
