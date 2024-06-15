@@ -27,6 +27,14 @@
 		369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E02C1A8D760021E2E0 /* UIView+.swift */; };
 		369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E22C1A95060021E2E0 /* UIColor+.swift */; };
 		369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E42C1A95280021E2E0 /* UIButton+.swift */; };
+		36EB5F8A2C1D335500FAF995 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F892C1D335500FAF995 /* RxBlocking */; };
+		36EB5F8C2C1D335500FAF995 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F8B2C1D335500FAF995 /* RxCocoa */; };
+		36EB5F8E2C1D335500FAF995 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F8D2C1D335500FAF995 /* RxRelay */; };
+		36EB5F912C1D338100FAF995 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F902C1D338100FAF995 /* SnapKit */; };
+		36EB5F942C1D346B00FAF995 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F932C1D346B00FAF995 /* Alamofire */; };
+		36EB5F962C1D353100FAF995 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5F952C1D353100FAF995 /* HomeView.swift */; };
+		36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */; };
+		36EB5F9C2C1D365000FAF995 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F9B2C1D365000FAF995 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +79,8 @@
 		369C63E02C1A8D760021E2E0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		369C63E22C1A95060021E2E0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		369C63E42C1A95280021E2E0 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
+		36EB5F952C1D353100FAF995 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +88,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36EB5F942C1D346B00FAF995 /* Alamofire in Frameworks */,
+				36EB5F9C2C1D365000FAF995 /* Then in Frameworks */,
+				36EB5F8E2C1D335500FAF995 /* RxRelay in Frameworks */,
+				36EB5F912C1D338100FAF995 /* SnapKit in Frameworks */,
+				36EB5F8C2C1D335500FAF995 /* RxCocoa in Frameworks */,
+				36EB5F8A2C1D335500FAF995 /* RxBlocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +195,7 @@
 		369C63BE2C1A7AFA0021E2E0 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				36EB5F992C1D35BD00FAF995 /* Common */,
 				369C63C62C1A7D320021E2E0 /* Home */,
 			);
 			path = Presentation;
@@ -231,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				369C638E2C1A7A240021E2E0 /* HomeViewController.swift */,
+				36EB5F952C1D353100FAF995 /* HomeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -288,6 +306,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		36EB5F992C1D35BD00FAF995 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -304,6 +330,14 @@
 			dependencies = (
 			);
 			name = DDANZI_iOS;
+			packageProductDependencies = (
+				36EB5F892C1D335500FAF995 /* RxBlocking */,
+				36EB5F8B2C1D335500FAF995 /* RxCocoa */,
+				36EB5F8D2C1D335500FAF995 /* RxRelay */,
+				36EB5F902C1D338100FAF995 /* SnapKit */,
+				36EB5F932C1D346B00FAF995 /* Alamofire */,
+				36EB5F9B2C1D365000FAF995 /* Then */,
+			);
 			productName = DDANZI_iOS;
 			productReference = 369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -376,6 +410,12 @@
 				Base,
 			);
 			mainGroup = 369C637E2C1A7A240021E2E0;
+			packageReferences = (
+				36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				36EB5F8F2C1D338100FAF995 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				36EB5F922C1D346B00FAF995 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				36EB5F9A2C1D365000FAF995 /* XCRemoteSwiftPackageReference "Then" */,
+			);
 			productRefGroup = 369C63882C1A7A240021E2E0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -431,8 +471,10 @@
 				369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */,
 				369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */,
 				369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */,
+				36EB5F962C1D353100FAF995 /* HomeView.swift in Sources */,
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
 				369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */,
+				36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,6 +800,74 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.7.1;
+			};
+		};
+		36EB5F8F2C1D338100FAF995 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		36EB5F922C1D346B00FAF995 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+		36EB5F9A2C1D365000FAF995 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36EB5F892C1D335500FAF995 /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		36EB5F8B2C1D335500FAF995 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		36EB5F8D2C1D335500FAF995 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		36EB5F902C1D338100FAF995 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36EB5F8F2C1D338100FAF995 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		36EB5F932C1D346B00FAF995 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36EB5F922C1D346B00FAF995 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		36EB5F9B2C1D365000FAF995 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36EB5F9A2C1D365000FAF995 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 369C637F2C1A7A240021E2E0 /* Project object */;
 }
