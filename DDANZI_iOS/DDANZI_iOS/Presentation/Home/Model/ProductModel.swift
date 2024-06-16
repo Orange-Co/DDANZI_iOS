@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+struct ProductModel {
+    let title: String
+    let beforePrice: String
+    let price: String
+    let heartCount: Int
+}
