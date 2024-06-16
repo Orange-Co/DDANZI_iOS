@@ -12,7 +12,7 @@ class DdanziTabBarController: UITabBarController {
     private let tabBarHeight: CGFloat = 100
 
     private let homeViewController = HomeViewController()
-    let mypageViewController  = HomeViewController()
+    let mypageViewController  = MyPageViewController()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
