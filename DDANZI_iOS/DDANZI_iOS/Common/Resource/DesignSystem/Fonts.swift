@@ -48,11 +48,17 @@ extension UIFont {
         return UIFont(name: "Pretendard-Regular", size: 14.0)!
     }
     
+    class var body6M12: UIFont {
+        return UIFont(name: "Pretendard-Medium", size: 12.0)!
+    }
+    
+    class var body7M8: UIFont {
+        return UIFont(name: "Pretendard-Medium", size: 8.0)!
+    }
+    
     class var buttonText: UIFont {
         return UIFont(name: "Pretendard-Medium", size: 12.0)!
     }
     
-    class var body6M12: UIFont {
-        return UIFont(name: "Pretendard-Medium", size: 12.0)!
-    }
+
 }
