@@ -10,6 +10,7 @@
 		3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */; };
 		368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */; };
 		3688337B2C1F2B3D000F3A45 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3688337A2C1F2B3D000F3A45 /* RxDataSources */; };
+		3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */; };
 		369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638A2C1A7A240021E2E0 /* AppDelegate.swift */; };
 		369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */; };
 		369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638E2C1A7A240021E2E0 /* HomeViewController.swift */; };
@@ -265,6 +266,7 @@
 				36EB5FA62C1ED6A000FAF995 /* Model */,
 				369C638E2C1A7A240021E2E0 /* HomeViewController.swift */,
 				36EB5FA02C1EC9E900FAF995 /* HomeViewReactor.swift */,
+				3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */,
 				36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */,
 			);
 			path = Home;
@@ -510,6 +512,7 @@
 				36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */,
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
+				3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */,
 				369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */,
 				36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */,
 			);
