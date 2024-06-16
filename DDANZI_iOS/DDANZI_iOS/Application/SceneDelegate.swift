@@ -13,12 +13,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-            guard let windowScene = (scene as? UIWindowScene) else { return }
-            window = UIWindow(windowScene: windowScene) // SceneDelegate의 프로퍼티에 설정해줌
-            let mainViewController = HomeViewController() // 맨 처음 보여줄 ViewController
-
-            window?.rootViewController = mainViewController
-            window?.makeKeyAndVisible()
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        self.window = UIWindow(windowScene: windowScene)
+        
+        let mainViewController = DdanziTabBarController()
+        let navigationController = UINavigationController(rootViewController: mainViewController)
+        self.window?.rootViewController = navigationController
+        self.window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

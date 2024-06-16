@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */; };
+		368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */; };
+		3688337B2C1F2B3D000F3A45 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3688337A2C1F2B3D000F3A45 /* RxDataSources */; };
+		3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */; };
+		368833832C1F3425000F3A45 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833822C1F3425000F3A45 /* MyPageViewController.swift */; };
 		369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638A2C1A7A240021E2E0 /* AppDelegate.swift */; };
 		369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */; };
 		369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638E2C1A7A240021E2E0 /* HomeViewController.swift */; };
@@ -32,9 +37,13 @@
 		36EB5F8E2C1D335500FAF995 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F8D2C1D335500FAF995 /* RxRelay */; };
 		36EB5F912C1D338100FAF995 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F902C1D338100FAF995 /* SnapKit */; };
 		36EB5F942C1D346B00FAF995 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F932C1D346B00FAF995 /* Alamofire */; };
-		36EB5F962C1D353100FAF995 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5F952C1D353100FAF995 /* HomeView.swift */; };
 		36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */; };
 		36EB5F9C2C1D365000FAF995 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F9B2C1D365000FAF995 /* Then */; };
+		36EB5F9F2C1EC99400FAF995 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F9E2C1EC99400FAF995 /* ReactorKit */; };
+		36EB5FA12C1EC9E900FAF995 /* HomeViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA02C1EC9E900FAF995 /* HomeViewReactor.swift */; };
+		36EB5FA32C1ECB1900FAF995 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */; };
+		36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA42C1ECDED00FAF995 /* String+.swift */; };
+		36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA72C1ED6B600FAF995 /* ProductModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +64,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarController.swift; sourceTree = "<group>"; };
+		368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarItems.swift; sourceTree = "<group>"; };
+		3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionViewCell.swift; sourceTree = "<group>"; };
+		368833822C1F3425000F3A45 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDANZI_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		369C638A2C1A7A240021E2E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,8 +92,11 @@
 		369C63E02C1A8D760021E2E0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		369C63E22C1A95060021E2E0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		369C63E42C1A95280021E2E0 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
-		36EB5F952C1D353100FAF995 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
+		36EB5FA02C1EC9E900FAF995 /* HomeViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewReactor.swift; sourceTree = "<group>"; };
+		36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
+		36EB5FA42C1ECDED00FAF995 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		36EB5FA72C1ED6B600FAF995 /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,8 +106,10 @@
 			files = (
 				36EB5F942C1D346B00FAF995 /* Alamofire in Frameworks */,
 				36EB5F9C2C1D365000FAF995 /* Then in Frameworks */,
+				36EB5F9F2C1EC99400FAF995 /* ReactorKit in Frameworks */,
 				36EB5F8E2C1D335500FAF995 /* RxRelay in Frameworks */,
 				36EB5F912C1D338100FAF995 /* SnapKit in Frameworks */,
+				3688337B2C1F2B3D000F3A45 /* RxDataSources in Frameworks */,
 				36EB5F8C2C1D335500FAF995 /* RxCocoa in Frameworks */,
 				36EB5F8A2C1D335500FAF995 /* RxBlocking in Frameworks */,
 			);
@@ -114,6 +132,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3688337E2C1F33DC000F3A45 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */,
+				36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		3688337F2C1F33E5000F3A45 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				369C638E2C1A7A240021E2E0 /* HomeViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		368833802C1F33EE000F3A45 /* Reactor */ = {
+			isa = PBXGroup;
+			children = (
+				36EB5FA02C1EC9E900FAF995 /* HomeViewReactor.swift */,
+			);
+			path = Reactor;
+			sourceTree = "<group>";
+		};
+		368833812C1F33FF000F3A45 /* Mypage */ = {
+			isa = PBXGroup;
+			children = (
+				368833822C1F3425000F3A45 /* MyPageViewController.swift */,
+			);
+			path = Mypage;
+			sourceTree = "<group>";
+		};
 		369C637E2C1A7A240021E2E0 = {
 			isa = PBXGroup;
 			children = (
@@ -197,6 +248,7 @@
 			children = (
 				36EB5F992C1D35BD00FAF995 /* Common */,
 				369C63C62C1A7D320021E2E0 /* Home */,
+				368833812C1F33FF000F3A45 /* Mypage */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -247,8 +299,10 @@
 		369C63C62C1A7D320021E2E0 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				369C638E2C1A7A240021E2E0 /* HomeViewController.swift */,
-				36EB5F952C1D353100FAF995 /* HomeView.swift */,
+				3688337F2C1F33E5000F3A45 /* ViewController */,
+				3688337E2C1F33DC000F3A45 /* Cell */,
+				368833802C1F33EE000F3A45 /* Reactor */,
+				36EB5FA62C1ED6A000FAF995 /* Model */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -302,6 +356,7 @@
 				369C63E02C1A8D760021E2E0 /* UIView+.swift */,
 				369C63E22C1A95060021E2E0 /* UIColor+.swift */,
 				369C63E42C1A95280021E2E0 /* UIButton+.swift */,
+				36EB5FA42C1ECDED00FAF995 /* String+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -310,8 +365,18 @@
 			isa = PBXGroup;
 			children = (
 				36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */,
+				368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */,
+				368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		36EB5FA62C1ED6A000FAF995 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				36EB5FA72C1ED6B600FAF995 /* ProductModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,6 +402,8 @@
 				36EB5F902C1D338100FAF995 /* SnapKit */,
 				36EB5F932C1D346B00FAF995 /* Alamofire */,
 				36EB5F9B2C1D365000FAF995 /* Then */,
+				36EB5F9E2C1EC99400FAF995 /* ReactorKit */,
+				3688337A2C1F2B3D000F3A45 /* RxDataSources */,
 			);
 			productName = DDANZI_iOS;
 			productReference = 369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */;
@@ -415,6 +482,8 @@
 				36EB5F8F2C1D338100FAF995 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				36EB5F922C1D346B00FAF995 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				36EB5F9A2C1D365000FAF995 /* XCRemoteSwiftPackageReference "Then" */,
+				36EB5F9D2C1EC99400FAF995 /* XCRemoteSwiftPackageReference "ReactorKit" */,
+				368833792C1F2B3D000F3A45 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 369C63882C1A7A240021E2E0 /* Products */;
 			projectDirPath = "";
@@ -471,8 +540,15 @@
 				369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */,
 				369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */,
 				369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */,
-				36EB5F962C1D353100FAF995 /* HomeView.swift in Sources */,
+				3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */,
+				36EB5FA32C1ECB1900FAF995 /* HomeCollectionViewCell.swift in Sources */,
+				368833832C1F3425000F3A45 /* MyPageViewController.swift in Sources */,
+				36EB5FA12C1EC9E900FAF995 /* HomeViewReactor.swift in Sources */,
+				368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */,
+				36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */,
+				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
+				3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */,
 				369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */,
 				36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */,
 			);
@@ -642,8 +718,11 @@
 				INFOPLIST_FILE = DDANZI_iOS/Application/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -669,8 +748,11 @@
 				INFOPLIST_FILE = DDANZI_iOS/Application/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -802,6 +884,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		368833792C1F2B3D000F3A45 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
 		36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -834,9 +924,22 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		36EB5F9D2C1EC99400FAF995 /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactorKit/ReactorKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3688337A2C1F2B3D000F3A45 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 368833792C1F2B3D000F3A45 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
+		};
 		36EB5F892C1D335500FAF995 /* RxBlocking */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */;
@@ -866,6 +969,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36EB5F9A2C1D365000FAF995 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		36EB5F9E2C1EC99400FAF995 /* ReactorKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36EB5F9D2C1EC99400FAF995 /* XCRemoteSwiftPackageReference "ReactorKit" */;
+			productName = ReactorKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
