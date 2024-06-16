@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */; };
+		368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */; };
 		369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638A2C1A7A240021E2E0 /* AppDelegate.swift */; };
 		369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */; };
 		369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638E2C1A7A240021E2E0 /* HomeViewController.swift */; };
@@ -32,9 +34,13 @@
 		36EB5F8E2C1D335500FAF995 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F8D2C1D335500FAF995 /* RxRelay */; };
 		36EB5F912C1D338100FAF995 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F902C1D338100FAF995 /* SnapKit */; };
 		36EB5F942C1D346B00FAF995 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F932C1D346B00FAF995 /* Alamofire */; };
-		36EB5F962C1D353100FAF995 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5F952C1D353100FAF995 /* HomeView.swift */; };
 		36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */; };
 		36EB5F9C2C1D365000FAF995 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F9B2C1D365000FAF995 /* Then */; };
+		36EB5F9F2C1EC99400FAF995 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36EB5F9E2C1EC99400FAF995 /* ReactorKit */; };
+		36EB5FA12C1EC9E900FAF995 /* HomeReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA02C1EC9E900FAF995 /* HomeReactor.swift */; };
+		36EB5FA32C1ECB1900FAF995 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */; };
+		36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA42C1ECDED00FAF995 /* String+.swift */; };
+		36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA72C1ED6B600FAF995 /* ProductModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +61,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarController.swift; sourceTree = "<group>"; };
+		368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarItems.swift; sourceTree = "<group>"; };
 		369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDANZI_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		369C638A2C1A7A240021E2E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,8 +87,11 @@
 		369C63E02C1A8D760021E2E0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		369C63E22C1A95060021E2E0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		369C63E42C1A95280021E2E0 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
-		36EB5F952C1D353100FAF995 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
+		36EB5FA02C1EC9E900FAF995 /* HomeReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReactor.swift; sourceTree = "<group>"; };
+		36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
+		36EB5FA42C1ECDED00FAF995 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		36EB5FA72C1ED6B600FAF995 /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +101,7 @@
 			files = (
 				36EB5F942C1D346B00FAF995 /* Alamofire in Frameworks */,
 				36EB5F9C2C1D365000FAF995 /* Then in Frameworks */,
+				36EB5F9F2C1EC99400FAF995 /* ReactorKit in Frameworks */,
 				36EB5F8E2C1D335500FAF995 /* RxRelay in Frameworks */,
 				36EB5F912C1D338100FAF995 /* SnapKit in Frameworks */,
 				36EB5F8C2C1D335500FAF995 /* RxCocoa in Frameworks */,
@@ -247,8 +259,10 @@
 		369C63C62C1A7D320021E2E0 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				36EB5FA62C1ED6A000FAF995 /* Model */,
 				369C638E2C1A7A240021E2E0 /* HomeViewController.swift */,
-				36EB5F952C1D353100FAF995 /* HomeView.swift */,
+				36EB5FA02C1EC9E900FAF995 /* HomeReactor.swift */,
+				36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -302,6 +316,7 @@
 				369C63E02C1A8D760021E2E0 /* UIView+.swift */,
 				369C63E22C1A95060021E2E0 /* UIColor+.swift */,
 				369C63E42C1A95280021E2E0 /* UIButton+.swift */,
+				36EB5FA42C1ECDED00FAF995 /* String+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -310,8 +325,18 @@
 			isa = PBXGroup;
 			children = (
 				36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */,
+				368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */,
+				368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		36EB5FA62C1ED6A000FAF995 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				36EB5FA72C1ED6B600FAF995 /* ProductModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -471,7 +496,12 @@
 				369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */,
 				369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */,
 				369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */,
-				36EB5F962C1D353100FAF995 /* HomeView.swift in Sources */,
+				3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */,
+				36EB5FA32C1ECB1900FAF995 /* HomeCollectionViewCell.swift in Sources */,
+				36EB5FA12C1EC9E900FAF995 /* HomeReactor.swift in Sources */,
+				368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */,
+				36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */,
+				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
 				369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */,
 				36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */,
