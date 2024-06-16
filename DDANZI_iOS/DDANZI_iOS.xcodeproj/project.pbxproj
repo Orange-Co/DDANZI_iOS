@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */; };
 		368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */; };
+		3688337B2C1F2B3D000F3A45 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3688337A2C1F2B3D000F3A45 /* RxDataSources */; };
 		369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638A2C1A7A240021E2E0 /* AppDelegate.swift */; };
 		369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */; };
 		369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638E2C1A7A240021E2E0 /* HomeViewController.swift */; };
@@ -63,6 +64,7 @@
 /* Begin PBXFileReference section */
 		368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarController.swift; sourceTree = "<group>"; };
 		368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarItems.swift; sourceTree = "<group>"; };
+		3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionViewCell.swift; sourceTree = "<group>"; };
 		369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDANZI_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		369C638A2C1A7A240021E2E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				36EB5F9F2C1EC99400FAF995 /* ReactorKit in Frameworks */,
 				36EB5F8E2C1D335500FAF995 /* RxRelay in Frameworks */,
 				36EB5F912C1D338100FAF995 /* SnapKit in Frameworks */,
+				3688337B2C1F2B3D000F3A45 /* RxDataSources in Frameworks */,
 				36EB5F8C2C1D335500FAF995 /* RxCocoa in Frameworks */,
 				36EB5F8A2C1D335500FAF995 /* RxBlocking in Frameworks */,
 			);
@@ -363,6 +366,7 @@
 				36EB5F932C1D346B00FAF995 /* Alamofire */,
 				36EB5F9B2C1D365000FAF995 /* Then */,
 				36EB5F9E2C1EC99400FAF995 /* ReactorKit */,
+				3688337A2C1F2B3D000F3A45 /* RxDataSources */,
 			);
 			productName = DDANZI_iOS;
 			productReference = 369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */;
@@ -442,6 +446,7 @@
 				36EB5F922C1D346B00FAF995 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				36EB5F9A2C1D365000FAF995 /* XCRemoteSwiftPackageReference "Then" */,
 				36EB5F9D2C1EC99400FAF995 /* XCRemoteSwiftPackageReference "ReactorKit" */,
+				368833792C1F2B3D000F3A45 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 369C63882C1A7A240021E2E0 /* Products */;
 			projectDirPath = "";
@@ -840,6 +845,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		368833792C1F2B3D000F3A45 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
 		36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -883,6 +896,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3688337A2C1F2B3D000F3A45 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 368833792C1F2B3D000F3A45 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
+		};
 		36EB5F892C1D335500FAF995 /* RxBlocking */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36EB5F882C1D335500FAF995 /* XCRemoteSwiftPackageReference "RxSwift" */;
