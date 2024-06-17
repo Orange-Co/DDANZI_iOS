@@ -12,6 +12,9 @@
 		3688337B2C1F2B3D000F3A45 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3688337A2C1F2B3D000F3A45 /* RxDataSources */; };
 		3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */; };
 		368833832C1F3425000F3A45 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833822C1F3425000F3A45 /* MyPageViewController.swift */; };
+		368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833A52C20A675000F3A45 /* ProductDetailViewController.swift */; };
+		368833AA2C20A9B7000F3A45 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833A92C20A9B7000F3A45 /* String.swift */; };
+		368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833AB2C20AD91000F3A45 /* ProductDetailModel.swift */; };
 		369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638A2C1A7A240021E2E0 /* AppDelegate.swift */; };
 		369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */; };
 		369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638E2C1A7A240021E2E0 /* HomeViewController.swift */; };
@@ -68,6 +71,9 @@
 		368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarItems.swift; sourceTree = "<group>"; };
 		3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionViewCell.swift; sourceTree = "<group>"; };
 		368833822C1F3425000F3A45 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		368833A52C20A675000F3A45 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		368833A92C20A9B7000F3A45 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		368833AB2C20AD91000F3A45 /* ProductDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailModel.swift; sourceTree = "<group>"; };
 		369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDANZI_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		369C638A2C1A7A240021E2E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -165,6 +171,47 @@
 			path = Mypage;
 			sourceTree = "<group>";
 		};
+		368833A12C20A634000F3A45 /* ProductDetail */ = {
+			isa = PBXGroup;
+			children = (
+				368833A42C20A652000F3A45 /* Model */,
+				368833A32C20A649000F3A45 /* Reactor */,
+				368833A22C20A63D000F3A45 /* ViewControllers */,
+			);
+			path = ProductDetail;
+			sourceTree = "<group>";
+		};
+		368833A22C20A63D000F3A45 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				368833A52C20A675000F3A45 /* ProductDetailViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		368833A32C20A649000F3A45 /* Reactor */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Reactor;
+			sourceTree = "<group>";
+		};
+		368833A42C20A652000F3A45 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				368833AB2C20AD91000F3A45 /* ProductDetailModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		368833A82C20A9AE000F3A45 /* Literals */ = {
+			isa = PBXGroup;
+			children = (
+				368833A92C20A9B7000F3A45 /* String.swift */,
+			);
+			path = Literals;
+			sourceTree = "<group>";
+		};
 		369C637E2C1A7A240021E2E0 = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +295,7 @@
 			children = (
 				36EB5F992C1D35BD00FAF995 /* Common */,
 				369C63C62C1A7D320021E2E0 /* Home */,
+				368833A12C20A634000F3A45 /* ProductDetail */,
 				368833812C1F33FF000F3A45 /* Mypage */,
 			);
 			path = Presentation;
@@ -310,6 +358,7 @@
 		369C63C72C1A7DC30021E2E0 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				368833A82C20A9AE000F3A45 /* Literals */,
 				369C63C92C1A7DDF0021E2E0 /* DesignSystem */,
 				369C63C82C1A7DDA0021E2E0 /* Fonts */,
 				369C63932C1A7A270021E2E0 /* Assets.xcassets */,
@@ -545,7 +594,10 @@
 				368833832C1F3425000F3A45 /* MyPageViewController.swift in Sources */,
 				36EB5FA12C1EC9E900FAF995 /* HomeViewReactor.swift in Sources */,
 				368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */,
+				368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */,
+				368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */,
 				36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */,
+				368833AA2C20A9B7000F3A45 /* String.swift in Sources */,
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
 				3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */,
