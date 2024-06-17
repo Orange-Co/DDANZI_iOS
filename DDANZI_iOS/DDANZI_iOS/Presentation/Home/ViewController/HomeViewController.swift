@@ -100,6 +100,17 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
         
         homeViewCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
+        
+        
+        homeViewCollectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                if indexPath.section == 1 {
+                    let detailVC = ProductDetailViewController()
+                    self.navigationController?.pushViewController(detailVC, animated: true)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
 }
