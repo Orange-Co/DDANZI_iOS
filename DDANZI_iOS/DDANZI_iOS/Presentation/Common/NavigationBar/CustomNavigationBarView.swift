@@ -104,7 +104,13 @@ final class CustomNavigationBarView: UIView {
                 $0.edges.equalToSuperview()
             }
         case .home:
+            leftView.addSubview(backButton)
             rightView.addSubview(homeButton)
+            
+            backButton.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            
             homeButton.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
