@@ -14,9 +14,11 @@ import RxSwift
 import SnapKit
 import Then
 
-class ProductDetailViewController: UIViewController {
+final class ProductDetailViewController: UIViewController {
     // MARK: Properties
-    let dummy = ProductDetailModel(productTitle: "퓨어 오일 퍼퓸 10ml 입니다 긴제목은 어떻게 될까요? 짧은 것도 이간격",
+    
+    private let disposeBag = DisposeBag()
+    let dummy = ProductDetailModel(productTitle: "퓨어 오일 퍼퓸 10ml",
                                    discountRate: 30, price: 48900, beforePrice: 54000,
                                    remainAmount: 30)
     // MARK: Compenets
@@ -26,12 +28,13 @@ class ProductDetailViewController: UIViewController {
         $0.backgroundColor = .gray2
     }
     
-    private let labelView = UIView() // TO DO: 라벨뷰 커스텀
+    private let labelView = ProductChipView(labelText: "향수")
     
     private let productTitleLabel = UILabel().then {
         $0.font = .title4Sb24
         $0.textColor = .black
         $0.numberOfLines = 2
+        $0.textAlignment = .left
     }
     
     private let discountLabel = UILabel().then {
@@ -64,9 +67,21 @@ class ProductDetailViewController: UIViewController {
         $0.setTitle(StringLiterals.ProductDetail.Button.morelinkButtonText,
                     for: .normal)
         $0.setTitleColor(.gray3, for: .normal)
+        $0.setImage(.rightChv, for: .normal)
+        $0.semanticContentAttribute = .forceRightToLeft
         $0.titleLabel?.font = .body3Sb16
+        var config = UIButton.Configuration.plain()
+        config.imagePadding = 10
+        $0.configuration = config
     }
     
+    private let bottomButtonView = BottomButtonView(buttonText: "구매하기")
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
     
     // MARK: LifeCycles
     override func viewDidLoad() {
@@ -74,6 +89,7 @@ class ProductDetailViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .white
         bindDummy()
+        bind()
         setUI()
     }
     
@@ -90,7 +106,20 @@ class ProductDetailViewController: UIViewController {
         beforePriceLabel.attributedText = "\(dummy.beforePrice)".strikeThrough()
         
         amountLabel.text = "\(dummy.remainAmount)개"
-        
+    }
+    
+    private func bind() {
+        bottomButtonView.button.rx.tap
+            .bind{
+                let optionViewController = OptionSelectViewController()
+                
+                if let sheet = optionViewController.sheetPresentationController {
+                    sheet.detents = [.medium()]
+                }
+                
+                self.present(optionViewController, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setHierarchy() {
@@ -102,7 +131,8 @@ class ProductDetailViewController: UIViewController {
                          priceLabel,
                          beforePriceLabel,remainLabel,
                          amountLabel,
-                         moreLinkButton)
+                         moreLinkButton,
+                         bottomButtonView)
     }
     
     private func setConstraints() {
@@ -118,13 +148,12 @@ class ProductDetailViewController: UIViewController {
         }
         
         labelView.snp.makeConstraints {
-            $0.top.equalTo(productImageView.snp.bottom).offset(15)
+            $0.top.equalTo(productImageView.snp.bottom).offset(13)
             $0.leading.equalToSuperview().offset(20)
-            $0.height.equalTo(25)
         }
         
         productTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(labelView.snp.bottom).offset(15)
+            $0.top.equalTo(labelView.snp.bottom).offset(13)
             $0.leading.trailing.equalToSuperview().inset(21)
             $0.height.equalTo(58)
         }
@@ -157,6 +186,11 @@ class ProductDetailViewController: UIViewController {
         moreLinkButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
             $0.top.equalTo(remainLabel.snp.bottom).offset(15)
+        }
+        
+        bottomButtonView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
     
