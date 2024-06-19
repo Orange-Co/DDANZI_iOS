@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36305E582C21E82700701BDA /* ProductChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E572C21E82700701BDA /* ProductChipView.swift */; };
+		36305E5A2C21F00600701BDA /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E592C21F00600701BDA /* UILabel+.swift */; };
+		36305E5C2C21F7EB00701BDA /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E5B2C21F7EB00701BDA /* ProductDetailViewModel.swift */; };
+		36305E5E2C21F97100701BDA /* OptionSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E5D2C21F97100701BDA /* OptionSelectViewController.swift */; };
+		36305E602C21FF4200701BDA /* OptionSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E5F2C21FF4200701BDA /* OptionSelectViewModel.swift */; };
 		3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */; };
 		368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */; };
 		3688337B2C1F2B3D000F3A45 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3688337A2C1F2B3D000F3A45 /* RxDataSources */; };
@@ -15,6 +20,7 @@
 		368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833A52C20A675000F3A45 /* ProductDetailViewController.swift */; };
 		368833AA2C20A9B7000F3A45 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833A92C20A9B7000F3A45 /* String.swift */; };
 		368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833AB2C20AD91000F3A45 /* ProductDetailModel.swift */; };
+		368833B12C210BB6000F3A45 /* BottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833B02C210BB6000F3A45 /* BottomButtonView.swift */; };
 		369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638A2C1A7A240021E2E0 /* AppDelegate.swift */; };
 		369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */; };
 		369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638E2C1A7A240021E2E0 /* HomeViewController.swift */; };
@@ -67,6 +73,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		36305E572C21E82700701BDA /* ProductChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductChipView.swift; sourceTree = "<group>"; };
+		36305E592C21F00600701BDA /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
+		36305E5B2C21F7EB00701BDA /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "\U0010ProductDetailViewModel.swift"; sourceTree = "<group>"; };
+		36305E5D2C21F97100701BDA /* OptionSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSelectViewController.swift; sourceTree = "<group>"; };
+		36305E5F2C21FF4200701BDA /* OptionSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSelectViewModel.swift; sourceTree = "<group>"; };
 		368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarController.swift; sourceTree = "<group>"; };
 		368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarItems.swift; sourceTree = "<group>"; };
 		3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -74,6 +85,7 @@
 		368833A52C20A675000F3A45 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		368833A92C20A9B7000F3A45 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		368833AB2C20AD91000F3A45 /* ProductDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailModel.swift; sourceTree = "<group>"; };
+		368833B02C210BB6000F3A45 /* BottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonView.swift; sourceTree = "<group>"; };
 		369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDANZI_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		369C638A2C1A7A240021E2E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +189,8 @@
 				368833A42C20A652000F3A45 /* Model */,
 				368833A32C20A649000F3A45 /* Reactor */,
 				368833A22C20A63D000F3A45 /* ViewControllers */,
+				36305E5F2C21FF4200701BDA /* OptionSelectViewModel.swift */,
+				36305E5D2C21F97100701BDA /* OptionSelectViewController.swift */,
 			);
 			path = ProductDetail;
 			sourceTree = "<group>";
@@ -185,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				368833A52C20A675000F3A45 /* ProductDetailViewController.swift */,
+				36305E5B2C21F7EB00701BDA /* ProductDetailViewModel.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -210,6 +225,32 @@
 				368833A92C20A9B7000F3A45 /* String.swift */,
 			);
 			path = Literals;
+			sourceTree = "<group>";
+		};
+		368833AD2C210B8D000F3A45 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */,
+				368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		368833AE2C210B97000F3A45 /* NavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */,
+			);
+			path = NavigationBar;
+			sourceTree = "<group>";
+		};
+		368833AF2C210BA4000F3A45 /* ReusableView */ = {
+			isa = PBXGroup;
+			children = (
+				368833B02C210BB6000F3A45 /* BottomButtonView.swift */,
+				36305E572C21E82700701BDA /* ProductChipView.swift */,
+			);
+			path = ReusableView;
 			sourceTree = "<group>";
 		};
 		369C637E2C1A7A240021E2E0 = {
@@ -406,6 +447,7 @@
 				369C63E22C1A95060021E2E0 /* UIColor+.swift */,
 				369C63E42C1A95280021E2E0 /* UIButton+.swift */,
 				36EB5FA42C1ECDED00FAF995 /* String+.swift */,
+				36305E592C21F00600701BDA /* UILabel+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -413,9 +455,9 @@
 		36EB5F992C1D35BD00FAF995 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */,
-				368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */,
-				368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */,
+				368833AF2C210BA4000F3A45 /* ReusableView */,
+				368833AE2C210B97000F3A45 /* NavigationBar */,
+				368833AD2C210B8D000F3A45 /* TabBar */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -585,21 +627,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				369C63DF2C1A84DD0021E2E0 /* Fonts.swift in Sources */,
+				368833B12C210BB6000F3A45 /* BottomButtonView.swift in Sources */,
 				369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */,
 				369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */,
 				369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */,
+				36305E602C21FF4200701BDA /* OptionSelectViewModel.swift in Sources */,
 				369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */,
 				3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */,
 				36EB5FA32C1ECB1900FAF995 /* HomeCollectionViewCell.swift in Sources */,
+				36305E5A2C21F00600701BDA /* UILabel+.swift in Sources */,
 				368833832C1F3425000F3A45 /* MyPageViewController.swift in Sources */,
 				36EB5FA12C1EC9E900FAF995 /* HomeViewReactor.swift in Sources */,
 				368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */,
 				368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */,
 				368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */,
+				36305E5E2C21F97100701BDA /* OptionSelectViewController.swift in Sources */,
 				36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */,
+				36305E582C21E82700701BDA /* ProductChipView.swift in Sources */,
 				368833AA2C20A9B7000F3A45 /* String.swift in Sources */,
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
+				36305E5C2C21F7EB00701BDA /* ProductDetailViewModel.swift in Sources */,
 				3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */,
 				369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */,
 				36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */,
