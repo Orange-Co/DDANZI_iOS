@@ -26,6 +26,11 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: LifeCycles
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
