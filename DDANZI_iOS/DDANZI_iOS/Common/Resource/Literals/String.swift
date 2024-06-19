@@ -23,5 +23,10 @@ enum StringLiterals {
         enum Button{
             static let morelinkButtonText = "이 상품에 대한 자세한 정보를 보고 싶다면?"
         }
+        enum Option{
+            static let optionTitle = "원하는 옵션을 선택해주세요"
+            static let moreButtonText = "이 상품에 대한 자세한 정보를 보고 싶다면?"
+            static let optionCaptionText = "* 각인 옵션은 사용할 수 없습니다."
+        }
     }
 }
