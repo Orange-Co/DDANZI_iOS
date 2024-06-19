@@ -12,8 +12,8 @@ import RxCocoa
 
 final class OptionSelectViewModel {
     let sections = BehaviorRelay(value: [
-        SectionModel(isExpanded: false, items: ["S","M"]),
-        SectionModel(isExpanded: false, items: ["색상 1", "색상 2"])
+        OptionSectionModel(isExpanded: true, items: ["S","M"]),
+        OptionSectionModel(isExpanded: false, items: ["색상 1", "색상 2"])
     ])
     
     func toggleSection(at index: Int) {
