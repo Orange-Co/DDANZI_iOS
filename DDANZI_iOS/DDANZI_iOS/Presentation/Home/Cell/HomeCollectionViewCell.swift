@@ -43,7 +43,7 @@ class HomeCollectionViewCell: UICollectionViewCell {
     }
     
     private let heartCountLabel = UILabel().then {
-        $0.font = .body7M8
+        $0.font = .body7M10
         $0.textColor = .black
     }
     
