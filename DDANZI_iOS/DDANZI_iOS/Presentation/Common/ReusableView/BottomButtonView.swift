@@ -42,7 +42,6 @@ class BottomButtonView: UIView {
     
     private func setUI() {
         self.backgroundColor = .white
-        self.addShadow(offset: .init(width: 1, height: -3))
         setHierarchy()
         setConstraints()
     }

@@ -77,7 +77,6 @@ final class ProductDetailViewController: UIViewController {
     
     private let bottomButtonView = BottomButtonView(buttonText: "구매하기")
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
@@ -114,7 +113,7 @@ final class ProductDetailViewController: UIViewController {
                 let optionViewController = OptionSelectViewController()
                 
                 if let sheet = optionViewController.sheetPresentationController {
-                    sheet.detents = [.medium()]
+                    sheet.detents = [.medium(), .large()]
                 }
                 
                 self.present(optionViewController, animated: true)
