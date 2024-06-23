@@ -12,6 +12,7 @@
 		36305E5C2C21F7EB00701BDA /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E5B2C21F7EB00701BDA /* ProductDetailViewModel.swift */; };
 		36305E5E2C21F97100701BDA /* OptionSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E5D2C21F97100701BDA /* OptionSelectViewController.swift */; };
 		36305E602C21FF4200701BDA /* OptionSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E5F2C21FF4200701BDA /* OptionSelectViewModel.swift */; };
+		3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */; };
 		3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */; };
 		368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */; };
 		3688337B2C1F2B3D000F3A45 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 3688337A2C1F2B3D000F3A45 /* RxDataSources */; };
@@ -78,6 +79,7 @@
 		36305E5B2C21F7EB00701BDA /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "\U0010ProductDetailViewModel.swift"; sourceTree = "<group>"; };
 		36305E5D2C21F97100701BDA /* OptionSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSelectViewController.swift; sourceTree = "<group>"; };
 		36305E5F2C21FF4200701BDA /* OptionSelectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSelectViewModel.swift; sourceTree = "<group>"; };
+		3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarController.swift; sourceTree = "<group>"; };
 		368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarItems.swift; sourceTree = "<group>"; };
 		3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				368833A22C20A63D000F3A45 /* ViewControllers */,
 				36305E5F2C21FF4200701BDA /* OptionSelectViewModel.swift */,
 				36305E5D2C21F97100701BDA /* OptionSelectViewController.swift */,
+				3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */,
 			);
 			path = ProductDetail;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				369C63DF2C1A84DD0021E2E0 /* Fonts.swift in Sources */,
+				3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */,
 				368833B12C210BB6000F3A45 /* BottomButtonView.swift in Sources */,
 				369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */,
 				369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */,
