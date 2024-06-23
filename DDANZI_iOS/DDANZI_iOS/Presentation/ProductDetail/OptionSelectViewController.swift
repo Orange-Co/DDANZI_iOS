@@ -1,4 +1,3 @@
-//
 //  OptionSelectViewController.swift
 //  DDANZI_iOS
 //
@@ -15,10 +14,39 @@ import RxDataSources
 
 typealias StrOption = StringLiterals.ProductDetail.Option
 
+private enum Section: Hashable {
+    case main
+}
+
+private struct Item: Hashable {
+    let category: Category
+    let image: UIImage?
+    let title: String?
+    let description: String?
+    init(category: Category, imageName: String? = nil, title: String? = nil, description: String? = nil) {
+        self.category = category
+        if let systemName = imageName {
+            self.image = UIImage(systemName: systemName)
+        } else {
+            self.image = nil
+        }
+        self.title = title
+        self.description = description
+    }
+    private let identifier = UUID()
+}
+
 final class OptionSelectViewController: UIViewController {
     // MARK: Properties
     private let disposeBag = DisposeBag()
     private let optionViewModel = OptionSelectViewModel()
+    
+    let optionItems = [
+        OptionItem(title: "색상", subItems: [], item: Option(title: "색상1", isSelected: false)),
+        OptionItem(title: "사이즈", subItems: [], item: Option(title: "1", isSelected: false))
+    ]
+    
+    private var dataSource: UICollectionViewDiffableDataSource<Section, OptionItem>! = nil
     
     // MARK: Compenets
     private let titleLabel = UILabel().then {
@@ -39,14 +67,36 @@ final class OptionSelectViewController: UIViewController {
         $0.textColor = .gray2
     }
     
-    private let tableView = UITableView()
+    private lazy var optionCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
+        $0.backgroundColor = .clear
+    }
     
+    private let bottomButton = BottomButtonView(buttonText: "구매하기")
+    
+    let titleCell = UICollectionView.CellRegistration<UICollectionViewListCell, OptionItem> { cell, indexPath, itemIdentifier in
+        var contentConfiguration = cell.defaultContentConfiguration()
+        contentConfiguration.text = itemIdentifier.title
+        contentConfiguration.textProperties.font = .body5R14
+        cell.contentConfiguration = contentConfiguration
+        
+        let disclosureOptions = UICellAccessory.OutlineDisclosureOptions(style: .header, tintColor: .gray3)
+        
+        cell.accessories = [.outlineDisclosure(options: disclosureOptions)]
+        
+        
+    }
+    // 자식 셀로 사용할 것
+    let optionCell = UICollectionView.CellRegistration<OptionCollectionViewCell, Option> { cell, indexPath, itemIdentifier in
+        cell.titleLabel.text = itemIdentifier.title
+    }
+    
+    let optionList: [[Option]] = []
     
     // MARK: LifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
-        configureTableView()
+        configureDataSource()
     }
     
     // MARK: LayoutHelper
@@ -60,7 +110,8 @@ final class OptionSelectViewController: UIViewController {
         view.addSubviews(titleLabel,
                          moreButton,
                          optionCaptionLabel,
-                         tableView)
+                         optionCollectionView,
+                         bottomButton)
     }
     
     private func setConstraints() {
@@ -73,71 +124,73 @@ final class OptionSelectViewController: UIViewController {
             $0.leading.equalToSuperview().offset(20)
         }
         
-        tableView.snp.makeConstraints {
-            $0.top.equalTo(moreButton.snp.bottom).offset(15)
+        optionCollectionView.snp.makeConstraints {
+            $0.top.equalTo(moreButton.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(bottomButton.snp.top).offset(8)
+        }
+        
+        bottomButton.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
-    private func configureTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-               tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Header")
-               
-        // RxDataSources 설정
-        let dataSource = RxTableViewSectionedReloadDataSource<OptionSectionModel>(
-            configureCell: { dataSource, tableView, indexPath, item in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-                cell.textLabel?.text = item
-                return cell
-            },
-            titleForHeaderInSection: { dataSource, index in
-                return "Section \(index)"
-            }
-        )
+    private func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<OptionCollectionViewCell, OptionItem> { [weak self] (cell, indexPath, item) in
+            guard let self = self else { return }
+            
+            var content = cell.defaultContentConfiguration()
+            content.text = item.title
+            cell.contentConfiguration = content
+            cell.accessories = []
+        }
         
-        optionViewModel.sections
-            .map { sections in
-                sections.map { section in
-                    OptionSectionModel(isExpanded: section.isExpanded, items: section.items)
+        dataSource = UICollectionViewDiffableDataSource<Section, OptionItem>(collectionView: optionCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            
+            if itemIdentifier.subItems.count == 0 {
+                if let option = itemIdentifier.item as? Option {
+                    return collectionView.dequeueConfiguredReusableCell(using: self.optionCell, for: indexPath, item: option)
+                } else{
+                    return UICollectionViewCell()
                 }
+            } else {
+                return collectionView.dequeueConfiguredReusableCell(using: self.titleCell, for: indexPath, item: itemIdentifier)
             }
-            .bind(to: tableView.rx.items(dataSource: dataSource))
-            .disposed(by: disposeBag)
+        })
+    }
+    
+    private func updateSnapShot(section: Section, item: [OptionItem]) {
+        let snapShot = initialSnapshot(items: item)
+        self.dataSource.apply(snapShot, to: section, animatingDifferences: true)
+    }
+    
+    func initialSnapshot(items: [OptionItem]) -> NSDiffableDataSourceSectionSnapshot<OptionItem> {
+        var snapshot = NSDiffableDataSourceSectionSnapshot<OptionItem>()
         
-        tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        snapshot.append(items, to: nil)
+        for item in items where !item.subItems.isEmpty{
+            snapshot.append(item.subItems, to: item)
+            if item.subItems.count > 1{
+                snapshot.expand(items)
+            }
+        }
+        return snapshot
+    }
+    
+    private func sectionSnapShot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, OptionItem>()
+        snapshot.appendSections([.main])
+        self.dataSource.apply(snapshot)
     }
     
 }
 
-extension OptionSelectViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header")
-        header?.textLabel?.text = "Section \(section)"
-        let button = UIButton(type: .system)
-        button.setTitle("Toggle", for: .normal)
-        button.frame = CGRect(x: tableView.frame.width - 100, y: 0, width: 100, height: 44)
-        button.tag = section
-        button.addTarget(self, action: #selector(toggleSection(sender:)), for: .touchUpInside)
-        header?.contentView.addSubview(button)
-        return header
-    }
-    
-    @objc func toggleSection(sender: UIButton) {
-        optionViewModel.toggleSection(at: sender.tag)
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let isExpanded = optionViewModel.sections.value[section].isExpanded
-        return isExpanded ? optionViewModel.sections.value[section].items.count : 0
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return optionViewModel.sections.value.count
-    }
-    
-    private func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = optionViewModel.sections.value[indexPath.section].items[indexPath.row]
-        return cell
+extension OptionSelectViewController {
+    private func createLayout() -> UICollectionViewLayout {
+        return UICollectionViewCompositionalLayout { section, layoutEnvironment in
+            var config = UICollectionLayoutListConfiguration(appearance: .plain)
+            config.headerMode = .firstItemInSection
+            return NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
+        }
     }
 }
