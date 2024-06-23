@@ -16,9 +16,9 @@ extension TabBarItem {
     var title: String {
         switch self {
         case .home:
-            return "홈"
+            return StringLiterals.TabBar.ItemTitle.home
         case .profile:
-            return "프로필"
+            return StringLiterals.TabBar.ItemTitle.myPage
         }
     }
 }

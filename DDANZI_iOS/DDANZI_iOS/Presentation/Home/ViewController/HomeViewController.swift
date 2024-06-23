@@ -26,6 +26,11 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: LifeCycles
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
@@ -99,6 +104,17 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
             .disposed(by: disposeBag)
         
         homeViewCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        
+        homeViewCollectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                if indexPath.section == 1 {
+                    let detailVC = ProductDetailViewController()
+                    self.navigationController?.pushViewController(detailVC, animated: true)
+                }
+            })
             .disposed(by: disposeBag)
     }
     
