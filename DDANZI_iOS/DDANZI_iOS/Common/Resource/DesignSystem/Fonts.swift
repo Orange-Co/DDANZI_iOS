@@ -52,7 +52,11 @@ extension UIFont {
         return UIFont(name: "Pretendard-Medium", size: 12.0)!
     }
     
-    class var body7M8: UIFont {
+    class var body7M10: UIFont {
+        return UIFont(name: "Pretendard-Medium", size: 10.0)!
+    }
+    
+    class var body8M8: UIFont {
         return UIFont(name: "Pretendard-Medium", size: 8.0)!
     }
     
