@@ -29,12 +29,14 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
         bindCollectionView()
+        bindNavigationBar()
     }
     
     // MARK: LayoutHelper
@@ -52,6 +54,14 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
             $0.leading.trailing.bottom.equalToSuperview()
             
         }
+    }
+    
+    private func bindNavigationBar() {
+        navigationBarView.searchButtonTap
+                    .subscribe(onNext: { [weak self] in
+                        self?.navigationController?.pushViewController(SearchViewController(), animated: true)
+                    })
+                    .disposed(by: disposeBag)
     }
     
     private func bindCollectionView() {

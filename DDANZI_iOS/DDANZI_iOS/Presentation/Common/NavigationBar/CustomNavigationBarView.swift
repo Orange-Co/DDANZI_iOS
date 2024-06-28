@@ -20,6 +20,7 @@ enum NavigationBarType {
     case cancel
     case search
     case setting
+    case searching
 }
 
 final class CustomNavigationBarView: UIView {
@@ -33,12 +34,14 @@ final class CustomNavigationBarView: UIView {
     private let homeButtonSubject = PublishSubject<Void>()
     private let logoButtonSubject = PublishSubject<Void>()
     private let searchButtonSubject = PublishSubject<Void>()
+    private let searchBarSubject = PublishSubject<Void>()
     
     var backButtonTap: Observable<Void> { backButtonSubject.asObservable() }
     var cancelButtonTap: Observable<Void> { cancelButtonSubject.asObservable() }
     var homeButtonTap: Observable<Void> { homeButtonSubject.asObservable() }
     var logoButtonTap: Observable<Void> { logoButtonSubject.asObservable() }
     var searchButtonTap: Observable<Void> { searchButtonSubject.asObservable() }
+    var searchBarTextEdit: Observable<Void> { searchBarSubject.asObservable() }
     
     // MARK: - componenets
     private var leftView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
@@ -71,6 +74,7 @@ final class CustomNavigationBarView: UIView {
         $0.setImage(.icSearch, for: .normal)
     }
     
+    let searchTextField = UISearchTextField()
     
     // MARK: - init
     init(navigationBarType: NavigationBarType, title: String = "") {
@@ -139,12 +143,23 @@ final class CustomNavigationBarView: UIView {
                 $0.edges.equalToSuperview()
             }
             
+        case .searching:
+            leftView.addSubview(backButton)
+            backButton.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            self.addSubviews(searchTextField)
+            searchTextField.snp.makeConstraints {
+                $0.top.equalTo(leftView.snp.top)
+                $0.leading.equalTo(leftView.snp.trailing).offset(10)
+                $0.trailing.equalToSuperview().inset(20)
+            }
         }
     }
     
     private func setConstraints() {
         self.snp.makeConstraints {
-            $0.height.equalTo(100)
+            $0.height.equalTo(110)
         }
         
         leftView.snp.makeConstraints {
@@ -187,6 +202,8 @@ final class CustomNavigationBarView: UIView {
         searchButton.rx.tap
             .bind(to: searchButtonSubject)
             .disposed(by: disposeBag)
+        
+    
     }
     
 }

@@ -108,6 +108,21 @@ final class ProductDetailViewController: UIViewController {
     }
     
     private func bind() {
+        customNavigationBar.backButtonTap
+            .subscribe(onNext: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        customNavigationBar.homeButtonTap
+            .subscribe(onNext: { [weak self] in
+                let homeViewController = HomeViewController()
+                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
+                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: homeViewController)
+            })
+            .disposed(by: disposeBag)
+        
+        
         bottomButtonView.button.rx.tap
             .bind{
                 let optionViewController = OptionSelectViewController()

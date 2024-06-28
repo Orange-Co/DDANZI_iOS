@@ -1,17 +1,21 @@
 //
-//  HomeCollectionViewCell.swift
+//  SearchCollectionViewCell.swift
 //  DDANZI_iOS
 //
-//  Created by 이지희 on 6/16/24.
+//  Created by 이지희 on 6/23/24.
 //
 
 import UIKit
 
 import RxSwift
+import Then
+import SnapKit
 
-class HomeCollectionViewCell: UICollectionViewCell {
+class SearchCollectionViewCell: UICollectionViewCell {
     // MARK: Properties
+    static let identifier = "SearchCollectionViewCell"
     let disposeBag = DisposeBag()
+    var heartCount = 29
     
     // MARK: Compenets
     private let productImageView = UIImageView().then {
@@ -19,8 +23,19 @@ class HomeCollectionViewCell: UICollectionViewCell {
         $0.makeCornerRound(radius: 5)
     }
     
+    let heartButtonView = UIView().then {
+        $0.backgroundColor = .black.withAlphaComponent(0.3)
+        $0.makeCornerRound(radius: 10)
+    }
+    
     let heartButton = UIButton().then {
         $0.setImage(.icEmptyHeart, for: .normal)
+    }
+    
+    let heartLabel = UILabel().then {
+        $0.text = "22"
+        $0.font = .body7M10
+        $0.textColor = .white
     }
     
     private let titleLabel = UILabel().then {
@@ -38,18 +53,9 @@ class HomeCollectionViewCell: UICollectionViewCell {
         $0.textColor = .black
     }
     
-    private let heartImageView = UIImageView().then {
-        $0.image = .icBlackHeart
-    }
-    
-    private let heartCountLabel = UILabel().then {
-        $0.font = .body7M10
-        $0.textColor = .black
-    }
-    
     var heartButtonTap: Observable<Void> {
-            return heartButton.rx.tap.asObservable()
-        }
+        return heartButton.rx.tap.asObservable()
+    }
     
     // MARK: LifeCycles
     override init(frame: CGRect) {
@@ -68,18 +74,30 @@ class HomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func setHierarchy() {
-        productImageView.addSubview(heartButton)
+        heartButtonView.addSubviews(heartButton, heartLabel)
+        productImageView.addSubview(heartButtonView)
         
         self.addSubviews(productImageView,
                          titleLabel,
                          beforePriceLabel,
-                         priceLabel,
-                         heartImageView,
-                         heartCountLabel)
+                         priceLabel)
     }
     
     private func setConstraints() {
         heartButton.snp.makeConstraints {
+            $0.size.equalTo(10)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(8)
+            $0.trailing.equalTo(heartLabel.snp.leading).offset(-3)
+        }
+        
+        heartLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(8)
+        }
+        
+        heartButtonView.snp.makeConstraints {
+            $0.height.equalTo(20)
             $0.top.trailing.equalToSuperview().inset(7)
         }
         
@@ -95,23 +113,12 @@ class HomeCollectionViewCell: UICollectionViewCell {
         
         beforePriceLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(7)
+            $0.bottom.equalTo(priceLabel.snp.bottom)
         }
         
         priceLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLabel.snp.leading)
-            $0.top.equalTo(beforePriceLabel.snp.bottom).offset(7)
-        }
-        
-        heartImageView.snp.makeConstraints {
-            $0.size.equalTo(8)
-            $0.centerY.equalTo(heartCountLabel)
-            $0.trailing.equalTo(heartCountLabel.snp.leading).offset(-2)
-        }
-        
-        heartCountLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(6)
-            $0.bottom.equalTo(priceLabel.snp.bottom)
+            $0.trailing.equalTo(productImageView.snp.trailing).offset(6)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(5)
         }
     }
     
@@ -122,7 +129,6 @@ class HomeCollectionViewCell: UICollectionViewCell {
         titleLabel.text = productTitle
         beforePriceLabel.text = beforePrice
         priceLabel.text = price
-        heartCountLabel.text = "\(heartCount)"
         
         beforePriceLabel.attributedText = beforePriceLabel.text?.strikeThrough()
     }
