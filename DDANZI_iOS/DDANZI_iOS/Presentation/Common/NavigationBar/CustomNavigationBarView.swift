@@ -21,6 +21,7 @@ enum NavigationBarType {
     case search
     case setting
     case searching
+    case logo
 }
 
 final class CustomNavigationBarView: UIView {
@@ -72,6 +73,10 @@ final class CustomNavigationBarView: UIView {
     
     private let searchButton = UIButton().then {
         $0.setImage(.icSearch, for: .normal)
+    }
+    
+    private let settingButton = UIButton().then {
+        $0.setImage(.icSetting, for: .normal)
     }
     
     let searchTextField = UISearchTextField()
@@ -138,8 +143,8 @@ final class CustomNavigationBarView: UIView {
                 $0.edges.equalToSuperview()
             }
         case .setting:
-            leftView.addSubview(homeButton)
-            homeButton.snp.makeConstraints {
+            rightView.addSubview(settingButton)
+            settingButton.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
             
@@ -153,6 +158,11 @@ final class CustomNavigationBarView: UIView {
                 $0.top.equalTo(leftView.snp.top)
                 $0.leading.equalTo(leftView.snp.trailing).offset(10)
                 $0.trailing.equalToSuperview().inset(20)
+            }
+        case .logo:
+            leftView.addSubview(logoButton)
+            logoButton.snp.makeConstraints {
+                $0.edges.equalToSuperview()
             }
         }
     }
