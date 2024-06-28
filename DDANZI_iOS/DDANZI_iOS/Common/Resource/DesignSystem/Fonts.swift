@@ -12,9 +12,10 @@ extension UIFont {
         return UIFont(name: "Pretendard-Bold", size: 64.0)!
     }
     
-    class var title2B40: UIFont {
-        return UIFont(name: "Pretendard-Bold", size: 40.0)!
+    class var title2R32: UIFont {
+        return UIFont(name: "Pretendard-Regular", size: 32.0)!
     }
+    
     
     class var title3Sb28: UIFont {
         return UIFont(name: "Pretendard-SemiBold", size: 28.0)!
