@@ -14,6 +14,7 @@
 		3631527E2C35EADA00DF689E /* BottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631527B2C35EADA00DF689E /* BottomButtonView.swift */; };
 		3631527F2C35EADA00DF689E /* ProductChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631527C2C35EADA00DF689E /* ProductChipView.swift */; };
 		363152812C35EAF400DF689E /* DdanziButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152802C35EAF400DF689E /* DdanziButton.swift */; };
+		363152832C36E73800DF689E /* MyProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152822C36E73800DF689E /* MyProductCollectionViewCell.swift */; };
 		36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */; };
 		36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */; };
 		36542E632C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */; };
@@ -98,6 +99,7 @@
 		3631527B2C35EADA00DF689E /* BottomButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomButtonView.swift; sourceTree = "<group>"; };
 		3631527C2C35EADA00DF689E /* ProductChipView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductChipView.swift; sourceTree = "<group>"; };
 		363152802C35EAF400DF689E /* DdanziButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziButton.swift; sourceTree = "<group>"; };
+		363152822C36E73800DF689E /* MyProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProductCollectionViewCell.swift; sourceTree = "<group>"; };
 		36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */,
+				363152822C36E73800DF689E /* MyProductCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -774,6 +777,7 @@
 				3631527F2C35EADA00DF689E /* ProductChipView.swift in Sources */,
 				36EB5FA12C1EC9E900FAF995 /* HomeViewReactor.swift in Sources */,
 				368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */,
+				363152832C36E73800DF689E /* MyProductCollectionViewCell.swift in Sources */,
 				363152812C35EAF400DF689E /* DdanziButton.swift in Sources */,
 				368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */,
 				368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */,
