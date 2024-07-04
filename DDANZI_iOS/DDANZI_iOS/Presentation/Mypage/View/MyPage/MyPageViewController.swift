@@ -7,23 +7,34 @@
 
 import UIKit
 
+import RxSwift
+import Then
+import SnapKit
 
 final class MyPageViewController: UIViewController {
-    
+    private let disposeBag = DisposeBag()
     let viewModel = MyPageViewModel()
     
     private let navigationBar = CustomNavigationBarView(navigationBarType: .setting)
     private lazy var headerView = viewModel.isLogin ? MyPageHeaderView() : LoginHeaderView()
     private let tableView = UITableView(frame: .zero, style: .plain).then {
         $0.isScrollEnabled = false
-        $0.rowHeight = 49
+        $0.separatorStyle = .none
+        $0.rowHeight = 52
         $0.register(MyPageTableViewCell.self,
                     forCellReuseIdentifier: MyPageTableViewCell.identifier)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+        bind()
         configureTableView()
     }
     
@@ -41,7 +52,8 @@ final class MyPageViewController: UIViewController {
     
     private func setConstraints() {
         navigationBar.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.top.equalTo(view.safeAreaInsets.top)
+            $0.leading.trailing.equalToSuperview()
         }
         
         headerView.snp.makeConstraints {
@@ -59,6 +71,14 @@ final class MyPageViewController: UIViewController {
     private func configureTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+    }
+    
+    private func bind() {
+        navigationBar.settingButtonTap
+            .subscribe(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(InfoSettingViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -90,6 +110,34 @@ extension MyPageViewController: UITableViewDataSource {
             return header
         default:
             return UIView()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        switch section {
+        case 0:
+            switch indexPath.item {
+            case 0:
+                navigationController?.pushViewController(BuyListViewController(), animated: true)
+            case 1:
+                navigationController?.pushViewController(SellListViewController(), animated: true)
+            case 2:
+                navigationController?.pushViewController(FavoriteViewController(), animated: true)
+            default:
+                break
+            }
+        case 1:
+            switch indexPath.item {
+            case 0:
+                navigationController?.pushViewController(QuestionViewController(), animated: true)
+            case 1:
+                navigationController?.pushViewController(CsCenterViewController(), animated: true)
+            default:
+                break
+            }
+        default:
+            return
         }
     }
     

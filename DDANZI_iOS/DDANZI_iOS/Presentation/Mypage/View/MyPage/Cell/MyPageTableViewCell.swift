@@ -18,7 +18,10 @@ final class MyPageTableViewCell: UITableViewCell {
     }
     let rightButton = UIButton()
     let buttonImageView = UIImageView(image: .rightChv)
-
+    let bottomLine = UIView().then {
+        $0.backgroundColor = .gray2
+    }
+    
     static let identifier = "MyPageTableViewCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -36,8 +39,9 @@ final class MyPageTableViewCell: UITableViewCell {
     }
     
     private func setHierarchy() {
-        self.addSubviews(titleLabel, rightButton)
-        rightButton.addSubviews(buttonImageView)
+        self.addSubviews(titleLabel,
+                         buttonImageView,
+                         bottomLine)
     }
     
     private func setConstraints() {
@@ -47,12 +51,14 @@ final class MyPageTableViewCell: UITableViewCell {
         }
         
         buttonImageView.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-        
-        rightButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
+        }
+        
+        bottomLine.snp.makeConstraints {
+            $0.height.equalTo(1)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalToSuperview()
         }
     }
     
