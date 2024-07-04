@@ -32,6 +32,7 @@ final class InfoTableViewCell: UITableViewCell {
     }
     
     private func setUI() {
+        self.backgroundColor = .white
         setHierarchy()
         setConstraints()
     }

@@ -23,7 +23,7 @@ final class InfoSettingViewController: UIViewController {
         $0.separatorStyle = .none
         $0.register(InfoTableViewCell.self, forCellReuseIdentifier: InfoTableViewCell.identifier)
         $0.register(MyPageTableViewCell.self, forCellReuseIdentifier: MyPageTableViewCell.identifier)
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .white
     }
     
     override func viewWillAppear(_ animated: Bool) {
