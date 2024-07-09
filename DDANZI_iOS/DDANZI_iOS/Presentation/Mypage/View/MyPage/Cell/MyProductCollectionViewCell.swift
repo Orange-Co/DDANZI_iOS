@@ -112,6 +112,11 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     }
   }
   
+  private func setUI() {
+    setHierarchy()
+    setConstraints()
+  }
+  
   private func setHierarchy() {
     heartView.addArrangedSubview(heartIconImageView)
     heartView.addArrangedSubview(heartLabel)
@@ -135,7 +140,7 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     
   }
   
-  private func setSalesConstraints() {
+  private func setPurchaseConstraints() {
     self.addSubviews(purchaseDateLabel)
     
     purchaseDateLabel.snp.makeConstraints {
@@ -143,35 +148,37 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
       $0.leading.equalToSuperview()
     }
     
-    priceLabel.snp.makeConstraints {
+    priceLabel.snp.remakeConstraints {
       $0.top.equalTo(purchaseDateLabel.snp.bottom).offset(5)
       $0.trailing.equalToSuperview().inset(5)
     }
     
-    beforeLabel.snp.makeConstraints {
+    beforeLabel.snp.remakeConstraints {
       $0.bottom.equalTo(priceLabel.snp.bottom)
       $0.leading.equalToSuperview()
     }
   }
   
-  private func setPurchaseConstraints() {
+  private func setSalesConstraints() {
+    self.addSubviews(heartView)
     beforeLabel.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(7)
       $0.leading.equalToSuperview()
     }
     
-    priceLabel.snp.makeConstraints {
+    priceLabel.snp.remakeConstraints {
       $0.top.equalTo(beforeLabel.snp.bottom).offset(7)
-      $0.leading.equalToSuperview().offset(5)
+      $0.leading.equalToSuperview()
     }
     
     heartView.snp.makeConstraints {
-      $0.bottom.equalToSuperview().inset(7)
+      $0.bottom.equalTo(priceLabel.snp.bottom)
       $0.trailing.equalToSuperview().inset(5)
     }
   }
   
   private func setInterestConstraints() {
+    self.addSubviews(heartView)
     imageView.addSubviews(heartButton)
     
     heartButton.snp.makeConstraints {
@@ -189,7 +196,7 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     }
     
     heartView.snp.makeConstraints {
-      $0.bottom.equalToSuperview().inset(7)
+      $0.bottom.equalTo(priceLabel.snp.bottom)
       $0.trailing.equalToSuperview().inset(5)
     }
   }
