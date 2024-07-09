@@ -46,7 +46,6 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
         
         navigationBarView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(100)
         }
         
         homeViewCollectionView.snp.makeConstraints {
@@ -66,12 +65,12 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     private func bindCollectionView() {
         let dummyData = [
-            ProductModel(title: "Product 1", beforePrice: "34,000", price: "28,000", heartCount: 10),
-            ProductModel(title: "Product 2", beforePrice: "34,000", price: "28,000", heartCount: 20),
-            ProductModel(title: "Product 3", beforePrice: "34,000", price: "28,000", heartCount: 30),
-            ProductModel(title: "Product 4", beforePrice: "34,000", price: "28,000", heartCount: 40),
-            ProductModel(title: "Product 5", beforePrice: "34,000", price: "28,000", heartCount: 50),
-            ProductModel(title: "Product 6", beforePrice: "34,000", price: "28,000", heartCount: 60)
+          ProductModel(image: UIImage(resource: .image2),title: "Product 1", beforePrice: "34,000", price: "28,000", heartCount: 10),
+          ProductModel(image: UIImage(resource: .image2), title: "Product 2", beforePrice: "34,000", price: "28,000", heartCount: 20),
+          ProductModel(image: UIImage(resource: .image2), title: "Product 3", beforePrice: "34,000", price: "28,000", heartCount: 30),
+          ProductModel(image: UIImage(resource: .image2), title: "Product 4", beforePrice: "34,000", price: "28,000", heartCount: 40),
+          ProductModel(image: UIImage(resource: .image2), title: "Product 5", beforePrice: "34,000", price: "28,000", heartCount: 50),
+          ProductModel(image: UIImage(resource: .image2), title: "Product 6", beforePrice: "34,000", price: "28,000", heartCount: 60)
         ]
         
         let colorDummy: [UIColor] = [.red, .blue, .yellow]
