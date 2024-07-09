@@ -41,6 +41,7 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
   }
   private let titleLabel = UILabel().then {
     $0.font = .body3Sb16
+    $0.numberOfLines = 2
     $0.textColor = .blackground
   }
   private let purchaseDateLabel = UILabel().then {
@@ -142,6 +143,7 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
   
   private func setPurchaseConstraints() {
     self.addSubviews(purchaseDateLabel)
+    purchaseDateLabel.text = "2024년 05월 12일 구매"
     
     purchaseDateLabel.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(5)
@@ -207,6 +209,9 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     beforeLabel.text = beforePrice
     priceLabel.text = price
     heartLabel.text = "\(heartCount)"
+    
+    
+    beforeLabel.attributedText = beforeLabel.text?.strikeThrough()
   }
 }
 

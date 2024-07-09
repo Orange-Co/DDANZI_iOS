@@ -36,6 +36,7 @@ final class InfoSettingViewController: UIViewController {
         view.backgroundColor = .white
         setUI()
         configureTableView()
+        bind()
     }
     
     private func setUI() {
@@ -70,7 +71,6 @@ final class InfoSettingViewController: UIViewController {
                 self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
-        
     }
 }
 

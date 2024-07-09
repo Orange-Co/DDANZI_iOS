@@ -21,6 +21,8 @@ final class ProductListHeaderView: UIView {
     }
     private let editButton = UIButton().then {
         $0.setTitle("편집", for: .normal)
+        $0.titleLabel?.font = .body4R16
+        $0.setTitleColor(.gray4, for: .normal)
         $0.setUnderline()
     }
     

@@ -12,4 +12,7 @@ import RxSwift
 final class MyPageViewModel: ObservableObject {
     var isLogin: Bool = true
     
+    func tapSettingButton() {
+        
+    }
 }
