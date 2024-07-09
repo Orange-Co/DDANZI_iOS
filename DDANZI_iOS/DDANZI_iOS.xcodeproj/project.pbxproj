@@ -18,6 +18,7 @@
 		363152852C37F1BA00DF689E /* ProductListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152842C37F1BA00DF689E /* ProductListHeaderView.swift */; };
 		3631528B2C3D120400DF689E /* PurchaseSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631528A2C3D120400DF689E /* PurchaseSectionModel.swift */; };
 		3631528E2C3DAF5800DF689E /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631528D2C3DAF5800DF689E /* PurchaseListViewModel.swift */; };
+		363152942C3DB49200DF689E /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152932C3DB49200DF689E /* UIStackView+.swift */; };
 		36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */; };
 		36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */; };
 		36542E632C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */; };
@@ -106,6 +107,7 @@
 		363152842C37F1BA00DF689E /* ProductListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListHeaderView.swift; sourceTree = "<group>"; };
 		3631528A2C3D120400DF689E /* PurchaseSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSectionModel.swift; sourceTree = "<group>"; };
 		3631528D2C3DAF5800DF689E /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
+		363152932C3DB49200DF689E /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 				369C63E42C1A95280021E2E0 /* UIButton+.swift */,
 				36EB5FA42C1ECDED00FAF995 /* String+.swift */,
 				36305E592C21F00600701BDA /* UILabel+.swift */,
+				363152932C3DB49200DF689E /* UIStackView+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -797,6 +800,7 @@
 				368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */,
 				363152832C36E73800DF689E /* MyProductCollectionViewCell.swift in Sources */,
 				363152812C35EAF400DF689E /* DdanziButton.swift in Sources */,
+				363152942C3DB49200DF689E /* UIStackView+.swift in Sources */,
 				368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */,
 				3631528E2C3DAF5800DF689E /* PurchaseListViewModel.swift in Sources */,
 				368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */,
