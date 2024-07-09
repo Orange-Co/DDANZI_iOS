@@ -5,25 +5,136 @@
 //  Created by 이지희 on 6/28/24.
 //
 
+
 import UIKit
 
-class SellListViewController: UIViewController {
+import SnapKit
+import Then
+import RxSwift
+import RxCocoa
+import RxDataSources
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+final class SellListViewController: UIViewController {
+  private let disposeBag = DisposeBag()
+  
+  private let dummy = [
+    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
+    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
+    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
+    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
+    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
+    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
+    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78)]
+  
+  
+  private let navigationBar = CustomNavigationBarView(navigationBarType: .normal,
+                                                      title: "판매 목록")
+  private let headerView = ProductListHeaderView(isEditable: true)
+  private let collectionView = UICollectionView(frame: .zero,
+                                                collectionViewLayout: .init()).then {
+    $0.backgroundColor = .white
+    $0.register(MyProductCollectionViewCell.self,
+                forCellWithReuseIdentifier: MyProductCollectionViewCell.identifier)
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    self.tabBarController?.tabBar.isHidden = true
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    view.backgroundColor = .white
+    setUI()
+    configureCollectionView()
+    bind()
+  }
+  
+  private func setUI() {
+    headerView.setCount(count: dummy.count)
+    setHierarchy()
+    setConstraints()
+  }
+  
+  private func setHierarchy() {
+    view.addSubviews(navigationBar,
+                     headerView,
+                     collectionView)
+  }
+  
+  private func setConstraints() {
+    navigationBar.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    headerView.snp.makeConstraints {
+      $0.top.equalTo(navigationBar.snp.bottom)
+      $0.leading.trailing.equalToSuperview()
+      $0.height.equalTo(35)
     }
-    */
-
+    
+    collectionView.snp.makeConstraints {
+      $0.top.equalTo(headerView.snp.bottom)
+      $0.leading.trailing.bottom.equalToSuperview()
+    }
+  }
+  
+  private func bind() {
+    navigationBar.backButtonTap
+      .subscribe(onNext: { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  private func configureCollectionView() {
+    let layout = UICollectionViewFlowLayout()
+    layout.itemSize = CGSize(width: (view.frame.width-50)/2, height: 260)
+    layout.sectionInset = .init(top: 0, left: 20, bottom: 0, right: 20)
+    collectionView.collectionViewLayout = layout
+    
+    
+    let sections: [SectionModel<String, Any>] = [
+      SectionModel(model: "Section 1", items: dummy)
+    ]
+    
+    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
+      configureCell: { dataSource, collectionView, indexPath, item in
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyProductCollectionViewCell.identifier, for: indexPath) as! MyProductCollectionViewCell
+        if let product = item as? ProductModel {
+          cell.bindData(image: product.image,
+                        title: product.title,
+                        beforePrice: product.beforePrice,
+                        price: product.price,
+                        heartCount: product.heartCount)
+          //          cell.heartButtonTap
+          //            .subscribe(onNext: {
+          //              print("Heart button tapped on row \(indexPath.row)")
+          //              // Handle heart button tap
+          //            })
+          //            .disposed(by: cell.disposeBag)
+        }
+        return cell
+      }
+    )
+    
+    let items = Observable.just(sections)
+    items.bind(to: collectionView.rx.items(dataSource: dataSource))
+      .disposed(by: disposeBag)
+    
+    collectionView.rx.setDelegate(self)
+      .disposed(by: disposeBag)
+    
+    
+    collectionView.rx.itemSelected
+      .subscribe(onNext: { [weak self] indexPath in
+        guard let self = self else { return }
+        if indexPath.section == 0 {
+          let detailVC = ProductDetailViewController()
+          self.navigationController?.pushViewController(detailVC, animated: true)
+        }
+      })
+      .disposed(by: disposeBag)
+  }
 }
+
+extension SellListViewController: UICollectionViewDelegate { }
