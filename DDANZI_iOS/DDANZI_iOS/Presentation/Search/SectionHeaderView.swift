@@ -13,7 +13,7 @@ class SectionHeaderView: UICollectionReusableView {
     static let identifier = "SectionHeaderView"
     
     private let titleLabel = UILabel().then {
-        $0.font = .body3Sb16
+        $0.font = .body1B20
         $0.textColor = .black
     }
     

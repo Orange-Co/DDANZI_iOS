@@ -21,6 +21,7 @@ enum NavigationBarType {
     case search
     case setting
     case searching
+    case logo
 }
 
 final class CustomNavigationBarView: UIView {
@@ -33,7 +34,8 @@ final class CustomNavigationBarView: UIView {
     private let cancelButtonSubject = PublishSubject<Void>()
     private let homeButtonSubject = PublishSubject<Void>()
     private let logoButtonSubject = PublishSubject<Void>()
-    private let searchButtonSubject = PublishSubject<Void>()
+    private let searchButtonSubject = PublishSubject<Void>()    
+    private let settingButtonSubject = PublishSubject<Void>()
     private let searchBarSubject = PublishSubject<Void>()
     
     var backButtonTap: Observable<Void> { backButtonSubject.asObservable() }
@@ -41,6 +43,7 @@ final class CustomNavigationBarView: UIView {
     var homeButtonTap: Observable<Void> { homeButtonSubject.asObservable() }
     var logoButtonTap: Observable<Void> { logoButtonSubject.asObservable() }
     var searchButtonTap: Observable<Void> { searchButtonSubject.asObservable() }
+    var settingButtonTap: Observable<Void> { settingButtonSubject.asObservable() }
     var searchBarTextEdit: Observable<Void> { searchBarSubject.asObservable() }
     
     // MARK: - componenets
@@ -74,14 +77,18 @@ final class CustomNavigationBarView: UIView {
         $0.setImage(.icSearch, for: .normal)
     }
     
+    private let settingButton = UIButton().then {
+        $0.setImage(.icSetting, for: .normal)
+    }
+    
     let searchTextField = UISearchTextField()
     
     // MARK: - init
     init(navigationBarType: NavigationBarType, title: String = "") {
         super.init(frame: .zero)
         self.backgroundColor = .white
-        self.navigationType = navigationBarType
         self.titleLabel.text = title
+        self.navigationType = navigationBarType
         setUI()
         bindButtons()
     }
@@ -138,8 +145,8 @@ final class CustomNavigationBarView: UIView {
                 $0.edges.equalToSuperview()
             }
         case .setting:
-            leftView.addSubview(homeButton)
-            homeButton.snp.makeConstraints {
+            rightView.addSubview(settingButton)
+            settingButton.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
             
@@ -153,6 +160,11 @@ final class CustomNavigationBarView: UIView {
                 $0.top.equalTo(leftView.snp.top)
                 $0.leading.equalTo(leftView.snp.trailing).offset(10)
                 $0.trailing.equalToSuperview().inset(20)
+            }
+        case .logo:
+            leftView.addSubview(logoButton)
+            logoButton.snp.makeConstraints {
+                $0.edges.equalToSuperview()
             }
         }
     }
@@ -201,6 +213,9 @@ final class CustomNavigationBarView: UIView {
         
         searchButton.rx.tap
             .bind(to: searchButtonSubject)
+            .disposed(by: disposeBag)
+        settingButton.rx.tap
+            .bind(to: settingButtonSubject)
             .disposed(by: disposeBag)
         
     
