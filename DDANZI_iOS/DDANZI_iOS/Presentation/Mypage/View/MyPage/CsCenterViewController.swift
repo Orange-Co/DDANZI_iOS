@@ -9,8 +9,11 @@ import UIKit
 
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class CsCenterViewController: UIViewController {
+    private let disposeBag = DisposeBag()
     let navigaionBar = CustomNavigationBarView(navigationBarType: .normal, title: "상담 센터")
     
     let titleLabel = UILabel().then {
@@ -50,6 +53,7 @@ final class CsCenterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+        bind()
     }
     
     private func setUI() {
@@ -90,6 +94,14 @@ final class CsCenterViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(50)
         }
+    }
+  
+    private func bind() {
+      navigaionBar.backButtonTap
+        .subscribe(onNext: { [weak self] in
+          self?.navigationController?.popViewController(animated: true)
+        })
+        .disposed(by: disposeBag)
     }
     
 }
