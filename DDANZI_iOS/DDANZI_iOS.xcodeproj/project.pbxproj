@@ -18,6 +18,8 @@
 		363152852C37F1BA00DF689E /* ProductListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152842C37F1BA00DF689E /* ProductListHeaderView.swift */; };
 		3631528B2C3D120400DF689E /* PurchaseSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631528A2C3D120400DF689E /* PurchaseSectionModel.swift */; };
 		3631528E2C3DAF5800DF689E /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631528D2C3DAF5800DF689E /* PurchaseListViewModel.swift */; };
+		363152902C3DB37000DF689E /* PurchaseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631528F2C3DB37000DF689E /* PurchaseDetailViewController.swift */; };
+		363152922C3DB3BD00DF689E /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152912C3DB3BD00DF689E /* StatusView.swift */; };
 		363152942C3DB49200DF689E /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152932C3DB49200DF689E /* UIStackView+.swift */; };
 		36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */; };
 		36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */; };
@@ -107,6 +109,8 @@
 		363152842C37F1BA00DF689E /* ProductListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListHeaderView.swift; sourceTree = "<group>"; };
 		3631528A2C3D120400DF689E /* PurchaseSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseSectionModel.swift; sourceTree = "<group>"; };
 		3631528D2C3DAF5800DF689E /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
+		3631528F2C3DB37000DF689E /* PurchaseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseDetailViewController.swift; sourceTree = "<group>"; };
+		363152912C3DB3BD00DF689E /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		363152932C3DB49200DF689E /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
@@ -212,6 +216,39 @@
 				3631528A2C3D120400DF689E /* PurchaseSectionModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		363152952C3DB83A00DF689E /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				363152982C3DB88600DF689E /* SalesDetail */,
+				363152972C3DB87D00DF689E /* PurchaseDetail */,
+				363152962C3DB87800DF689E /* Common */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		363152962C3DB87800DF689E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				363152912C3DB3BD00DF689E /* StatusView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		363152972C3DB87D00DF689E /* PurchaseDetail */ = {
+			isa = PBXGroup;
+			children = (
+				3631528F2C3DB37000DF689E /* PurchaseDetailViewController.swift */,
+			);
+			path = PurchaseDetail;
+			sourceTree = "<group>";
+		};
+		363152982C3DB88600DF689E /* SalesDetail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SalesDetail;
 			sourceTree = "<group>";
 		};
 		36542E682C2E55DF00D5BFEB /* View */ = {
@@ -481,6 +518,7 @@
 		369C63BE2C1A7AFA0021E2E0 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				363152952C3DB83A00DF689E /* Transaction */,
 				36EB5F992C1D35BD00FAF995 /* Common */,
 				3673CA2A2C286468009411A4 /* Search */,
 				369C63C62C1A7D320021E2E0 /* Home */,
@@ -808,8 +846,10 @@
 				36542E652C2D4E9000D5BFEB /* LoginHeaderView.swift in Sources */,
 				36305E5E2C21F97100701BDA /* OptionSelectViewController.swift in Sources */,
 				3673CA302C286E27009411A4 /* RankCollectionViewCell.swift in Sources */,
+				363152922C3DB3BD00DF689E /* StatusView.swift in Sources */,
 				36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */,
 				368833AA2C20A9B7000F3A45 /* String.swift in Sources */,
+				363152902C3DB37000DF689E /* PurchaseDetailViewController.swift in Sources */,
 				36542E732C2E88F500D5BFEB /* SellListViewController.swift in Sources */,
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				36542E792C2E892500D5BFEB /* CsCenterViewController.swift in Sources */,
