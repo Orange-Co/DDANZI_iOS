@@ -21,6 +21,10 @@
 		363152902C3DB37000DF689E /* PurchaseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631528F2C3DB37000DF689E /* PurchaseDetailViewController.swift */; };
 		363152922C3DB3BD00DF689E /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152912C3DB3BD00DF689E /* StatusView.swift */; };
 		363152942C3DB49200DF689E /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152932C3DB49200DF689E /* UIStackView+.swift */; };
+		3631529B2C3DB97F00DF689E /* ProductInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631529A2C3DB97F00DF689E /* ProductInfoCollectionViewCell.swift */; };
+		3631529D2C3DB9CF00DF689E /* SellerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631529C2C3DB9CF00DF689E /* SellerCollectionViewCell.swift */; };
+		3631529F2C3DB9EA00DF689E /* AddressCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631529E2C3DB9EA00DF689E /* AddressCollectionViewCell.swift */; };
+		363152A12C3DBA0B00DF689E /* InfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152A02C3DBA0B00DF689E /* InfoCollectionViewCell.swift */; };
 		36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */; };
 		36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */; };
 		36542E632C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */; };
@@ -112,6 +116,10 @@
 		3631528F2C3DB37000DF689E /* PurchaseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseDetailViewController.swift; sourceTree = "<group>"; };
 		363152912C3DB3BD00DF689E /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		363152932C3DB49200DF689E /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
+		3631529A2C3DB97F00DF689E /* ProductInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfoCollectionViewCell.swift; sourceTree = "<group>"; };
+		3631529C2C3DB9CF00DF689E /* SellerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerCollectionViewCell.swift; sourceTree = "<group>"; };
+		3631529E2C3DB9EA00DF689E /* AddressCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCollectionViewCell.swift; sourceTree = "<group>"; };
+		363152A02C3DBA0B00DF689E /* InfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -239,6 +247,7 @@
 		363152972C3DB87D00DF689E /* PurchaseDetail */ = {
 			isa = PBXGroup;
 			children = (
+				363152992C3DB96100DF689E /* Cell */,
 				3631528F2C3DB37000DF689E /* PurchaseDetailViewController.swift */,
 			);
 			path = PurchaseDetail;
@@ -249,6 +258,17 @@
 			children = (
 			);
 			path = SalesDetail;
+			sourceTree = "<group>";
+		};
+		363152992C3DB96100DF689E /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				3631529A2C3DB97F00DF689E /* ProductInfoCollectionViewCell.swift */,
+				3631529C2C3DB9CF00DF689E /* SellerCollectionViewCell.swift */,
+				3631529E2C3DB9EA00DF689E /* AddressCollectionViewCell.swift */,
+				363152A02C3DBA0B00DF689E /* InfoCollectionViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		36542E682C2E55DF00D5BFEB /* View */ = {
@@ -816,6 +836,7 @@
 				36542E712C2E88E900D5BFEB /* PurchaseListViewController.swift in Sources */,
 				369C63DF2C1A84DD0021E2E0 /* Fonts.swift in Sources */,
 				3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */,
+				3631529F2C3DB9EA00DF689E /* AddressCollectionViewCell.swift in Sources */,
 				36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */,
 				36542E812C308ED000D5BFEB /* InfoDetailViewController.swift in Sources */,
 				3631527E2C35EADA00DF689E /* BottomButtonView.swift in Sources */,
@@ -830,6 +851,7 @@
 				369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */,
 				3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */,
 				36EB5FA32C1ECB1900FAF995 /* HomeCollectionViewCell.swift in Sources */,
+				3631529B2C3DB97F00DF689E /* ProductInfoCollectionViewCell.swift in Sources */,
 				36542E632C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift in Sources */,
 				36305E5A2C21F00600701BDA /* UILabel+.swift in Sources */,
 				368833832C1F3425000F3A45 /* MyPageViewController.swift in Sources */,
@@ -853,6 +875,7 @@
 				36542E732C2E88F500D5BFEB /* SellListViewController.swift in Sources */,
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				36542E792C2E892500D5BFEB /* CsCenterViewController.swift in Sources */,
+				363152A12C3DBA0B00DF689E /* InfoCollectionViewCell.swift in Sources */,
 				3631528B2C3D120400DF689E /* PurchaseSectionModel.swift in Sources */,
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
 				36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */,
@@ -863,6 +886,7 @@
 				36542E7B2C2FEE6000D5BFEB /* InfoTableViewCell.swift in Sources */,
 				36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */,
 				36542E6F2C2E87C100D5BFEB /* InfoSettingViewController.swift in Sources */,
+				3631529D2C3DB9CF00DF689E /* SellerCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
