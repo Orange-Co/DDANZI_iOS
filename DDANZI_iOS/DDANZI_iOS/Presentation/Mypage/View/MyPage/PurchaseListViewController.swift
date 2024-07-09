@@ -16,7 +16,7 @@ import RxDataSources
 final class PurchaseListViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private let listTypeRelay = BehaviorRelay<ListType>(value: .sales)
-  
+  private let viewModel: PurchaseListViewModel
   private let dummy = [
     ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
     ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
@@ -33,6 +33,15 @@ final class PurchaseListViewController: UIViewController {
     $0.backgroundColor = .white
     $0.register(MyProductCollectionViewCell.self,
                 forCellWithReuseIdentifier: MyProductCollectionViewCell.identifier)
+  }
+  
+  init() {
+    self.viewModel = PurchaseListViewModel(products: dummy)
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -77,11 +86,17 @@ final class PurchaseListViewController: UIViewController {
   }
   
   private func bind() {
+    headerView.bind(to: viewModel)
+    
     navigationBar.backButtonTap
       .subscribe(onNext: { [weak self] in
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    headerView.editButton.rx.tap
+        .bind(to: viewModel.editModeTapped)
+        .disposed(by: disposeBag)
   }
   
   private func configureCollectionView() {
@@ -96,7 +111,7 @@ final class PurchaseListViewController: UIViewController {
     ]
     
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
-      configureCell: { dataSource, collectionView, indexPath, item in
+      configureCell: { [weak self] dataSource, collectionView, indexPath, item in
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyProductCollectionViewCell.identifier, for: indexPath) as! MyProductCollectionViewCell
         if let product = item as? ProductModel {
           cell.bindData(image: product.image,
@@ -105,7 +120,9 @@ final class PurchaseListViewController: UIViewController {
                         price: product.price,
                         heartCount: product.heartCount)
           
-            cell.listType = self.listTypeRelay.value
+          cell.bind(to: self?.viewModel ?? PurchaseListViewModel(products: []))
+          
+          cell.listType = self?.listTypeRelay.value ?? .purchase
         }
         return cell
       }
@@ -118,6 +135,7 @@ final class PurchaseListViewController: UIViewController {
     
     listTypeRelay.accept(.purchase)
     collectionView.reloadData()
+    
     
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)

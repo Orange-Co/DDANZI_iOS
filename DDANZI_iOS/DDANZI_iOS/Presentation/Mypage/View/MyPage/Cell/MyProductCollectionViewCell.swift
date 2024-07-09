@@ -203,6 +203,12 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     }
   }
   
+  func bind(to viewModel: PurchaseListViewModel) {
+      viewModel.isEditMode
+          .bind(to: cancelButton.rx.isHidden)
+          .disposed(by: disposeBag)
+  }
+  
   func bindData(image: UIImage?, title: String, beforePrice: String, price: String, heartCount: Int) {
     imageView.image = image
     titleLabel.text = title

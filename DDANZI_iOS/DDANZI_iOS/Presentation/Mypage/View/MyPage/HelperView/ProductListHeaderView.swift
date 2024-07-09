@@ -9,17 +9,21 @@ import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 final class ProductListHeaderView: UIView {
     /// 상품 개수를 나타냅니다.
     var count = 10
-    
+    private let disposeBag = DisposeBag()
+  
+  
     // MARK: - UIComponents
     private let countLabel = UILabel().then {
         $0.font = .body4R16
         $0.textColor = .gray3
     }
-    private let editButton = UIButton().then {
+    let editButton = UIButton().then {
         $0.setTitle("편집", for: .normal)
         $0.titleLabel?.font = .body4R16
         $0.setTitleColor(.gray4, for: .normal)
@@ -60,6 +64,13 @@ final class ProductListHeaderView: UIView {
             $0.centerY.equalToSuperview()
         }
     }
+    
+  func bind(to viewModel: PurchaseListViewModel) {
+       editButton.rx.tap
+           .bind(to: viewModel.editModeTapped)
+           .disposed(by: disposeBag)
+   }
+   
     
     func setCount(count: Int) {
         countLabel.text = "총 \(count)개"
