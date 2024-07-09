@@ -15,13 +15,14 @@
 		3631527F2C35EADA00DF689E /* ProductChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631527C2C35EADA00DF689E /* ProductChipView.swift */; };
 		363152812C35EAF400DF689E /* DdanziButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152802C35EAF400DF689E /* DdanziButton.swift */; };
 		363152832C36E73800DF689E /* MyProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152822C36E73800DF689E /* MyProductCollectionViewCell.swift */; };
+		363152852C37F1BA00DF689E /* ProductListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363152842C37F1BA00DF689E /* ProductListHeaderView.swift */; };
 		36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */; };
 		36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */; };
 		36542E632C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */; };
 		36542E652C2D4E9000D5BFEB /* LoginHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E642C2D4E9000D5BFEB /* LoginHeaderView.swift */; };
 		36542E672C2D4E9D00D5BFEB /* MyPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E662C2D4E9D00D5BFEB /* MyPageHeaderView.swift */; };
 		36542E6F2C2E87C100D5BFEB /* InfoSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E6E2C2E87C100D5BFEB /* InfoSettingViewController.swift */; };
-		36542E712C2E88E900D5BFEB /* BuyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E702C2E88E900D5BFEB /* BuyListViewController.swift */; };
+		36542E712C2E88E900D5BFEB /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E702C2E88E900D5BFEB /* PurchaseListViewController.swift */; };
 		36542E732C2E88F500D5BFEB /* SellListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E722C2E88F500D5BFEB /* SellListViewController.swift */; };
 		36542E752C2E890600D5BFEB /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E742C2E890600D5BFEB /* FavoriteViewController.swift */; };
 		36542E792C2E892500D5BFEB /* CsCenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E782C2E892500D5BFEB /* CsCenterViewController.swift */; };
@@ -100,13 +101,14 @@
 		3631527C2C35EADA00DF689E /* ProductChipView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductChipView.swift; sourceTree = "<group>"; };
 		363152802C35EAF400DF689E /* DdanziButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziButton.swift; sourceTree = "<group>"; };
 		363152822C36E73800DF689E /* MyProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProductCollectionViewCell.swift; sourceTree = "<group>"; };
+		363152842C37F1BA00DF689E /* ProductListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListHeaderView.swift; sourceTree = "<group>"; };
 		36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionHeaderView.swift; sourceTree = "<group>"; };
 		36542E642C2D4E9000D5BFEB /* LoginHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginHeaderView.swift; sourceTree = "<group>"; };
 		36542E662C2D4E9D00D5BFEB /* MyPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageHeaderView.swift; sourceTree = "<group>"; };
 		36542E6E2C2E87C100D5BFEB /* InfoSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSettingViewController.swift; sourceTree = "<group>"; };
-		36542E702C2E88E900D5BFEB /* BuyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyListViewController.swift; sourceTree = "<group>"; };
+		36542E702C2E88E900D5BFEB /* PurchaseListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListViewController.swift; sourceTree = "<group>"; };
 		36542E722C2E88F500D5BFEB /* SellListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellListViewController.swift; sourceTree = "<group>"; };
 		36542E742C2E890600D5BFEB /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
 		36542E782C2E892500D5BFEB /* CsCenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsCenterViewController.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */,
 				36542E642C2D4E9000D5BFEB /* LoginHeaderView.swift */,
 				36542E662C2D4E9D00D5BFEB /* MyPageHeaderView.swift */,
+				363152842C37F1BA00DF689E /* ProductListHeaderView.swift */,
 			);
 			path = HelperView;
 			sourceTree = "<group>";
@@ -256,7 +259,7 @@
 				36542E6B2C2E561200D5BFEB /* HelperView */,
 				36542E6A2C2E560600D5BFEB /* Cell */,
 				368833822C1F3425000F3A45 /* MyPageViewController.swift */,
-				36542E702C2E88E900D5BFEB /* BuyListViewController.swift */,
+				36542E702C2E88E900D5BFEB /* PurchaseListViewController.swift */,
 				36542E722C2E88F500D5BFEB /* SellListViewController.swift */,
 				36542E742C2E890600D5BFEB /* FavoriteViewController.swift */,
 				36542E782C2E892500D5BFEB /* CsCenterViewController.swift */,
@@ -755,7 +758,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36542E712C2E88E900D5BFEB /* BuyListViewController.swift in Sources */,
+				36542E712C2E88E900D5BFEB /* PurchaseListViewController.swift in Sources */,
 				369C63DF2C1A84DD0021E2E0 /* Fonts.swift in Sources */,
 				3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */,
 				36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */,
@@ -766,6 +769,7 @@
 				369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */,
 				369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */,
 				3673CA322C287BD2009411A4 /* SectionHeaderView.swift in Sources */,
+				363152852C37F1BA00DF689E /* ProductListHeaderView.swift in Sources */,
 				36542E672C2D4E9D00D5BFEB /* MyPageHeaderView.swift in Sources */,
 				36305E602C21FF4200701BDA /* OptionSelectViewModel.swift in Sources */,
 				369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */,
@@ -964,6 +968,7 @@
 				DEVELOPMENT_TEAM = 65NSM7Z327;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDANZI_iOS/Application/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "딴지";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
@@ -994,6 +999,7 @@
 				DEVELOPMENT_TEAM = 65NSM7Z327;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDANZI_iOS/Application/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "딴지";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "";

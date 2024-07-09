@@ -7,7 +7,13 @@
 
 import UIKit
 
-class BuyListViewController: UIViewController {
+import SnapKit
+import Then
+import RxSwift
+import RxCocoa
+
+final class BuyListViewController: UIViewController {
+    private let 
 
     override func viewDidLoad() {
         super.viewDidLoad()
