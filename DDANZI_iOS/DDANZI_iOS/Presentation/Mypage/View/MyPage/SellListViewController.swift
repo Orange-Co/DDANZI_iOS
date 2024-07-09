@@ -16,6 +16,7 @@ import RxDataSources
 
 final class SellListViewController: UIViewController {
   private let disposeBag = DisposeBag()
+  private let listTypeRelay = BehaviorRelay<ListType>(value: .sales)
   
   private let dummy = [
     ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
@@ -106,6 +107,8 @@ final class SellListViewController: UIViewController {
                         beforePrice: product.beforePrice,
                         price: product.price,
                         heartCount: product.heartCount)
+          
+            cell.listType = self.listTypeRelay.value
           //          cell.heartButtonTap
           //            .subscribe(onNext: {
           //              print("Heart button tapped on row \(indexPath.row)")
@@ -124,6 +127,8 @@ final class SellListViewController: UIViewController {
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
     
+    listTypeRelay.accept(.sales)
+    collectionView.reloadData()
     
     collectionView.rx.itemSelected
       .subscribe(onNext: { [weak self] indexPath in

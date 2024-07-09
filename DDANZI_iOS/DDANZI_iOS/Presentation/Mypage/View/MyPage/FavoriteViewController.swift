@@ -13,6 +13,7 @@ import RxDataSources
 
 final class FavoriteViewController: UIViewController {
   private let disposeBag = DisposeBag()
+  private let listTypeRelay = BehaviorRelay<ListType>(value: .interest)
   
   private let dummy = [
     ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
@@ -100,6 +101,8 @@ final class FavoriteViewController: UIViewController {
                         beforePrice: product.beforePrice,
                         price: product.price,
                         heartCount: product.heartCount)
+          
+            cell.listType = self.listTypeRelay.value
           //          cell.heartButtonTap
           //            .subscribe(onNext: {
           //              print("Heart button tapped on row \(indexPath.row)")
@@ -114,6 +117,9 @@ final class FavoriteViewController: UIViewController {
     let items = Observable.just(sections)
     items.bind(to: collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
+    
+    listTypeRelay.accept(.interest)
+    collectionView.reloadData()
     
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)

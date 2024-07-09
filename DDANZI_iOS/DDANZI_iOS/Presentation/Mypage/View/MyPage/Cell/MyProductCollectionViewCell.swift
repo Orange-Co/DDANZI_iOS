@@ -9,6 +9,8 @@ import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 enum ListType {
   case sales
@@ -18,7 +20,18 @@ enum ListType {
 
 final class MyProductCollectionViewCell: UICollectionViewCell {
   static let identifier = "MyProductCollectionViewCell"
-  var listType: ListType = .sales
+  
+  private let disposeBag = DisposeBag()
+  private let listTypeRelay = BehaviorRelay<ListType>(value: .sales)
+  
+  var listType: ListType {
+    get {
+      return listTypeRelay.value
+    }
+    set {
+      listTypeRelay.accept(newValue)
+    }
+  }
   
   private let imageView = UIImageView().then {
     $0.backgroundColor = .gray2
@@ -61,15 +74,34 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setUI()
+    bindUI()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-  private func setUI() {
-    setHierarchy()
-    setConstraints()
+  override func prepareForReuse() {
+    imageView.subviews.forEach { $0.removeFromSuperview() }
+    purchaseDateLabel.removeFromSuperview()
+    setUI()
+  }
+  
+  private func bindUI() {
+    listTypeRelay
+      .distinctUntilChanged()
+      .subscribe(onNext: { [weak self] listType in
+        guard let self = self else { return }
+        self.updateUI(for: listType)
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  private func updateUI(for listType: ListType) {
+    imageView.subviews.forEach { $0.removeFromSuperview() }
+    purchaseDateLabel.removeFromSuperview()
+    heartView.removeFromSuperview()
+    
     switch listType {
     case .sales:
       setSalesConstraints()
