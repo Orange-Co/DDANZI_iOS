@@ -34,7 +34,8 @@ final class CustomNavigationBarView: UIView {
     private let cancelButtonSubject = PublishSubject<Void>()
     private let homeButtonSubject = PublishSubject<Void>()
     private let logoButtonSubject = PublishSubject<Void>()
-    private let searchButtonSubject = PublishSubject<Void>()
+    private let searchButtonSubject = PublishSubject<Void>()    
+    private let settingButtonSubject = PublishSubject<Void>()
     private let searchBarSubject = PublishSubject<Void>()
     
     var backButtonTap: Observable<Void> { backButtonSubject.asObservable() }
@@ -42,6 +43,7 @@ final class CustomNavigationBarView: UIView {
     var homeButtonTap: Observable<Void> { homeButtonSubject.asObservable() }
     var logoButtonTap: Observable<Void> { logoButtonSubject.asObservable() }
     var searchButtonTap: Observable<Void> { searchButtonSubject.asObservable() }
+    var settingButtonTap: Observable<Void> { settingButtonSubject.asObservable() }
     var searchBarTextEdit: Observable<Void> { searchBarSubject.asObservable() }
     
     // MARK: - componenets
@@ -85,8 +87,8 @@ final class CustomNavigationBarView: UIView {
     init(navigationBarType: NavigationBarType, title: String = "") {
         super.init(frame: .zero)
         self.backgroundColor = .white
-        self.navigationType = navigationBarType
         self.titleLabel.text = title
+        self.navigationType = navigationBarType
         setUI()
         bindButtons()
     }
@@ -211,6 +213,9 @@ final class CustomNavigationBarView: UIView {
         
         searchButton.rx.tap
             .bind(to: searchButtonSubject)
+            .disposed(by: disposeBag)
+        settingButton.rx.tap
+            .bind(to: settingButtonSubject)
             .disposed(by: disposeBag)
         
     
