@@ -42,6 +42,7 @@ class BottomButtonView: UIView {
     
     private func setUI() {
         self.backgroundColor = .white
+      self.addShadow(offset: .init(width: 0, height: 2), opacity: 0.3)
         setHierarchy()
         setConstraints()
     }
@@ -54,7 +55,7 @@ class BottomButtonView: UIView {
     
     private func setConstraints() {
         self.snp.makeConstraints {
-            $0.height.equalTo(100)
+            $0.height.equalTo(82)
         }
         
         heartButton.snp.makeConstraints {
@@ -71,7 +72,7 @@ class BottomButtonView: UIView {
         button.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.leading.equalTo(heartButton.snp.trailing).offset(20)
-            $0.trailing.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(23)
             $0.height.equalTo(50)
         }
     }

@@ -23,7 +23,8 @@ final class ProductDetailViewController: UIViewController {
                                    remainAmount: 30)
     // MARK: Compenets
     private let customNavigationBar = CustomNavigationBarView(navigationBarType: .home)
-    
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     private let productImageView = UIImageView().then {
         $0.backgroundColor = .gray2
     }
@@ -97,12 +98,100 @@ final class ProductDetailViewController: UIViewController {
         setHierarchy()
         setConstraints()
     }
+  
+    private func setHierarchy() {
+        view.addSubviews(customNavigationBar,
+                         scrollView,
+                         bottomButtonView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(productImageView,
+                                labelView,
+                                productTitleLabel,
+                                discountLabel,
+                                priceLabel,
+                                beforePriceLabel,remainLabel,
+                                amountLabel,
+                                moreLinkButton)
+    }
+    
+    private func setConstraints() {
+        customNavigationBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaInsets.top)
+            $0.leading.trailing.equalToSuperview()
+        }
+      
+        scrollView.snp.makeConstraints {
+          $0.top.equalTo(customNavigationBar.snp.bottom)
+          $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+          $0.edges.equalToSuperview()
+          $0.width.equalToSuperview()
+        }
+        
+        productImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(375)
+        }
+        
+        labelView.snp.makeConstraints {
+            $0.top.equalTo(productImageView.snp.bottom).offset(13)
+            $0.leading.equalToSuperview().offset(20)
+        }
+        
+        productTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(labelView.snp.bottom).offset(13)
+            $0.leading.trailing.equalToSuperview().inset(21)
+            $0.height.equalTo(58)
+        }
+        
+        discountLabel.snp.makeConstraints {
+            $0.top.equalTo(productTitleLabel.snp.bottom).offset(15)
+            $0.leading.equalToSuperview().offset(21)
+        }
+        
+        beforePriceLabel.snp.makeConstraints {
+            $0.trailing.equalTo(priceLabel.snp.leading).offset(-8)
+            $0.bottom.equalTo(discountLabel.snp.bottom)
+        }
+        
+        priceLabel.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(discountLabel.snp.bottom)
+        }
+        
+        remainLabel.snp.makeConstraints {
+            $0.top.equalTo(priceLabel.snp.bottom).offset(15)
+            $0.leading.equalToSuperview().offset(21)
+        }
+        
+        amountLabel.snp.makeConstraints {
+            $0.leading.equalTo(remainLabel.snp.trailing).offset(8)
+            $0.centerY.equalTo(remainLabel.snp.centerY)
+        }
+        
+        moreLinkButton.snp.makeConstraints {
+            $0.leading.equalTo(remainLabel.snp.leading).offset(-10)
+            $0.top.equalTo(remainLabel.snp.bottom).offset(5)
+        }
+        
+        bottomButtonView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+      
+        contentView.snp.makeConstraints {
+            $0.bottom.equalTo(moreLinkButton.snp.bottom).offset(104)
+        }
+    }
     
     private func bindDummy() {
         productTitleLabel.text = dummy.productTitle
         discountLabel.text = "\(dummy.discountRate)%"
-        priceLabel.text = "\(dummy.price)"
-        beforePriceLabel.attributedText = "\(dummy.beforePrice)".strikeThrough()
+        priceLabel.text = "\(dummy.price)원"
+        beforePriceLabel.attributedText = "\(dummy.beforePrice)원".strikeThrough()
         
         amountLabel.text = "\(dummy.remainAmount)개"
     }
@@ -134,78 +223,6 @@ final class ProductDetailViewController: UIViewController {
                 self.present(optionViewController, animated: true)
             }
             .disposed(by: disposeBag)
-    }
-    
-    private func setHierarchy() {
-        view.addSubviews(customNavigationBar,
-                         productImageView,
-                         labelView,
-                         productTitleLabel,
-                         discountLabel,
-                         priceLabel,
-                         beforePriceLabel,remainLabel,
-                         amountLabel,
-                         moreLinkButton,
-                         bottomButtonView)
-    }
-    
-    private func setConstraints() {
-        customNavigationBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaInsets.top)
-            $0.leading.trailing.equalToSuperview()
-        }
-        
-        productImageView.snp.makeConstraints {
-            $0.top.equalTo(customNavigationBar.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(375)
-        }
-        
-        labelView.snp.makeConstraints {
-            $0.top.equalTo(productImageView.snp.bottom).offset(13)
-            $0.leading.equalToSuperview().offset(20)
-        }
-        
-        productTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(labelView.snp.bottom).offset(13)
-            $0.leading.trailing.equalToSuperview().inset(21)
-            $0.height.equalTo(58)
-        }
-        
-        discountLabel.snp.makeConstraints {
-            $0.top.equalTo(productTitleLabel.snp.bottom).offset(15)
-            $0.leading.equalToSuperview().offset(21)
-        }
-        
-        beforePriceLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(discountLabel.snp.bottom)
-        }
-        
-        priceLabel.snp.makeConstraints {
-            $0.trailing.equalTo(beforePriceLabel.snp.leading).offset(-8)
-            $0.bottom.equalTo(discountLabel.snp.bottom)
-        }
-        
-        remainLabel.snp.makeConstraints {
-            $0.top.equalTo(priceLabel.snp.bottom).offset(15)
-            $0.leading.equalToSuperview().offset(21)
-        }
-        
-        amountLabel.snp.makeConstraints {
-            $0.leading.equalTo(remainLabel.snp.trailing).offset(8)
-            $0.centerY.equalTo(remainLabel.snp.centerY)
-        }
-        
-        moreLinkButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.top.equalTo(remainLabel.snp.bottom).offset(15)
-        }
-        
-        bottomButtonView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
     }
     
 }
