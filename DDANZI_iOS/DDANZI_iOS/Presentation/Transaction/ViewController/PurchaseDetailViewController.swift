@@ -47,9 +47,11 @@ final class PurchaseDetailViewController: UIViewController {
     super.viewDidLoad()
     setUI()
     configureCollectionView()
+    bind()
   }
   
   private func setUI() {
+    view.backgroundColor = .white
     setHierarchy()
     setConstraints()
   }
@@ -81,7 +83,16 @@ final class PurchaseDetailViewController: UIViewController {
       $0.centerX.equalToSuperview()
       $0.top.equalToSuperview().offset(12)
       $0.leading.trailing.equalToSuperview().inset(20)
+      $0.height.equalTo(50)
     }
+  }
+  
+  private func bind() {
+    navigaitonBar.cancelButtonTap
+      .subscribe(onNext: { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   private func configureCollectionView() {

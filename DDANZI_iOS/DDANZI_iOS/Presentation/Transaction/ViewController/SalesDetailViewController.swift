@@ -37,7 +37,7 @@ class SalesDetailViewController: UIViewController {
     $0.addShadow(offset: .init(width: 0, height: 2), opacity: 0.4)
   }
   
-  private let button = DdanziButton(title: "판매 확정하기")
+  private let button = DdanziButton(title: "구매 확정하기")
   
   override func viewWillAppear(_ animated: Bool) {
     self.tabBarController?.tabBar.isHidden = true
@@ -47,9 +47,11 @@ class SalesDetailViewController: UIViewController {
     super.viewDidLoad()
     setUI()
     configureCollectionView()
+    bind()
   }
   
   private func setUI() {
+    view.backgroundColor = .white
     setHierarchy()
     setConstraints()
   }
@@ -82,6 +84,14 @@ class SalesDetailViewController: UIViewController {
       $0.top.equalToSuperview().offset(12)
       $0.leading.trailing.equalToSuperview().inset(20)
     }
+  }
+  
+  private func bind() {
+    navigaitonBar.cancelButtonTap
+      .subscribe(onNext: { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   private func configureCollectionView() {
