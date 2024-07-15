@@ -8,9 +8,9 @@
 import UIKit
 
 final class DdanziButton: UIButton {
-    init (title: String) {
+  init (title: String, enable: Bool = true) {
         super.init(frame: .init(x: 0, y: 0, width: 0, height: 50))
-        configureButton(title: title)
+        enable ? configureButton(title: title) : configureUnableButton(title: title)
     }
     
     required init?(coder: NSCoder) {
@@ -24,4 +24,12 @@ final class DdanziButton: UIButton {
         self.titleLabel?.font = .body3Sb16
         self.makeCornerRound(radius: 10)
     }
+  
+    private func configureUnableButton(title: String) {
+        self.backgroundColor = .gray2
+        self.setTitle(title, for: .normal)
+        self.setTitleColor(.white, for: .normal)
+        self.titleLabel?.font = .body3Sb16
+        self.makeCornerRound(radius: 10)
+  }
 }
