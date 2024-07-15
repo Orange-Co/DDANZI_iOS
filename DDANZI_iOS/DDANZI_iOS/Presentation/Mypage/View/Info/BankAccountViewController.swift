@@ -55,11 +55,14 @@ class BankAccountViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = .white
     setUI()
     configureButton()
+    bind()
   }
   
   private func setUI() {
+    headerView.setTitleLabel(title: "계좌 관리")
     setHierarchy()
     setConstraints()
   }
@@ -113,4 +116,11 @@ class BankAccountViewController: UIViewController {
     nameLabel.text = "이승준"
   }
   
+  private func bind() {
+    navigationBarView.backButtonTap
+      .subscribe(onNext: { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
+  }
 }
