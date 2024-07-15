@@ -1,13 +1,13 @@
 //
-//  InfoDetailViewController.swift
+//  AccountViewController.swift
 //  DDANZI_iOS
 //
-//  Created by 이지희 on 6/30/24.
+//  Created by 이지희 on 7/15/24.
 //
 
 import UIKit
 
-class InfoDetailViewController: UIViewController {
+class AccountViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
