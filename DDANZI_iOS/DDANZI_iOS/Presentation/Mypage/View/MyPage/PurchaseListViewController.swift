@@ -145,7 +145,7 @@ final class PurchaseListViewController: UIViewController {
       .subscribe(onNext: { [weak self] indexPath in
         guard let self = self else { return }
         if indexPath.section == 0 {
-          let detailVC = ProductDetailViewController()
+          let detailVC = PurchaseDetailViewController()
           self.navigationController?.pushViewController(detailVC, animated: true)
         }
       })

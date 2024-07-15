@@ -14,6 +14,7 @@ import SnapKit
 
 final class InfoSettingViewController: UIViewController {
     private let titles = ["내 정보", "내 정보 관리"]
+    private let infoTitles = ["배송지 관리", "계좌 관리", "계정 관리"]
     private let disposeBag = DisposeBag()
     
     private let navigationBar = CustomNavigationBarView(navigationBarType: .normal, title: "정보 관리")
@@ -94,7 +95,7 @@ extension InfoSettingViewController: UITableViewDataSource {
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: MyPageTableViewCell.identifier) as? MyPageTableViewCell
             guard let cell else { return UITableViewCell() }
-            cell.setTitleLabel(title: "배송지 관리")
+            cell.setTitleLabel(title: infoTitles[indexPath.item])
             cell.selectionStyle = .none
             return cell
         default:
@@ -109,9 +110,22 @@ extension InfoSettingViewController: UITableViewDataSource {
         header.setTitleLabel(title: titles[section])
         return header
     }
-    
 }
 
 
-extension InfoSettingViewController: UITableViewDelegate { }
-
+extension InfoSettingViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      if indexPath.section == 1 {
+        switch indexPath.item {
+        case 0:
+          navigationController?.pushViewController(AddressSettingViewController(), animated: true)
+        case 1:
+          navigationController?.pushViewController(BankAccountViewController(), animated: true)
+        case 2:
+          navigationController?.pushViewController(AccountViewController(), animated: true)
+        default:
+          break
+        }
+      }
+    }
+}
