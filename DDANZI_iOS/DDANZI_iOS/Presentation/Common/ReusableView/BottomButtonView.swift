@@ -25,14 +25,14 @@ class BottomButtonView: UIView {
     }
     
     let heartCountLabel = UILabel().then {
-        $0.text = "13"
         $0.textColor = .black
         $0.font = .body6M12
     }
     
-    init(buttonText: String) {
+    init(buttonText: String, heartCount: Int = 0) {
         super.init(frame: .zero)
         self.button.setTitle(buttonText, for: .normal)
+        self.heartCountLabel.text = "\(heartCount)"
         setUI()
     }
     
