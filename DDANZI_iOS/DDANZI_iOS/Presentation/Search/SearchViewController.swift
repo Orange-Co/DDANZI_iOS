@@ -269,6 +269,7 @@ extension SearchViewController {
       return nil
     }
   }
+  
   private func createResultLayout() -> UICollectionViewCompositionalLayout {
     return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
       
