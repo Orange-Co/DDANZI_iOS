@@ -23,7 +23,8 @@ final class ProductDetailViewController: UIViewController {
                                    remainAmount: 30)
     // MARK: Compenets
     private let customNavigationBar = CustomNavigationBarView(navigationBarType: .home)
-    
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     private let productImageView = UIImageView().then {
         $0.backgroundColor = .gray2
     }
@@ -97,56 +98,20 @@ final class ProductDetailViewController: UIViewController {
         setHierarchy()
         setConstraints()
     }
-    
-    private func bindDummy() {
-        productTitleLabel.text = dummy.productTitle
-        discountLabel.text = "\(dummy.discountRate)%"
-        priceLabel.text = "\(dummy.price)"
-        beforePriceLabel.attributedText = "\(dummy.beforePrice)".strikeThrough()
-        
-        amountLabel.text = "\(dummy.remainAmount)개"
-    }
-    
-    private func bind() {
-        customNavigationBar.backButtonTap
-            .subscribe(onNext: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        customNavigationBar.homeButtonTap
-            .subscribe(onNext: { [weak self] in
-                let homeViewController = HomeViewController()
-                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
-                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: homeViewController)
-            })
-            .disposed(by: disposeBag)
-        
-        
-        bottomButtonView.button.rx.tap
-            .bind{
-                let optionViewController = OptionSelectViewController()
-                
-                if let sheet = optionViewController.sheetPresentationController {
-                    sheet.detents = [.medium(), .large()]
-                }
-                
-                self.present(optionViewController, animated: true)
-            }
-            .disposed(by: disposeBag)
-    }
-    
+  
     private func setHierarchy() {
         view.addSubviews(customNavigationBar,
-                         productImageView,
-                         labelView,
-                         productTitleLabel,
-                         discountLabel,
-                         priceLabel,
-                         beforePriceLabel,remainLabel,
-                         amountLabel,
-                         moreLinkButton,
+                         scrollView,
                          bottomButtonView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(productImageView,
+                                labelView,
+                                productTitleLabel,
+                                discountLabel,
+                                priceLabel,
+                                beforePriceLabel,remainLabel,
+                                amountLabel,
+                                moreLinkButton)
     }
     
     private func setConstraints() {
@@ -154,9 +119,19 @@ final class ProductDetailViewController: UIViewController {
             $0.top.equalTo(view.safeAreaInsets.top)
             $0.leading.trailing.equalToSuperview()
         }
+      
+        scrollView.snp.makeConstraints {
+          $0.top.equalTo(customNavigationBar.snp.bottom)
+          $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+          $0.edges.equalToSuperview()
+          $0.width.equalToSuperview()
+        }
         
         productImageView.snp.makeConstraints {
-            $0.top.equalTo(customNavigationBar.snp.bottom)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(375)
         }
@@ -178,12 +153,12 @@ final class ProductDetailViewController: UIViewController {
         }
         
         beforePriceLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalTo(priceLabel.snp.leading).offset(-8)
             $0.bottom.equalTo(discountLabel.snp.bottom)
         }
         
         priceLabel.snp.makeConstraints {
-            $0.trailing.equalTo(beforePriceLabel.snp.leading).offset(-8)
+            $0.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(discountLabel.snp.bottom)
         }
         
@@ -198,14 +173,63 @@ final class ProductDetailViewController: UIViewController {
         }
         
         moreLinkButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.top.equalTo(remainLabel.snp.bottom).offset(15)
+            $0.leading.equalTo(remainLabel.snp.leading).offset(-10)
+            $0.top.equalTo(remainLabel.snp.bottom).offset(5)
         }
         
         bottomButtonView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+      
+        contentView.snp.makeConstraints {
+            $0.bottom.equalTo(moreLinkButton.snp.bottom).offset(104)
+        }
     }
     
+    private func bindDummy() {
+        productTitleLabel.text = dummy.productTitle
+        discountLabel.text = "\(dummy.discountRate)%"
+        priceLabel.text = "\(dummy.price)원"
+        beforePriceLabel.attributedText = "\(dummy.beforePrice)원".strikeThrough()
+        
+        amountLabel.text = "\(dummy.remainAmount)개"
+    }
+    
+    private func bind() {
+        customNavigationBar.backButtonTap
+            .subscribe(onNext: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        customNavigationBar.homeButtonTap
+            .subscribe(onNext: { 
+                let homeViewController = DdanziTabBarController()
+                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
+                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: homeViewController)
+            })
+            .disposed(by: disposeBag)
+        
+        
+        bottomButtonView.button.rx.tap
+            .bind{
+                let optionViewController = OptionSelectViewController()
+                
+                if let sheet = optionViewController.sheetPresentationController {
+                    sheet.detents = [.medium(), .large()]
+                }
+              optionViewController.delegate = self
+                self.present(optionViewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+}
+
+extension ProductDetailViewController: OptionViewControllerDelegate {
+    func optionViewControllerDidFinish(_ viewController: OptionSelectViewController) {
+        let purchaseVC = PurchaseViewController()
+        self.navigationController?.pushViewController(purchaseVC, animated: true)
+    }
 }

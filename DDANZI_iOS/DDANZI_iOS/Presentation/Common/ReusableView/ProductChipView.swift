@@ -11,7 +11,7 @@ import Then
 
 final class ProductChipView: UIView {
     private let label = UILabel().then {
-        $0.font = .body3Sb16
+        $0.font = .body5R14
         $0.textColor = .black
     }
 
