@@ -18,6 +18,10 @@ private enum Section: Hashable {
     case main
 }
 
+protocol OptionViewControllerDelegate: AnyObject {
+    func optionViewControllerDidFinish(_ viewController: OptionSelectViewController)
+}
+
 private struct Item: Hashable {
     let category: Category
     let image: UIImage?
@@ -40,6 +44,8 @@ final class OptionSelectViewController: UIViewController {
     // MARK: Properties
     private let disposeBag = DisposeBag()
     private let optionViewModel = OptionSelectViewModel()
+  
+    weak var delegate: OptionViewControllerDelegate?
     
     let optionItems = [
         OptionItem(title: "색상", subItems: [], item: Option(title: "색상1", isSelected: false)),
@@ -95,6 +101,7 @@ final class OptionSelectViewController: UIViewController {
     // MARK: LifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
         setUI()
         configureDataSource()
     }
@@ -183,6 +190,15 @@ final class OptionSelectViewController: UIViewController {
         self.dataSource.apply(snapshot)
     }
     
+  private func bind() {
+    bottomButton.button.rx.tap
+      .bind {
+        self.dismiss(animated: true) {
+          self.delegate?.optionViewControllerDidFinish(self)
+        }
+      }
+      .disposed(by: disposeBag)
+  }
 }
 
 extension OptionSelectViewController {

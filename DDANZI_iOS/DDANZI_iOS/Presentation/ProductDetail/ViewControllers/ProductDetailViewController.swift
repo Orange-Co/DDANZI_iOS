@@ -204,8 +204,8 @@ final class ProductDetailViewController: UIViewController {
             .disposed(by: disposeBag)
         
         customNavigationBar.homeButtonTap
-            .subscribe(onNext: { [weak self] in
-                let homeViewController = HomeViewController()
+            .subscribe(onNext: { 
+                let homeViewController = DdanziTabBarController()
                 let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
                 sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: homeViewController)
             })
@@ -219,10 +219,17 @@ final class ProductDetailViewController: UIViewController {
                 if let sheet = optionViewController.sheetPresentationController {
                     sheet.detents = [.medium(), .large()]
                 }
-                
+              optionViewController.delegate = self
                 self.present(optionViewController, animated: true)
             }
             .disposed(by: disposeBag)
     }
     
+}
+
+extension ProductDetailViewController: OptionViewControllerDelegate {
+    func optionViewControllerDidFinish(_ viewController: OptionSelectViewController) {
+        let purchaseVC = PurchaseViewController()
+        self.navigationController?.pushViewController(purchaseVC, animated: true)
+    }
 }
