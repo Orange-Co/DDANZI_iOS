@@ -58,6 +58,11 @@
 		368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833A52C20A675000F3A45 /* ProductDetailViewController.swift */; };
 		368833AA2C20A9B7000F3A45 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833A92C20A9B7000F3A45 /* String.swift */; };
 		368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833AB2C20AD91000F3A45 /* ProductDetailModel.swift */; };
+		368E367D2C49349C003FA911 /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368E367C2C49349C003FA911 /* BaseResponse.swift */; };
+		368E36842C4936AB003FA911 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368E36832C4936AA003FA911 /* APIConstants.swift */; };
+		368E36862C493702003FA911 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368E36852C493702003FA911 /* NetworkHelper.swift */; };
+		368E36882C493724003FA911 /* NetworkResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368E36872C493724003FA911 /* NetworkResults.swift */; };
+		368E368A2C493775003FA911 /* NetworkProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368E36892C493775003FA911 /* NetworkProviders.swift */; };
 		368E36962C4A3B3D003FA911 /* iamport-ios in Frameworks */ = {isa = PBXBuildFile; productRef = 368E36952C4A3B3D003FA911 /* iamport-ios */; };
 		368E36992C4A3B55003FA911 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 368E36982C4A3B55003FA911 /* Moya */; };
 		368E369B2C4A3B55003FA911 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 368E369A2C4A3B55003FA911 /* RxMoya */; };
@@ -68,6 +73,7 @@
 		368E36A82C4A3BBE003FA911 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 368E36A72C4A3BBE003FA911 /* RxDataSources */; };
 		368E36AB2C4A3BE9003FA911 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 368E36AA2C4A3BE9003FA911 /* Then */; };
 		368E36AE2C4A3C26003FA911 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 368E36AD2C4A3C26003FA911 /* ReactorKit */; };
+		368E36B02C4A3C53003FA911 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368E36AF2C4A3C53003FA911 /* AuthViewController.swift */; };
 		369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638A2C1A7A240021E2E0 /* AppDelegate.swift */; };
 		369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */; };
 		369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638E2C1A7A240021E2E0 /* HomeViewController.swift */; };
@@ -174,6 +180,12 @@
 		368833A52C20A675000F3A45 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		368833A92C20A9B7000F3A45 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		368833AB2C20AD91000F3A45 /* ProductDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailModel.swift; sourceTree = "<group>"; };
+		368E367C2C49349C003FA911 /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
+		368E36832C4936AA003FA911 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		368E36852C493702003FA911 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
+		368E36872C493724003FA911 /* NetworkResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResults.swift; sourceTree = "<group>"; };
+		368E36892C493775003FA911 /* NetworkProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProviders.swift; sourceTree = "<group>"; };
+		368E36AF2C4A3C53003FA911 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDANZI_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		369C638A2C1A7A240021E2E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -653,6 +665,11 @@
 		369C63C42C1A7BA00021E2E0 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				368E367C2C49349C003FA911 /* BaseResponse.swift */,
+				368E36832C4936AA003FA911 /* APIConstants.swift */,
+				368E36852C493702003FA911 /* NetworkHelper.swift */,
+				368E36872C493724003FA911 /* NetworkResults.swift */,
+				368E36892C493775003FA911 /* NetworkProviders.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -735,6 +752,7 @@
 				36BE65B32C456A8400CD4511 /* PurchaseViewController.swift */,
 				36BE65C72C46618400CD4511 /* PushSettingViewController.swift */,
 				36774A652C466C8300F32637 /* PurchaseCompleteViewController.swift */,
+				368E36AF2C4A3C53003FA911 /* AuthViewController.swift */,
 			);
 			path = Purchase;
 			sourceTree = "<group>";
@@ -956,6 +974,8 @@
 				363152A72C3DC19500DF689E /* NSObject+ClassName.swift in Sources */,
 				3673CA2C2C286482009411A4 /* SearchViewController.swift in Sources */,
 				36BE65BA2C45733800CD4511 /* PayCollectionViewCell.swift in Sources */,
+				368E368A2C493775003FA911 /* NetworkProviders.swift in Sources */,
+				368E36842C4936AB003FA911 /* APIConstants.swift in Sources */,
 				369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */,
 				36BE65C62C4591F500CD4511 /* PurchaseHeaderView.swift in Sources */,
 				369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */,
@@ -968,10 +988,12 @@
 				36542E672C2D4E9D00D5BFEB /* MyPageHeaderView.swift in Sources */,
 				36305E602C21FF4200701BDA /* OptionSelectViewModel.swift in Sources */,
 				363152A32C3DBACE00DF689E /* DetailSectionHeaderView.swift in Sources */,
+				368E36882C493724003FA911 /* NetworkResults.swift in Sources */,
 				369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */,
 				3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */,
 				36EB5FA32C1ECB1900FAF995 /* HomeCollectionViewCell.swift in Sources */,
 				36774A662C466C8300F32637 /* PurchaseCompleteViewController.swift in Sources */,
+				368E36862C493702003FA911 /* NetworkHelper.swift in Sources */,
 				3631529B2C3DB97F00DF689E /* ProductInfoCollectionViewCell.swift in Sources */,
 				36542E632C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift in Sources */,
 				36305E5A2C21F00600701BDA /* UILabel+.swift in Sources */,
@@ -988,8 +1010,10 @@
 				368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */,
 				36542E752C2E890600D5BFEB /* FavoriteViewController.swift in Sources */,
 				36542E652C2D4E9000D5BFEB /* LoginHeaderView.swift in Sources */,
+				368E36B02C4A3C53003FA911 /* AuthViewController.swift in Sources */,
 				36305E5E2C21F97100701BDA /* OptionSelectViewController.swift in Sources */,
 				36BE65C82C46618400CD4511 /* PushSettingViewController.swift in Sources */,
+				368E367D2C49349C003FA911 /* BaseResponse.swift in Sources */,
 				36BE65B42C456A8400CD4511 /* PurchaseViewController.swift in Sources */,
 				36BE65B12C4510FE00CD4511 /* AccountViewController.swift in Sources */,
 				3673CA302C286E27009411A4 /* RankCollectionViewCell.swift in Sources */,
