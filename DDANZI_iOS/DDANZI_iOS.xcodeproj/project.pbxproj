@@ -44,6 +44,10 @@
 		36542E792C2E892500D5BFEB /* CsCenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E782C2E892500D5BFEB /* CsCenterViewController.swift */; };
 		36542E7B2C2FEE6000D5BFEB /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E7A2C2FEE6000D5BFEB /* InfoTableViewCell.swift */; };
 		36542E812C308ED000D5BFEB /* BankAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E802C308ED000D5BFEB /* BankAccountViewController.swift */; };
+		36607D9E2C4F8085003803F4 /* MoyaLoggingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607D9D2C4F8085003803F4 /* MoyaLoggingPlugin.swift */; };
+		36607DA02C4F80BE003803F4 /* BaseTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607D9F2C4F80BE003803F4 /* BaseTargetType.swift */; };
+		36607DA22C4F80E2003803F4 /* Interceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607DA12C4F80E2003803F4 /* Interceptor.swift */; };
+		36607DA62C4F8110003803F4 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607DA52C4F8110003803F4 /* Config.swift */; };
 		3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */; };
 		3673CA2C2C286482009411A4 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA2B2C286482009411A4 /* SearchViewController.swift */; };
 		3673CA2E2C286C11009411A4 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA2D2C286C11009411A4 /* SearchCollectionViewCell.swift */; };
@@ -73,7 +77,6 @@
 		368E36A82C4A3BBE003FA911 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 368E36A72C4A3BBE003FA911 /* RxDataSources */; };
 		368E36AB2C4A3BE9003FA911 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 368E36AA2C4A3BE9003FA911 /* Then */; };
 		368E36AE2C4A3C26003FA911 /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 368E36AD2C4A3C26003FA911 /* ReactorKit */; };
-		368E36B02C4A3C53003FA911 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368E36AF2C4A3C53003FA911 /* AuthViewController.swift */; };
 		369C638B2C1A7A240021E2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638A2C1A7A240021E2E0 /* AppDelegate.swift */; };
 		369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */; };
 		369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C638E2C1A7A240021E2E0 /* HomeViewController.swift */; };
@@ -166,6 +169,10 @@
 		36542E782C2E892500D5BFEB /* CsCenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsCenterViewController.swift; sourceTree = "<group>"; };
 		36542E7A2C2FEE6000D5BFEB /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		36542E802C308ED000D5BFEB /* BankAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankAccountViewController.swift; sourceTree = "<group>"; };
+		36607D9D2C4F8085003803F4 /* MoyaLoggingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyaLoggingPlugin.swift; sourceTree = "<group>"; };
+		36607D9F2C4F80BE003803F4 /* BaseTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTargetType.swift; sourceTree = "<group>"; };
+		36607DA12C4F80E2003803F4 /* Interceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interceptor.swift; sourceTree = "<group>"; };
+		36607DA52C4F8110003803F4 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		3673CA2B2C286482009411A4 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		3673CA2D2C286C11009411A4 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -185,7 +192,6 @@
 		368E36852C493702003FA911 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		368E36872C493724003FA911 /* NetworkResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResults.swift; sourceTree = "<group>"; };
 		368E36892C493775003FA911 /* NetworkProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProviders.swift; sourceTree = "<group>"; };
-		368E36AF2C4A3C53003FA911 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDANZI_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		369C638A2C1A7A240021E2E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -416,6 +422,29 @@
 				36BE65B02C4510FE00CD4511 /* AccountViewController.swift */,
 			);
 			path = Info;
+			sourceTree = "<group>";
+		};
+		36607DA32C4F80ED003803F4 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				368E36832C4936AA003FA911 /* APIConstants.swift */,
+				368E367C2C49349C003FA911 /* BaseResponse.swift */,
+				36607D9F2C4F80BE003803F4 /* BaseTargetType.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		36607DA42C4F8101003803F4 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				368E36852C493702003FA911 /* NetworkHelper.swift */,
+				368E36872C493724003FA911 /* NetworkResults.swift */,
+				368E36892C493775003FA911 /* NetworkProviders.swift */,
+				36607D9D2C4F8085003803F4 /* MoyaLoggingPlugin.swift */,
+				36607DA12C4F80E2003803F4 /* Interceptor.swift */,
+				36607DA52C4F8110003803F4 /* Config.swift */,
+			);
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 		3673CA2A2C286468009411A4 /* Search */ = {
@@ -665,11 +694,8 @@
 		369C63C42C1A7BA00021E2E0 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				368E367C2C49349C003FA911 /* BaseResponse.swift */,
-				368E36832C4936AA003FA911 /* APIConstants.swift */,
-				368E36852C493702003FA911 /* NetworkHelper.swift */,
-				368E36872C493724003FA911 /* NetworkResults.swift */,
-				368E36892C493775003FA911 /* NetworkProviders.swift */,
+				36607DA42C4F8101003803F4 /* Foundation */,
+				36607DA32C4F80ED003803F4 /* Base */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -752,7 +778,6 @@
 				36BE65B32C456A8400CD4511 /* PurchaseViewController.swift */,
 				36BE65C72C46618400CD4511 /* PushSettingViewController.swift */,
 				36774A652C466C8300F32637 /* PurchaseCompleteViewController.swift */,
-				368E36AF2C4A3C53003FA911 /* AuthViewController.swift */,
 			);
 			path = Purchase;
 			sourceTree = "<group>";
@@ -968,6 +993,7 @@
 				3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */,
 				3631529F2C3DB9EA00DF689E /* AddressCollectionViewCell.swift in Sources */,
 				36BE65BC2C45758100CD4511 /* TermsCollectionViewCell.swift in Sources */,
+				36607DA62C4F8110003803F4 /* Config.swift in Sources */,
 				36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */,
 				36542E812C308ED000D5BFEB /* BankAccountViewController.swift in Sources */,
 				3631527E2C35EADA00DF689E /* BottomButtonView.swift in Sources */,
@@ -998,6 +1024,7 @@
 				36542E632C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift in Sources */,
 				36305E5A2C21F00600701BDA /* UILabel+.swift in Sources */,
 				368833832C1F3425000F3A45 /* MyPageViewController.swift in Sources */,
+				36607DA02C4F80BE003803F4 /* BaseTargetType.swift in Sources */,
 				3631527F2C35EADA00DF689E /* ProductChipView.swift in Sources */,
 				36EB5FA12C1EC9E900FAF995 /* HomeViewReactor.swift in Sources */,
 				368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */,
@@ -1010,9 +1037,9 @@
 				368833A62C20A675000F3A45 /* ProductDetailViewController.swift in Sources */,
 				36542E752C2E890600D5BFEB /* FavoriteViewController.swift in Sources */,
 				36542E652C2D4E9000D5BFEB /* LoginHeaderView.swift in Sources */,
-				368E36B02C4A3C53003FA911 /* AuthViewController.swift in Sources */,
 				36305E5E2C21F97100701BDA /* OptionSelectViewController.swift in Sources */,
 				36BE65C82C46618400CD4511 /* PushSettingViewController.swift in Sources */,
+				36607D9E2C4F8085003803F4 /* MoyaLoggingPlugin.swift in Sources */,
 				368E367D2C49349C003FA911 /* BaseResponse.swift in Sources */,
 				36BE65B42C456A8400CD4511 /* PurchaseViewController.swift in Sources */,
 				36BE65B12C4510FE00CD4511 /* AccountViewController.swift in Sources */,
@@ -1032,6 +1059,7 @@
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
 				36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */,
 				36305E5C2C21F7EB00701BDA /* ProductDetailViewModel.swift in Sources */,
+				36607DA22C4F80E2003803F4 /* Interceptor.swift in Sources */,
 				36BE65B82C45730400CD4511 /* PayAmountCollectionViewCell.swift in Sources */,
 				3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */,
 				369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */,
