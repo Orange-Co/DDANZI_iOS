@@ -7,23 +7,71 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+import SnapKit
+import Then
+import RxSwift
+import RxCocoa
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+final class LoginViewController: UIViewController {
+  private let disposeBag = DisposeBag()
+  
+  private let guideLabel = UILabel()
+  private let kakaoLoginButton = UIButton().then {
+    $0.setImage(.kakaoLoginLargeWide1, for: .normal)
+  }
+  private let appleLoginButton = UIButton().then {
+    $0.setImage(.appleLogin, for: .normal)
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setUI()
+    bind()
+  }
+  
+  private func setUI() {
+    setHierarchy()
+    setConstraints()
+  }
+  
+  private func setHierarchy() {
+    view.backgroundColor = .white
+    view.addSubviews(guideLabel,
+                     kakaoLoginButton,
+                     appleLoginButton)
+  }
+  
+  private func setConstraints() {
+    guideLabel.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(80)
+      $0.leading.equalToSuperview().offset(20)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    kakaoLoginButton.snp.makeConstraints {
+      $0.bottom.equalToSuperview().inset(80)
+      $0.centerX.equalToSuperview()
     }
-    */
-
+    
+    appleLoginButton.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.bottom.equalTo(kakaoLoginButton.snp.top).offset(-15)
+    }
+  }
+  
+  private func bind() {
+    kakaoLoginButton.rx.tap
+      .bind { [weak self] in
+        guard let self else { return }
+        self.navigationController?.pushViewController(CertificationViewController(), animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    appleLoginButton.rx.tap
+      .bind { [weak self] in
+        guard let self else { return }
+        self.navigationController?.pushViewController(CertificationViewController(), animated: true)
+      }
+      .disposed(by: disposeBag)
+  }
+  
 }
