@@ -216,6 +216,7 @@
 		369C63E02C1A8D760021E2E0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		369C63E22C1A95060021E2E0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		369C63E42C1A95280021E2E0 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
+		36B833EA2C5CDA8F009C2C3E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		36BE65B02C4510FE00CD4511 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		36BE65B32C456A8400CD4511 /* PurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
 		36BE65B52C4572AE00CD4511 /* ProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -615,6 +616,7 @@
 		369C63BA2C1A7AD60021E2E0 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				36B833EA2C5CDA8F009C2C3E /* Config.xcconfig */,
 				369C63982C1A7A270021E2E0 /* Info.plist */,
 				369C638A2C1A7A240021E2E0 /* AppDelegate.swift */,
 				369C638C2C1A7A240021E2E0 /* SceneDelegate.swift */,
@@ -1108,9 +1110,11 @@
 /* Begin XCBuildConfiguration section */
 		369C63AF2C1A7A270021E2E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36B833EA2C5CDA8F009C2C3E /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BASE_URL = "${BASE_URL}";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1171,9 +1175,11 @@
 		};
 		369C63B02C1A7A270021E2E0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36B833EA2C5CDA8F009C2C3E /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BASE_URL = "${BASE_URL}";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
