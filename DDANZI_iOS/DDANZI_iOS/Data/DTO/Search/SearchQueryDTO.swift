@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+
+struct SearchQueryDTO: Codable {
+  let keyword: String
+}
