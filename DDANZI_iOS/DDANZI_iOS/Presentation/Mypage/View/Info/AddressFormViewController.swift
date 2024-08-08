@@ -103,6 +103,16 @@ final class AddressFormViewController: UIViewController {
     addressFormTableView.dataSource = self
     addressFormTableView.delegate = self
   }
+  
+  private func setupDismissKeyboardGesture() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    tapGesture.cancelsTouchesInView = false // 터치 이벤트가 다른 뷰로 전파되도록 설정
+    view.addGestureRecognizer(tapGesture)
+  }
+  
+  @objc private func dismissKeyboard() {
+    view.endEditing(true)
+  }
 }
 
 extension AddressFormViewController: UITableViewDataSource {
