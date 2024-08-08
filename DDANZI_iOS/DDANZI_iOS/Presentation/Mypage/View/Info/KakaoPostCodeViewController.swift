@@ -52,6 +52,7 @@ class KakaoPostCodeViewController: UIViewController {
     let request = URLRequest(url: gitURL)
     let configure = WKWebViewConfiguration()
     let contentController = WKUserContentController()
+    contentController.add(self, name: "callBackHandler")
     configure.userContentController = contentController
     
     webView = WKWebView(frame: UIScreen.main.bounds, configuration: configure)
@@ -76,5 +77,8 @@ extension KakaoPostCodeViewController: WKNavigationDelegate {
 
 extension KakaoPostCodeViewController: WKScriptMessageHandler {
   func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    if let data = message.body as? [String: Any] {
+      print(data)
+    }
   }
 }
