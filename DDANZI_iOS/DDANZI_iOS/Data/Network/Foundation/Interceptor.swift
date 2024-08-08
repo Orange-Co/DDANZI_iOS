@@ -30,14 +30,14 @@ final class AuthInterceptor: RequestInterceptor {
       print("🚨재시도 횟수가 너무 많습니다")
       return completion(.doNotRetry)
     }
-    
+  
     if  request.retryCount < retryLimit {
       if let statusCode = request.response?.statusCode,
          request.retryCount < retryLimit {
         if statusCode == 401 {
           
         } else if statusCode == 404 {
-          /// 유저를 찾을 수 없는 상태
+          
         } else {
           completion(.doNotRetryWithError(error))
           return
