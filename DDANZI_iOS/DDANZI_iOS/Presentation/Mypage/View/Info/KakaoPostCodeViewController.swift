@@ -12,6 +12,8 @@ import RxSwift
 
 class KakaoPostCodeViewController: UIViewController {
   
+  let dataSubject = PublishSubject<[String:Any]>()
+  
   private var webView: WKWebView = WKWebView()
   private var activityIndicator: UIActivityIndicatorView!
   
@@ -79,6 +81,8 @@ extension KakaoPostCodeViewController: WKScriptMessageHandler {
   func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
     if let data = message.body as? [String: Any] {
       print(data)
+      dataSubject.onNext(data) // 데이터 전달
+      dismiss(animated: true, completion: nil) // 뷰 닫기
     }
   }
 }
