@@ -89,6 +89,14 @@ final class AddressFormViewController: UIViewController {
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    nexButton.rx.tap
+      .subscribe(with: self, onNext: { owner, event  in
+        print("다음 버튼 눌림")
+        print(owner.addressDetails)
+        self.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   private func setDelegate() {
@@ -141,7 +149,25 @@ extension AddressFormViewController: UITableViewDataSource {
     default:
       break
     }
+    
+    cell.textChanged = { [weak self] text in
+      self?.addressDetails[indexPath.row] = text
+      self?.checkIsVaild()
+    }
+      
+    
     return cell
+  }
+  
+  private func checkIsVaild() {
+    let allFieldsFilled = addressDetails.allSatisfy {
+      guard let info = $0 else { return false }
+      return !info.isEmpty
+    }
+    if allFieldsFilled {
+      nexButton.backgroundColor = .black
+      nexButton.isEnabled = true
+    }
   }
 }
 
