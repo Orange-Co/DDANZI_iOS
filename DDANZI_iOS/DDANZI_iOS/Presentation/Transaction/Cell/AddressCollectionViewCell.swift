@@ -26,6 +26,18 @@ final class AddressCollectionViewCell: UICollectionViewCell {
     $0.textColor = .black
   }
   
+  private let editButton = DdanziMiniButton(title: "수정")
+  private let deleteButton = DdanziMiniButton(title: "삭제")
+  
+  private let stackView = UIStackView().then {
+    $0.spacing = 8
+    $0.axis = .vertical
+    $0.alignment = .leading
+  }
+  private let buttonStackView = UIStackView().then {
+    $0.alignment = .center
+    $0.spacing = 12
+  }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -42,33 +54,29 @@ final class AddressCollectionViewCell: UICollectionViewCell {
   }
   
   private func setHierarchy() {
-    self.addSubviews(nameLabel,
-                     detailAddressLabel,
-                     phoneLabel)
+    buttonStackView.addArrangedSubviews(editButton, deleteButton)
+    stackView.addArrangedSubviews(
+      nameLabel,
+      detailAddressLabel,
+      phoneLabel,
+      buttonStackView
+    )
+    self.addSubviews(stackView)
   }
   
   private func setConstraints() {
-    nameLabel.snp.makeConstraints {
-      $0.bottom.equalTo(detailAddressLabel.snp.top).offset(-8)
-      $0.leading.equalToSuperview().offset(20)
-    }
-    
-    detailAddressLabel.snp.makeConstraints {
+    stackView.snp.makeConstraints {
       $0.centerY.equalToSuperview()
-      $0.leading.trailing.equalToSuperview().inset(20)
-    }
-    
-    phoneLabel.snp.makeConstraints {
-      $0.top.equalTo(detailAddressLabel.snp.bottom).offset(8)
-      $0.leading.equalTo(detailAddressLabel.snp.leading)
+      $0.horizontalEdges.equalToSuperview().inset(20)
     }
   }
   
-  func configureView(name: String, address: String, phone: String){
+  func configureView(name: String, address: String, phone: String, isEditable: Bool = false){
     nameLabel.text = name
     detailAddressLabel.text = address
     phoneLabel.text = phone
-    
+    buttonStackView.isHidden = !isEditable
+    stackView.setCustomSpacing(15, after: phoneLabel)
     self.makeCornerRound(radius: 10)
     self.makeBorder(width: 1, color: .gray1)
   }
