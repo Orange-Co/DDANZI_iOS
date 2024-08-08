@@ -12,40 +12,39 @@ import Moya
 
 ///// 토큰 만료 시 자동으로 refresh를 위한 서버 통신
 final class AuthInterceptor: RequestInterceptor {
-    
-    private var retryLimit = 2
-    static let shared = AuthInterceptor()
-    
-    private init() {}
-    
-    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        print("---adater 진입----")
-        completion(.success(urlRequest))
+  
+  private var retryLimit = 2
+  static let shared = AuthInterceptor()
+  
+  private init() {}
+  
+  func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+    print("---adater 진입----")
+    completion(.success(urlRequest))
+  }
+  
+  func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
+    print("-------🔧retry 시작🔧-------")
+    guard let statusCode = request.response?.statusCode
+    else {
+      print("🚨재시도 횟수가 너무 많습니다")
+      return completion(.doNotRetry)
     }
-    
-    func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-        print("-------🔧retry 시작🔧-------")
-        guard
-            let statusCode = request.response?.statusCode,
-            request.retryCount < retryLimit
-        else {
-            print("🚨재시도 횟수가 너무 많습니다🚨")
-            return completion(.doNotRetry)
-        }
-        
-        if let statusCode = request.response?.statusCode,
-           request.retryCount < retryLimit {
-           // do anyThing
+  
+    if  request.retryCount < retryLimit {
+      if let statusCode = request.response?.statusCode,
+         request.retryCount < retryLimit {
+        if statusCode == 401 {
+          
         } else if statusCode == 404 {
-            /// 유저를 찾을 수 없는 상태
+          
         } else {
-            if request.retryCount > retryLimit {
-                print("🚨재시도 횟수가 너무 많습니다🚨")
-            }
-            completion(.doNotRetryWithError(error))
-            return
+          completion(.doNotRetryWithError(error))
+          return
         }
+      }
     }
+  }
 }
-
-
+  
+  
