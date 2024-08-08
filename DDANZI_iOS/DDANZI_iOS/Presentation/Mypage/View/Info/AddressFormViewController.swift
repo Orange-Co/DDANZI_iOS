@@ -18,6 +18,9 @@ final class AddressFormViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private let titles: [String] = ["우편번호", "주소지", "상세주소", "아룸", "휴대폰 번호"]
   private let userInfo = UserInfoModel(name: "이단지", phone: "010-1234-8314", nickName: "")
+  private var zoneCode: String?
+  private var roadAddress: String?
+  private lazy var addressDetails: [String?] = [zoneCode, roadAddress, nil, userInfo.name, userInfo.phone]
   
   
   private let navigationBar = CustomNavigationBarView(navigationBarType: .normal)
@@ -108,19 +111,19 @@ extension AddressFormViewController: UITableViewDataSource {
       cell.configureCell(
         title: titles[indexPath.row],
         placeholder: "",
-        initalText: "",
+        initalText: zoneCode ?? "",
         isButtonCell: true)
     case 1:
       cell.configureCell(
         title: titles[indexPath.row],
         placeholder: "주소지를 입력해주세요",
-        initalText: "",
+        initalText: roadAddress ?? "",
         isButtonCell: false)
     case 2:
       cell.configureCell(
         title: titles[indexPath.row],
         placeholder: "상세주소를 입력해주세요",
-        initalText: "",
+        initalText: addressDetails[2] ?? "",
         isButtonCell: false,
         isEnableInput: true)
     case 3:
@@ -148,6 +151,19 @@ extension AddressFormViewController: UITableViewDelegate {
     switch indexPath.row {
     case 0, 1:
       let postCodeVC = KakaoPostCodeViewController()
+      postCodeVC.dataSubject
+        .subscribe(with: self,onNext: { owner, data in
+          if let zonecode = data["zonecode"] as? String, let roadAddress = data["roadAddress"] as? String {
+            owner.zoneCode = zonecode
+            owner.roadAddress = roadAddress
+            owner.addressDetails[0] = zonecode
+            owner.addressDetails[1] = roadAddress
+            
+            // 테이블 뷰 업데이트
+            owner.addressFormTableView.reloadData()
+          }
+        })
+        .disposed(by: disposeBag)
       self.present(postCodeVC, animated: true)
     default:
       break
