@@ -27,6 +27,15 @@ class AddressSettingViewController: UIViewController {
     $0.register(AddressCollectionViewCell.self,
                 forCellWithReuseIdentifier: AddressCollectionViewCell.className)
   }
+  private let addButton = UIButton().then {
+    $0.setTitle("+ 배송지 등록", for: .normal)
+    $0.titleLabel?.font = .body2Sb18
+    $0.backgroundColor = .white
+    $0.makeCornerRound(radius: 10)
+    $0.makeBorder(width: 1, color: .gray3)
+    $0.setTitleColor(.gray4, for: .normal)
+    $0.isHidden = true // 초기에는 숨겨둡니다.
+  }
   
   
   override func viewDidLoad() {
@@ -45,6 +54,7 @@ class AddressSettingViewController: UIViewController {
   private func setHierarchy() {
     view.addSubviews(navigationBarView,
                      headerView,
+                     addButton,
                      collectionView)
   }
   
@@ -63,11 +73,17 @@ class AddressSettingViewController: UIViewController {
       $0.top.equalTo(headerView.snp.bottom).offset(19)
       $0.leading.trailing.bottom.equalToSuperview()
     }
+    
+    addButton.snp.makeConstraints {
+      $0.top.equalTo(headerView.snp.bottom).offset(30)
+      $0.leading.trailing.equalToSuperview().inset(30)
+      $0.height.equalTo(150)
+    }
   }
-  
   private func configureCollectionView() {
     collectionView.delegate = nil
-    let dummy: [Address] = [.init(name: "이등둔", address: "(02578) 서울특별시 동대문구 무학로45길 34 (용두동), 204호", phone: "010-5213-2334")]
+    
+    let dummy: [Address] = [] // 데이터가 없는 상태를 가정
     
     let sections: [SectionModel<String, Any>] = [
       SectionModel(model: "배송지 관리", items: dummy)
@@ -81,7 +97,7 @@ class AddressSettingViewController: UIViewController {
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddressCollectionViewCell.className, for: indexPath) as? AddressCollectionViewCell
           if let cell {
             if let address = item as? Address {
-              cell.configureView(name: address.name, address: address.address, phone: address.phone)
+              cell.configureView(name: address.name, address: address.address, phone: address.phone, isEditable: true)
             }
             return cell
           }
@@ -98,21 +114,26 @@ class AddressSettingViewController: UIViewController {
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
     
-//    collectionView.rx.itemSelected
-//      .subscribe(onNext: { [weak self] indexPath in
-//        guard let self = self else { return }
-//        if indexPath.section == 0 {
-//          let detailVC = ProductDetailViewController()
-//          self.navigationController?.pushViewController(detailVC, animated: true)
-//        }
-//      })
-//      .disposed(by: disposeBag)
+    items.subscribe(onNext: { [weak self] sections in
+      guard let self = self else { return }
+      let isEmpty = sections.first?.items.isEmpty ?? true
+      self.collectionView.isHidden = isEmpty
+      self.addButton.isHidden = !isEmpty
+    })
+    .disposed(by: disposeBag)
   }
+  
   
   private func bind() {
     navigationBarView.backButtonTap
       .subscribe(onNext: { [weak self] in
         self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    addButton.rx.tap
+      .subscribe(onNext: { [weak self] in
+        self?.navigationController?.pushViewController(AddressFormViewController(), animated: true)
       })
       .disposed(by: disposeBag)
   }
