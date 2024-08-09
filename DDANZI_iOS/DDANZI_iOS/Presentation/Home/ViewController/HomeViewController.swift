@@ -14,154 +14,170 @@ import SnapKit
 import Then
 
 final class HomeViewController: UIViewController, UIScrollViewDelegate {
-    // MARK: Properties
-    var disposeBag = DisposeBag()
+  // MARK: Properties
+  var disposeBag = DisposeBag()
+  
+  // MARK: Components
+  let navigationBarView = CustomNavigationBarView(navigationBarType: .search)
+  private lazy var homeViewCollectionView = UICollectionView(frame: .zero, collectionViewLayout: HomeViewController.createLayout()).then {
+    $0.backgroundColor = .white
+    $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
+    $0.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: "HeaderCollectionViewCell")
+  }
+  
+  private let sellButton = UIButton().then {
+    $0.setTitle("판매하기", for: .normal)
+    $0.titleLabel?.font = .body3Sb16
+    $0.setTitleColor(.black, for: .normal)
+    $0.backgroundColor = .dYellow
+    $0.makeCornerRound(radius: 24)
+  }
+  
+  
+  // MARK: LifeCycles
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.tabBarController?.tabBar.isHidden = false
+    self.navigationController?.navigationBar.isHidden = true
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setUI()
+    bindCollectionView()
+    bindNavigationBar()
+  }
+  
+  // MARK: LayoutHelper
+  private func setUI() {
+    view.addSubviews(navigationBarView,
+                     homeViewCollectionView,
+                     sellButton)
     
-    // MARK: Components
-    let navigationBarView = CustomNavigationBarView(navigationBarType: .search)
-    private lazy var homeViewCollectionView = UICollectionView(frame: .zero, collectionViewLayout: HomeViewController.createLayout()).then {
-        $0.backgroundColor = .white
-        $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
-        $0.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: "HeaderCollectionViewCell")
+    navigationBarView.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
     }
     
-    // MARK: LifeCycles
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.navigationBar.isHidden = true
+    homeViewCollectionView.snp.makeConstraints {
+      $0.top.equalTo(navigationBarView.snp.bottom)
+      $0.leading.trailing.bottom.equalToSuperview()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setUI()
-        bindCollectionView()
-        bindNavigationBar()
+    sellButton.snp.makeConstraints {
+      $0.bottom.equalToSuperview().inset(27)
+      $0.trailing.equalToSuperview().inset(20)
+      $0.width.equalTo(108)
+      $0.height.equalTo(48)
     }
+  }
+  
+  private func bindNavigationBar() {
+    navigationBarView.searchButtonTap
+      .subscribe(onNext: { [weak self] in
+        self?.navigationController?.pushViewController(SearchViewController(), animated: true)
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  private func bindCollectionView() {
+    let dummyData = [
+      ProductModel(image: UIImage(resource: .image2),title: "Product 1", beforePrice: "34,000", price: "28,000", heartCount: 10),
+      ProductModel(image: UIImage(resource: .image2), title: "Product 2", beforePrice: "34,000", price: "28,000", heartCount: 20),
+      ProductModel(image: UIImage(resource: .image2), title: "Product 3", beforePrice: "34,000", price: "28,000", heartCount: 30),
+      ProductModel(image: UIImage(resource: .image2), title: "Product 4", beforePrice: "34,000", price: "28,000", heartCount: 40),
+      ProductModel(image: UIImage(resource: .image2), title: "Product 5", beforePrice: "34,000", price: "28,000", heartCount: 50),
+      ProductModel(image: UIImage(resource: .image2), title: "Product 6", beforePrice: "34,000", price: "28,000", heartCount: 60)
+    ]
     
-    // MARK: LayoutHelper
-    private func setUI() {
-        view.addSubviews(navigationBarView,
-                         homeViewCollectionView)
-        
-        navigationBarView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+    let colorDummy: [UIColor] = [.red, .blue, .yellow]
+    
+    let sections: [SectionModel<String, Any>] = [
+      SectionModel(model: "Section 0", items: colorDummy),
+      SectionModel(model: "Section 1", items: dummyData)
+    ]
+    
+    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
+      configureCell: { dataSource, collectionView, indexPath, item in
+        if indexPath.section == 0 {
+          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCollectionViewCell", for: indexPath) as! HeaderCollectionViewCell
+          if let banner = item as? UIColor {
+            cell.bindData(bannerImage: banner)
+          }
+          return cell
+        } else {
+          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
+          if let product = item as? ProductModel {
+            cell.bindData(productTitle: product.title,
+                          beforePrice: product.beforePrice,
+                          price: product.price,
+                          heartCount: product.heartCount)
+            cell.heartButtonTap
+              .subscribe(onNext: {
+                print("Heart button tapped on row \(indexPath.row)")
+                // Handle heart button tap
+              })
+              .disposed(by: cell.disposeBag)
+          }
+          return cell
         }
-        
-        homeViewCollectionView.snp.makeConstraints {
-            $0.top.equalTo(navigationBarView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-            
+      }
+    )
+    
+    let items = Observable.just(sections)
+    
+    items.bind(to: homeViewCollectionView.rx.items(dataSource: dataSource))
+      .disposed(by: disposeBag)
+    
+    homeViewCollectionView.rx.setDelegate(self)
+      .disposed(by: disposeBag)
+    
+    
+    homeViewCollectionView.rx.itemSelected
+      .subscribe(onNext: { [weak self] indexPath in
+        guard let self = self else { return }
+        if indexPath.section == 1 {
+          let detailVC = ProductDetailViewController()
+          self.navigationController?.pushViewController(detailVC, animated: true)
         }
-    }
-    
-    private func bindNavigationBar() {
-        navigationBarView.searchButtonTap
-                    .subscribe(onNext: { [weak self] in
-                        self?.navigationController?.pushViewController(SearchViewController(), animated: true)
-                    })
-                    .disposed(by: disposeBag)
-    }
-    
-    private func bindCollectionView() {
-        let dummyData = [
-          ProductModel(image: UIImage(resource: .image2),title: "Product 1", beforePrice: "34,000", price: "28,000", heartCount: 10),
-          ProductModel(image: UIImage(resource: .image2), title: "Product 2", beforePrice: "34,000", price: "28,000", heartCount: 20),
-          ProductModel(image: UIImage(resource: .image2), title: "Product 3", beforePrice: "34,000", price: "28,000", heartCount: 30),
-          ProductModel(image: UIImage(resource: .image2), title: "Product 4", beforePrice: "34,000", price: "28,000", heartCount: 40),
-          ProductModel(image: UIImage(resource: .image2), title: "Product 5", beforePrice: "34,000", price: "28,000", heartCount: 50),
-          ProductModel(image: UIImage(resource: .image2), title: "Product 6", beforePrice: "34,000", price: "28,000", heartCount: 60)
-        ]
-        
-        let colorDummy: [UIColor] = [.red, .blue, .yellow]
-        
-        let sections: [SectionModel<String, Any>] = [
-            SectionModel(model: "Section 0", items: colorDummy),
-            SectionModel(model: "Section 1", items: dummyData)
-        ]
-        
-        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
-            configureCell: { dataSource, collectionView, indexPath, item in
-                if indexPath.section == 0 {
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCollectionViewCell", for: indexPath) as! HeaderCollectionViewCell
-                    if let banner = item as? UIColor {
-                        cell.bindData(bannerImage: banner)
-                    }
-                    return cell
-                } else {
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
-                    if let product = item as? ProductModel {
-                        cell.bindData(productTitle: product.title,
-                                      beforePrice: product.beforePrice,
-                                      price: product.price,
-                                      heartCount: product.heartCount)
-                        cell.heartButtonTap
-                            .subscribe(onNext: {
-                                print("Heart button tapped on row \(indexPath.row)")
-                                // Handle heart button tap
-                            })
-                            .disposed(by: cell.disposeBag)
-                    }
-                    return cell
-                }
-            }
-        )
-        
-        let items = Observable.just(sections)
-        
-        items.bind(to: homeViewCollectionView.rx.items(dataSource: dataSource))
-            .disposed(by: disposeBag)
-        
-        homeViewCollectionView.rx.setDelegate(self)
-            .disposed(by: disposeBag)
-        
-        
-        homeViewCollectionView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                guard let self = self else { return }
-                if indexPath.section == 1 {
-                    let detailVC = ProductDetailViewController()
-                    self.navigationController?.pushViewController(detailVC, animated: true)
-                }
-            })
-            .disposed(by: disposeBag)
-    }
-    
+      })
+      .disposed(by: disposeBag)
+  }
+  
 }
 
 extension HomeViewController {
-    static func createLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
-            if sectionNumber == 0 {
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                    heightDimension: .fractionalHeight(1)))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                               heightDimension: .estimated(200)),
-                                                             subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                
-                section.orthogonalScrollingBehavior = .groupPaging
-                
-                return section
-            } else if sectionNumber == 1 {
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5),
-                                                                    heightDimension: .estimated(260)))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                                 heightDimension: .estimated(260)),
-                                                               subitems: [item, item])
-                group.interItemSpacing = .fixed(10)
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = .init(top: 14, leading: 10, bottom: 20, trailing: 10)
-                
-                return section
-            } else {
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .absolute(100),
-                                                                    heightDimension: .absolute(100)))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .absolute(100),
-                                                                               heightDimension: .absolute(100)),
-                                                             subitems: [item])
-                return NSCollectionLayoutSection(group: group)
-            }
-        }
+  static func createLayout() -> UICollectionViewCompositionalLayout {
+    return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
+      if sectionNumber == 0 {
+        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                            heightDimension: .fractionalHeight(1)))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                                       heightDimension: .estimated(200)),
+                                                     subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        return section
+      } else if sectionNumber == 1 {
+        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5),
+                                                            heightDimension: .estimated(260)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                                         heightDimension: .estimated(260)),
+                                                       subitems: [item, item])
+        group.interItemSpacing = .fixed(10)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 14, leading: 10, bottom: 20, trailing: 10)
+        
+        return section
+      } else {
+        let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .absolute(100),
+                                                            heightDimension: .absolute(100)))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .absolute(100),
+                                                                       heightDimension: .absolute(100)),
+                                                     subitems: [item])
+        return NSCollectionLayoutSection(group: group)
+      }
     }
+  }
 }
