@@ -40,6 +40,13 @@
 		363C242B2C6528A50097FCB7 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C242A2C6528A50097FCB7 /* UITextField+.swift */; };
 		363C242D2C6529500097FCB7 /* UserAddressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C242C2C6529500097FCB7 /* UserAddressModel.swift */; };
 		363C242F2C6537840097FCB7 /* KakaoPostCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C242E2C6537840097FCB7 /* KakaoPostCodeViewController.swift */; };
+		363C24332C6607080097FCB7 /* HomeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C24322C6607080097FCB7 /* HomeRepository.swift */; };
+		363C24352C6608770097FCB7 /* HomeRepositoryImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C24342C6608770097FCB7 /* HomeRepositoryImp.swift */; };
+		363C24372C66126C0097FCB7 /* HomeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C24362C66126C0097FCB7 /* HomeUseCase.swift */; };
+		363C24392C6616090097FCB7 /* HomeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C24382C6616090097FCB7 /* HomeEntity.swift */; };
+		363C243C2C6619950097FCB7 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 363C243B2C6619950097FCB7 /* Kingfisher */; };
+		363C243E2C6619F50097FCB7 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C243D2C6619F50097FCB7 /* Int+.swift */; };
+		363C24402C661ED30097FCB7 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363C243F2C661ED30097FCB7 /* UIImageView+.swift */; };
 		3648954E2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */; };
 		364895502C62822200AAA8E2 /* ProductDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */; };
 		364895522C62826200AAA8E2 /* SearchItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */; };
@@ -196,6 +203,12 @@
 		363C242A2C6528A50097FCB7 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		363C242C2C6529500097FCB7 /* UserAddressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAddressModel.swift; sourceTree = "<group>"; };
 		363C242E2C6537840097FCB7 /* KakaoPostCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoPostCodeViewController.swift; sourceTree = "<group>"; };
+		363C24322C6607080097FCB7 /* HomeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRepository.swift; sourceTree = "<group>"; };
+		363C24342C6608770097FCB7 /* HomeRepositoryImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRepositoryImp.swift; sourceTree = "<group>"; };
+		363C24362C66126C0097FCB7 /* HomeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUseCase.swift; sourceTree = "<group>"; };
+		363C24382C6616090097FCB7 /* HomeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEntity.swift; sourceTree = "<group>"; };
+		363C243D2C6619F50097FCB7 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		363C243F2C661ED30097FCB7 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
 		3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItemsResponseDTO.swift; sourceTree = "<group>"; };
 		3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailResponseDTO.swift; sourceTree = "<group>"; };
 		364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemsResponseDTO.swift; sourceTree = "<group>"; };
@@ -309,6 +322,7 @@
 				368E36A02C4A3B61003FA911 /* RxCocoa in Frameworks */,
 				368E36A82C4A3BBE003FA911 /* RxDataSources in Frameworks */,
 				368E36992C4A3B55003FA911 /* Moya in Frameworks */,
+				363C243C2C6619950097FCB7 /* Kingfisher in Frameworks */,
 				368E36AE2C4A3C26003FA911 /* ReactorKit in Frameworks */,
 				368E36962C4A3B3D003FA911 /* iamport-ios in Frameworks */,
 			);
@@ -802,6 +816,7 @@
 		369C63BF2C1A7B710021E2E0 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				363C24382C6616090097FCB7 /* HomeEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -809,6 +824,7 @@
 		369C63C02C1A7B770021E2E0 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				363C24362C66126C0097FCB7 /* HomeUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -824,6 +840,7 @@
 		369C63C22C1A7B890021E2E0 /* Reporsitories */ = {
 			isa = PBXGroup;
 			children = (
+				363C24322C6607080097FCB7 /* HomeRepository.swift */,
 			);
 			path = Reporsitories;
 			sourceTree = "<group>";
@@ -831,6 +848,7 @@
 		369C63C32C1A7B990021E2E0 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				363C24342C6608770097FCB7 /* HomeRepositoryImp.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -911,6 +929,8 @@
 				363152932C3DB49200DF689E /* UIStackView+.swift */,
 				363152A62C3DC19500DF689E /* NSObject+ClassName.swift */,
 				363C242A2C6528A50097FCB7 /* UITextField+.swift */,
+				363C243D2C6619F50097FCB7 /* Int+.swift */,
+				363C243F2C661ED30097FCB7 /* UIImageView+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1015,6 +1035,7 @@
 				368E36A72C4A3BBE003FA911 /* RxDataSources */,
 				368E36AA2C4A3BE9003FA911 /* Then */,
 				368E36AD2C4A3C26003FA911 /* ReactorKit */,
+				363C243B2C6619950097FCB7 /* Kingfisher */,
 			);
 			productName = DDANZI_iOS;
 			productReference = 369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */;
@@ -1096,6 +1117,7 @@
 				368E36A62C4A3BBE003FA911 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				368E36A92C4A3BE9003FA911 /* XCRemoteSwiftPackageReference "Then" */,
 				368E36AC2C4A3C26003FA911 /* XCRemoteSwiftPackageReference "ReactorKit" */,
+				363C243A2C6619950097FCB7 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 369C63882C1A7A240021E2E0 /* Products */;
 			projectDirPath = "";
@@ -1149,6 +1171,7 @@
 			files = (
 				36607DAB2C4F85D7003803F4 /* LoginViewController.swift in Sources */,
 				36542E712C2E88E900D5BFEB /* PurchaseListViewController.swift in Sources */,
+				363C24372C66126C0097FCB7 /* HomeUseCase.swift in Sources */,
 				369C63DF2C1A84DD0021E2E0 /* Fonts.swift in Sources */,
 				36B833F02C5CDD06009C2C3E /* SearchEndpoint.swift in Sources */,
 				3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */,
@@ -1159,14 +1182,17 @@
 				364895502C62822200AAA8E2 /* ProductDetailResponseDTO.swift in Sources */,
 				36542E812C308ED000D5BFEB /* BankAccountViewController.swift in Sources */,
 				3631527E2C35EADA00DF689E /* BottomButtonView.swift in Sources */,
+				363C24392C6616090097FCB7 /* HomeEntity.swift in Sources */,
 				363152A72C3DC19500DF689E /* NSObject+ClassName.swift in Sources */,
 				3673CA2C2C286482009411A4 /* SearchViewController.swift in Sources */,
 				36BE65BA2C45733800CD4511 /* PayCollectionViewCell.swift in Sources */,
 				368E368A2C493775003FA911 /* NetworkProviders.swift in Sources */,
 				368E36842C4936AB003FA911 /* APIConstants.swift in Sources */,
+				363C24332C6607080097FCB7 /* HomeRepository.swift in Sources */,
 				369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */,
 				3648954E2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift in Sources */,
 				36BE65C62C4591F500CD4511 /* PurchaseHeaderView.swift in Sources */,
+				363C24402C661ED30097FCB7 /* UIImageView+.swift in Sources */,
 				369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */,
 				369C638F2C1A7A240021E2E0 /* HomeViewController.swift in Sources */,
 				363152F12C44F80900DF689E /* SalesDetailViewController.swift in Sources */,
@@ -1245,6 +1271,7 @@
 				369C638D2C1A7A240021E2E0 /* SceneDelegate.swift in Sources */,
 				36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */,
 				36305E5C2C21F7EB00701BDA /* ProductDetailViewModel.swift in Sources */,
+				363C24352C6608770097FCB7 /* HomeRepositoryImp.swift in Sources */,
 				36607DA22C4F80E2003803F4 /* Interceptor.swift in Sources */,
 				364895622C62855900AAA8E2 /* UserSettingResponseDTO.swift in Sources */,
 				36BE65B82C45730400CD4511 /* PayAmountCollectionViewCell.swift in Sources */,
@@ -1260,6 +1287,7 @@
 				36B833F82C5CDD71009C2C3E /* Provider.swift in Sources */,
 				363C24232C6515BF0097FCB7 /* DdanziMiniButton.swift in Sources */,
 				364895562C6282DA00AAA8E2 /* InterestResponseDTO.swift in Sources */,
+				363C243E2C6619F50097FCB7 /* Int+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1599,6 +1627,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		363C243A2C6619950097FCB7 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.12.0;
+			};
+		};
 		368E36942C4A3B3D003FA911 /* XCRemoteSwiftPackageReference "iamport-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/iamport/iamport-ios";
@@ -1658,6 +1694,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		363C243B2C6619950097FCB7 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 363C243A2C6619950097FCB7 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		368E36952C4A3B3D003FA911 /* iamport-ios */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 368E36942C4A3B3D003FA911 /* XCRemoteSwiftPackageReference "iamport-ios" */;
