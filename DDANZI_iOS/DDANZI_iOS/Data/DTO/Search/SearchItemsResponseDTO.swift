@@ -10,11 +10,11 @@ import Foundation
 // MARK: - SearchItemsResponseDTO
 struct SearchItemsResponseDTO: Codable {
     let topSearchedList: [String]
-    let recentlyViewedList: [RecentlyViewedList]
+    let recentlyViewedList: [RecentlyViewedItem]
 }
 
-// MARK: - RecentlyViewedList
-struct RecentlyViewedList: Codable {
+// MARK: - RecentlyViewedItem
+struct RecentlyViewedItem: Codable {
     let productID: Int
     let name, imgURL: String
     let originPrice, salePrice, interestCount: Int
