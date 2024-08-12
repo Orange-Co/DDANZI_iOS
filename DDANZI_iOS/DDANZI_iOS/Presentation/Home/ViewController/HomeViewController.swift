@@ -16,6 +16,8 @@ import Then
 final class HomeViewController: UIViewController, UIScrollViewDelegate {
   // MARK: Properties
   var disposeBag = DisposeBag()
+  var homeProductItems = BehaviorRelay<[ProductList]>(value: [])
+  
   
   // MARK: Components
   let navigationBarView = CustomNavigationBarView(navigationBarType: .search)
@@ -24,7 +26,6 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
     $0.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: "HeaderCollectionViewCell")
   }
-  
   private let sellButton = UIButton().then {
     $0.setTitle("판매하기", for: .normal)
     $0.titleLabel?.font = .body3Sb16
@@ -32,7 +33,6 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     $0.backgroundColor = .dYellow
     $0.makeCornerRound(radius: 24)
   }
-  
   
   // MARK: LifeCycles
   override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +43,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    fetchHomeData()
     setUI()
     bindCollectionView()
     bindNavigationBar()
@@ -71,6 +72,29 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
   }
   
+  private func fetchHomeData() {
+    Providers.HomeProvider.request(target: .loadHomeItems, instance: BaseResponse<HomeItemsResponseDTO>.self) { [weak self] result in
+      guard let self = self else { return }
+      guard let data = result.data else { return }
+      
+      let items = data.productList.map { productDTO in
+        return ProductList(
+          productID: productDTO.productID,
+          kakaoProductID: productDTO.kakaoProductID,
+          name: productDTO.name,
+          imgURL: productDTO.imgURL,
+          originPrice: productDTO.originPrice,
+          salePrice: productDTO.salePrice,
+          interestCount: productDTO.interestCount
+        )
+      }
+      
+      // BehaviorRelay의 값을 업데이트하여 UI 업데이트를 트리거합니다.
+      self.homeProductItems.accept(items)
+    }
+  }
+  
+  
   private func bindNavigationBar() {
     navigationBarView.searchButtonTap
       .subscribe(onNext: { [weak self] in
@@ -80,22 +104,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   }
   
   private func bindCollectionView() {
-    let dummyData = [
-      ProductModel(image: UIImage(resource: .image2),title: "Product 1", beforePrice: "34,000", price: "28,000", heartCount: 10),
-      ProductModel(image: UIImage(resource: .image2), title: "Product 2", beforePrice: "34,000", price: "28,000", heartCount: 20),
-      ProductModel(image: UIImage(resource: .image2), title: "Product 3", beforePrice: "34,000", price: "28,000", heartCount: 30),
-      ProductModel(image: UIImage(resource: .image2), title: "Product 4", beforePrice: "34,000", price: "28,000", heartCount: 40),
-      ProductModel(image: UIImage(resource: .image2), title: "Product 5", beforePrice: "34,000", price: "28,000", heartCount: 50),
-      ProductModel(image: UIImage(resource: .image2), title: "Product 6", beforePrice: "34,000", price: "28,000", heartCount: 60)
-    ]
-    
     let colorDummy: [UIColor] = [.red, .blue, .yellow]
-    
-    let sections: [SectionModel<String, Any>] = [
-      SectionModel(model: "Section 0", items: colorDummy),
-      SectionModel(model: "Section 1", items: dummyData)
-    ]
-    
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
       configureCell: { dataSource, collectionView, indexPath, item in
         if indexPath.section == 0 {
@@ -106,11 +115,12 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
           return cell
         } else {
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
-          if let product = item as? ProductModel {
-            cell.bindData(productTitle: product.title,
-                          beforePrice: product.beforePrice,
-                          price: product.price,
-                          heartCount: product.heartCount)
+          if let product = item as? ProductList {
+            cell.bindData(productImageURL: product.imgURL,
+                          productTitle: product.name,
+                          beforePrice: product.originPrice.toKoreanWon(),
+                          price: product.salePrice.toKoreanWon(),
+                          heartCount: product.interestCount)
             cell.heartButtonTap
               .subscribe(onNext: {
                 print("Heart button tapped on row \(indexPath.row)")
@@ -123,20 +133,25 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
       }
     )
     
-    let items = Observable.just(sections)
     
-    items.bind(to: homeViewCollectionView.rx.items(dataSource: dataSource))
+    homeProductItems
+      .map { items -> [SectionModel<String, Any>] in
+        return [
+          SectionModel(model: "Section 0", items: colorDummy),
+          SectionModel(model: "Section 1", items: items)
+        ]
+      }
+      .bind(to: homeViewCollectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
     
     homeViewCollectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
     
-    
     homeViewCollectionView.rx.itemSelected
       .subscribe(onNext: { [weak self] indexPath in
         guard let self = self else { return }
         if indexPath.section == 1 {
-          let detailVC = ProductDetailViewController()
+          let detailVC = ProductDetailViewController(productId: homeProductItems.value[indexPath.row].productID)
           self.navigationController?.pushViewController(detailVC, animated: true)
         }
       })
@@ -161,9 +176,9 @@ extension HomeViewController {
         return section
       } else if sectionNumber == 1 {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5),
-                                                            heightDimension: .estimated(260)))
+                                                            heightDimension: .estimated(300)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                         heightDimension: .estimated(260)),
+                                                                         heightDimension: .estimated(300)),
                                                        subitems: [item, item])
         group.interItemSpacing = .fixed(10)
         let section = NSCollectionLayoutSection(group: group)

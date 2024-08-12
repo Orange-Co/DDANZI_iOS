@@ -14,3 +14,11 @@ struct ProductModel {
   let price: String
   let heartCount: Int
 }
+
+struct SearchProductModel {
+  let imageURL: String
+  let title: String
+  let beforePrice: String
+  let price: String
+  let heartCount: Int
+}
