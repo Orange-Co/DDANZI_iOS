@@ -14,11 +14,14 @@ import RxDataSources
 
 enum CollectionViewState {
   case normal
-  case searchResults([ProductModel])
+  case searchResults([SearchProductModel])
 }
 
 class SearchViewController: UIViewController {
   private let disposeBag = DisposeBag()
+  private var searchData = BehaviorRelay<SearchItemsResponseDTO>(value: .init(topSearchedList: [], recentlyViewedList: []))
+  private let searchResults = BehaviorRelay<[SearchProductModel]>(value: [])
+  
   private var currentState: CollectionViewState = .normal {
     didSet {
       switch currentState {
@@ -28,22 +31,10 @@ class SearchViewController: UIViewController {
       case .searchResults(let results):
         collectionView.isHidden = true
         searchResultsCollectionView.isHidden = false
-        updateSearchResults(results)
       }
     }
   }
   var searchKeyword:String = ""
-  
-  private let searchResults = BehaviorRelay<[ProductModel]>(value: [])
-  let rankSearchData: [String] = ["향수", "성년의 날 선물", "여자 향수"]
-  let dummyData = [
-    ProductModel(image: UIImage(resource: .image2),title: "Product 1", beforePrice: "34,000", price: "28,000", heartCount: 10),
-    ProductModel(image: UIImage(resource: .image2), title: "Product 2", beforePrice: "34,000", price: "28,000", heartCount: 20),
-    ProductModel(image: UIImage(resource: .image2), title: "Product 3", beforePrice: "34,000", price: "28,000", heartCount: 30),
-    ProductModel(image: UIImage(resource: .image2), title: "Product 4", beforePrice: "34,000", price: "28,000", heartCount: 40),
-    ProductModel(image: UIImage(resource: .image2), title: "Product 5", beforePrice: "34,000", price: "28,000", heartCount: 50),
-    ProductModel(image: UIImage(resource: .image2), title: "Product 6", beforePrice: "34,000", price: "28,000", heartCount: 60)
-  ]
   
   
   private let navigationBar = CustomNavigationBarView(navigationBarType: .searching)
@@ -76,7 +67,9 @@ class SearchViewController: UIViewController {
     super.viewDidLoad()
     bindNavigation()
     bindCollectionView()
+    bindSearchResultsCollectionView()
     currentState = .normal
+    fetchData()
     setUI()
   }
   
@@ -105,6 +98,33 @@ class SearchViewController: UIViewController {
     }
   }
   
+  private func fetchData() {
+    Providers.SearchProvider.request(target: .loadInitalSearch, instance: BaseResponse<SearchItemsResponseDTO>.self) { [weak self] result in
+      guard let self = self else { return }
+      guard let data = result.data else { return }
+      self.searchData.accept(data)
+    }
+  }
+  
+  private func fetchSearchData(keyword: String) {
+    let query = SearchQueryDTO(keyword: keyword)
+    Providers.SearchProvider.request(target: .loadSearchResult(query),
+                                     instance: BaseResponse<SearchResultResponseDTO>.self) { [weak self] result in
+      guard let self = self else { return }
+      guard let data = result.data else { return }
+      let items = data.searchedProductList.map { searchedProduct in
+        return SearchProductModel(imageURL: searchedProduct.imgURL,
+                                  title: searchedProduct.name,
+                                  beforePrice: searchedProduct.originPrice.toKoreanWon(),
+                                  price: searchedProduct.salePrice.toKoreanWon(),
+                                  heartCount: searchedProduct.interestCount)
+      }
+      
+      self.searchResults.accept(items)
+      self.currentState = .searchResults(items)
+    }
+  }
+  
   private func bindNavigation() {
     navigationBar.backButtonTap
       .subscribe(onNext: { [weak self] in
@@ -117,11 +137,6 @@ class SearchViewController: UIViewController {
   
   private func bindCollectionView() {
     collectionView.delegate = nil
-    
-    let sections: [SectionModel<String, Any>] = [
-      SectionModel(model: "인기 검색어", items: rankSearchData),
-      SectionModel(model: "최근 본 상품", items: dummyData)
-    ]
     
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
       configureCell: { dataSource, collectionView, indexPath, item in
@@ -136,11 +151,13 @@ class SearchViewController: UIViewController {
         } else {
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as? SearchCollectionViewCell
           if let cell {
-            if let product = item as? ProductModel {
-              cell.bindData(productTitle: product.title,
-                            beforePrice: product.beforePrice,
-                            price: product.price,
-                            heartCount: product.heartCount)
+            if let product = item as? SearchProductModel {
+              cell.bindData(
+                imgURL: product.imageURL,
+                productTitle: product.title,
+                beforePrice: product.beforePrice,
+                price: product.price,
+                heartCount: product.heartCount)
               cell.heartButtonTap
                 .subscribe(onNext: {
                   print("Heart button tapped on row \(indexPath.row)")
@@ -163,10 +180,14 @@ class SearchViewController: UIViewController {
       }
     )
     
-    let items = Observable.just(sections)
-    
-    items.bind(to: collectionView.rx.items(dataSource: dataSource))
-      .disposed(by: disposeBag)
+    searchData.map { items -> [SectionModel<String, Any>] in
+      return [
+        SectionModel(model: "인기 검색어", items: items.topSearchedList),
+        SectionModel(model: "최근 본 상품", items: items.recentlyViewedList)
+      ]
+    }
+    .bind(to: collectionView.rx.items(dataSource: dataSource))
+    .disposed(by: disposeBag)
     
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
@@ -175,14 +196,48 @@ class SearchViewController: UIViewController {
       .subscribe(onNext: { [weak self] indexPath in
         guard let self = self else { return }
         if indexPath.section == 1 {
-          let detailVC = ProductDetailViewController()
+          let detailVC = ProductDetailViewController(productId: "")
           self.navigationController?.pushViewController(detailVC, animated: true)
         }
       })
       .disposed(by: disposeBag)
   }
   
-  private func updateSearchResults(_ results: [ProductModel]) {
+  private func bindSearchResultsCollectionView() {
+    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
+      configureCell: { dataSource, collectionView, indexPath, item in
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as! SearchCollectionViewCell
+        if let product = item as? SearchProductModel {
+          cell.bindData(imgURL: product.imageURL,
+                        productTitle: product.title,
+                        beforePrice: product.beforePrice,
+                        price: product.price,
+                        heartCount: product.heartCount)
+        }
+        return cell
+      },
+      configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeaderView.identifier, for: indexPath) as? SectionHeaderView else {
+          return UICollectionReusableView()
+        }
+        headerView.bind(title: "\"\(self.searchKeyword)\" 검색 결과", searchKeyword: self.searchKeyword)
+        return headerView
+      }
+    )
+    
+    searchResults
+      .map { results in
+        return [SectionModel<String, Any>(model: "\"\(self.searchKeyword)\" 검색 결과", items: results as [Any])]
+      }
+      .bind(to: searchResultsCollectionView.rx.items(dataSource: dataSource))
+      .disposed(by: disposeBag)
+    
+    searchResultsCollectionView.rx.setDelegate(self)
+      .disposed(by: disposeBag)
+  }
+  
+  
+  private func updateSearchResults(_ results: [SearchProductModel]) {
     let sections: [SectionModel<String, Any>] = [
       SectionModel(model: "\"\(searchKeyword)\" 검색 결과", items: results)
     ]
@@ -190,8 +245,9 @@ class SearchViewController: UIViewController {
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
       configureCell: { dataSource, collectionView, indexPath, item in
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as! SearchCollectionViewCell
-        if let product = item as? ProductModel {
-          cell.bindData(productTitle: product.title,
+        if let product = item as? SearchProductModel {
+          cell.bindData(imgURL: product.imageURL,
+                        productTitle: product.title,
                         beforePrice: product.beforePrice,
                         price: product.price,
                         heartCount: product.heartCount)
@@ -307,13 +363,11 @@ extension SearchViewController: UITextFieldDelegate {
     
     if let searchText = textField.text, !searchText.isEmpty {
       searchKeyword = searchText
-      let searchResults = [
-        ProductModel(image: UIImage(resource: .image2), title: "Product 1", beforePrice: "34,000", price: "28,000", heartCount: 10),
-        ProductModel(image: UIImage(resource: .image2),title: "Product 2", beforePrice: "34,000", price: "28,000", heartCount: 20)]
-      currentState = .searchResults(searchResults)
+      fetchSearchData(keyword: searchKeyword)
     } else {
       currentState = .normal
     }
+    
     
     return true
   }
