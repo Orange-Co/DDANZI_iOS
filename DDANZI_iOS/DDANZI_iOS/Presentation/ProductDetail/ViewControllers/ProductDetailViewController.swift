@@ -18,9 +18,8 @@ final class ProductDetailViewController: UIViewController {
     // MARK: Properties
     
     private let disposeBag = DisposeBag()
-    let dummy = ProductDetailModel(productTitle: "퓨어 오일 퍼퓸 10ml",
-                                   discountRate: 30, price: 48900, beforePrice: 54000,
-                                   remainAmount: 30)
+  private var productId: String
+  
     // MARK: Compenets
     private let customNavigationBar = CustomNavigationBarView(navigationBarType: .home)
     private let scrollView = UIScrollView()
@@ -78,6 +77,16 @@ final class ProductDetailViewController: UIViewController {
     
     private let bottomButtonView = BottomButtonView(buttonText: "구매하기")
     
+  
+  init(productId: String) {
+    self.productId = productId
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
@@ -88,7 +97,7 @@ final class ProductDetailViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = .white
-        bindDummy()
+        fetchProductDetail(id: productId)
         bind()
         setUI()
     }
@@ -187,14 +196,32 @@ final class ProductDetailViewController: UIViewController {
         }
     }
     
-    private func bindDummy() {
-        productTitleLabel.text = dummy.productTitle
-        discountLabel.text = "\(dummy.discountRate)%"
-        priceLabel.text = "\(dummy.price)원"
-        beforePriceLabel.attributedText = "\(dummy.beforePrice)원".strikeThrough()
-        
-        amountLabel.text = "\(dummy.remainAmount)개"
+  private func fetchProductDetail(id: String) {
+    Providers.HomeProvider.request(target: .loadItemsDetail(id), instance: BaseResponse<ProductDetailResponseDTO>.self) { [weak self] result in
+      guard let self = self else { return }
+      guard let data = result.data else { return }
+      bindUI(productDetail: .init(imgURL: data.imgURL,
+                                  productTitle: data.name,
+                                  discountRate: data.discountRate,
+                                  price: data.salePrice,
+                                  beforePrice: data.originPrice,
+                                  remainAmount: data.stockCount,
+                                  infoURL: data.infoURL,
+                                  interestCount: data.interestCount,
+                                  isImminent: data.isImminent)
+      )
     }
+  }
+  
+  private func bindUI(productDetail: ProductDetailModel){
+    productImageView.setImage(with: productDetail.imgURL)
+    productTitleLabel.text = productDetail.productTitle
+    discountLabel.text = "\(productDetail.discountRate)%"
+    priceLabel.text = productDetail.price.toKoreanWon()
+    beforePriceLabel.attributedText = productDetail.beforePrice.toKoreanWon().strikeThrough()
+    
+    amountLabel.text = "\(productDetail.remainAmount)개"
+  }
     
     private func bind() {
         customNavigationBar.backButtonTap

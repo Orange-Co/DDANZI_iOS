@@ -10,11 +10,16 @@ import RxCocoa
 import RxDataSources
 
 struct ProductDetailModel {
+  let imgURL: String
     let productTitle: String
     let discountRate: Int
     let price: Int
     let beforePrice: Int
     let remainAmount: Int
+  let infoURL: String
+  let interestCount: Int
+  let isImminent: Bool
+  
 }
 
 // RxDataSources 섹션 모델 정의
