@@ -11,7 +11,7 @@ import Moya
 
 enum HomeEndpoint {
     case loadHomeItems
-    case loadItemsDetail(Int)
+    case loadItemsDetail(String)
 }
 
 extension HomeEndpoint: BaseTargetType {
@@ -20,7 +20,7 @@ extension HomeEndpoint: BaseTargetType {
       case .loadHomeItems:
         return APIConstants.hasAccessTokenHeader
       case .loadItemsDetail:
-        return APIConstants.hasAccessTokenHeader
+        return APIConstants.hasDeviceToken
       }
     }
     
