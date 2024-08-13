@@ -29,10 +29,12 @@ class BottomButtonView: UIView {
         $0.font = .body6M12
     }
     
-    init(buttonText: String, heartCount: Int = 0) {
+  init(buttonText: String, heartCount: Int = 0, isEnable: Bool = false) {
         super.init(frame: .zero)
         self.button.setTitle(buttonText, for: .normal)
         self.heartCountLabel.text = "\(heartCount)"
+        self.button.isEnabled = isEnable
+        self.button.backgroundColor = isEnable ? .black : .gray2
         setUI()
     }
     

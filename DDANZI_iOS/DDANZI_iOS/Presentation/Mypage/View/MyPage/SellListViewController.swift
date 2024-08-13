@@ -134,7 +134,7 @@ final class SellListViewController: UIViewController {
       .subscribe(onNext: { [weak self] indexPath in
         guard let self = self else { return }
         if indexPath.section == 0 {
-          let detailVC = ProductDetailViewController()
+          let detailVC = ProductDetailViewController(productId: "09887")
           self.navigationController?.pushViewController(detailVC, animated: true)
         }
       })

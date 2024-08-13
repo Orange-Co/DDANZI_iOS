@@ -33,7 +33,6 @@ final class CustomNavigationBarView: UIView {
     private let backButtonSubject = PublishSubject<Void>()
     private let cancelButtonSubject = PublishSubject<Void>()
     private let homeButtonSubject = PublishSubject<Void>()
-    private let logoButtonSubject = PublishSubject<Void>()
     private let searchButtonSubject = PublishSubject<Void>()    
     private let settingButtonSubject = PublishSubject<Void>()
     private let searchBarSubject = PublishSubject<Void>()
@@ -41,7 +40,6 @@ final class CustomNavigationBarView: UIView {
     var backButtonTap: Observable<Void> { backButtonSubject.asObservable() }
     var cancelButtonTap: Observable<Void> { cancelButtonSubject.asObservable() }
     var homeButtonTap: Observable<Void> { homeButtonSubject.asObservable() }
-    var logoButtonTap: Observable<Void> { logoButtonSubject.asObservable() }
     var searchButtonTap: Observable<Void> { searchButtonSubject.asObservable() }
     var settingButtonTap: Observable<Void> { settingButtonSubject.asObservable() }
     var searchBarTextEdit: Observable<Void> { searchBarSubject.asObservable() }
@@ -69,8 +67,7 @@ final class CustomNavigationBarView: UIView {
     }
     
     private let logoButton = UIButton().then {
-        $0.setTitle("LOGO", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
+      $0.setImage(.logo, for: .normal)
     }
     
     private let searchButton = UIButton().then {
@@ -177,7 +174,6 @@ final class CustomNavigationBarView: UIView {
         leftView.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(26)
             $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(25)
         }
         
         rightView.snp.makeConstraints {
@@ -205,10 +201,6 @@ final class CustomNavigationBarView: UIView {
         
         homeButton.rx.tap
             .bind(to: homeButtonSubject)
-            .disposed(by: disposeBag)
-        
-        logoButton.rx.tap
-            .bind(to: logoButtonSubject)
             .disposed(by: disposeBag)
         
         searchButton.rx.tap

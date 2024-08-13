@@ -12,6 +12,7 @@ struct APIConstants {
     static let contentType = "Content-Type"
     static let applicationJSON = "application/json"
     static let auth = "Authorization"
+  static let deviceToken = "devicetoken"
     
     static var accessToken: String {
         return "Bearer "
@@ -24,6 +25,8 @@ struct APIConstants {
     static var appleAccessToken: String {
         return ""
     }
+
+  static var deviceTokenValue: String = UUID().uuidString
 
     static let OS = "OS"
     static let iOS = "iOS"
@@ -50,6 +53,12 @@ extension APIConstants {
         return [contentType: applicationJSON,
                 auth: refreshToken]
     }
+  
+  static var hasDeviceToken: [String: String] {
+      return [contentType: applicationJSON,
+              auth: refreshToken,
+              deviceToken: deviceTokenValue]
+  }
     
     static var signUpHeader: [String: String] {
         return [contentType: applicationJSON,
