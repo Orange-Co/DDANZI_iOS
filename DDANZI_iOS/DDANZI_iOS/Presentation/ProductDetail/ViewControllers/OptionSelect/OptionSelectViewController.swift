@@ -18,6 +18,7 @@ final class OptionSelectViewController: UIViewController {
   // MARK: Properties
   private let disposeBag = DisposeBag()
   var option: [OptionModel] = []
+  private var selectedOptions: [Int?] = []
   
   weak var delegate: OptionViewControllerDelegate?
   
@@ -51,7 +52,6 @@ final class OptionSelectViewController: UIViewController {
       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
       withReuseIdentifier: OptionSectionHeaderView.className
     )
-    
   }
   
   private let bottomButton = BottomButtonView(buttonText: "구매하기")
@@ -61,6 +61,7 @@ final class OptionSelectViewController: UIViewController {
     super.viewDidLoad()
     bind()
     configureCollectionView()
+    selectedOptions = Array(repeating: nil, count: option.count)
     setUI()
   }
   
@@ -118,10 +119,19 @@ final class OptionSelectViewController: UIViewController {
     let dataSource = RxCollectionViewSectionedReloadDataSource<OptionSectionModel>(
       configureCell: { dataSource, collectionView, indexPath, item in
         let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: OptionCollectionViewCell.identifier,
+          withReuseIdentifier: OptionCollectionViewCell.className,
           for: indexPath) as! OptionCollectionViewCell
         cell.configureCell(text: item.content, isEnable: item.isAvailable)
         return cell
+      },
+      configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+        let header = collectionView.dequeueReusableSupplementaryView(
+          ofKind: UICollectionView.elementKindSectionHeader,
+          withReuseIdentifier: OptionSectionHeaderView.className,
+          for: indexPath) as! OptionSectionHeaderView
+        let section = dataSource.sectionModels[indexPath.section]
+        header.configure(with: section.header)
+        return header
       }
     )
     
@@ -132,6 +142,33 @@ final class OptionSelectViewController: UIViewController {
     Observable.just(sectionModels)
       .bind(to: optionCollectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
+    
+    optionCollectionView.rx.itemSelected
+      .bind(with: self) { owner, indexPath in
+        if let cell = owner.optionCollectionView.cellForItem(at: indexPath) as? OptionCollectionViewCell {
+          cell.isSelectedRelay.accept(true)
+          owner.selectedOptions[indexPath.section] = self.option[indexPath.section].optionDetailList[indexPath.row].optionDetailID
+          owner.updateButtonState()
+        }
+      }
+      .disposed(by: disposeBag)
+    
+    optionCollectionView.rx.itemDeselected
+      .bind(with: self) { owner, indexPath in
+        if let cell = owner.optionCollectionView.cellForItem(at: indexPath) as? OptionCollectionViewCell {
+          cell.isSelectedRelay.accept(false)
+          owner.selectedOptions[indexPath.section] = nil
+          owner.updateButtonState()
+        }
+      }
+      .disposed(by: disposeBag)
+  }
+  
+  private func updateButtonState() {
+    let allSectionsSelected = selectedOptions.allSatisfy { $0 != nil }
+    bottomButton.button.isEnabled = allSectionsSelected
+    bottomButton.button.backgroundColor = allSectionsSelected ? .black : .gray2
+    
   }
 }
 
@@ -139,7 +176,16 @@ extension OptionSelectViewController {
   private func createLayout() -> UICollectionViewLayout {
     let layout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
       let section = NSCollectionLayoutSection(group: self.createGroup())
-      section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+      section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
+      
+      let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .absolute(47))
+      let header = NSCollectionLayoutBoundarySupplementaryItem(
+        layoutSize: headerSize,
+        elementKind: UICollectionView.elementKindSectionHeader,
+        alignment: .top)
+      
+      section.boundarySupplementaryItems = [header]
       return section
     }
     return layout
