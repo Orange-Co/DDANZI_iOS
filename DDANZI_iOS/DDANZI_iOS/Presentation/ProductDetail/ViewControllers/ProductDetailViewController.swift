@@ -14,11 +14,17 @@ import RxSwift
 import SnapKit
 import Then
 
+// MARK: - OptionDelegate
+protocol OptionViewControllerDelegate: AnyObject {
+    func optionViewControllerDidFinish(_ viewController: OptionSelectViewController)
+}
+
 final class ProductDetailViewController: UIViewController {
     // MARK: Properties
     
     private let disposeBag = DisposeBag()
   private var productId: String
+  private var optionList: [OptionList] = []
   
     // MARK: Compenets
     private let customNavigationBar = CustomNavigationBarView(navigationBarType: .home)
@@ -200,7 +206,8 @@ final class ProductDetailViewController: UIViewController {
     Providers.HomeProvider.request(target: .loadItemsDetail(id), instance: BaseResponse<ProductDetailResponseDTO>.self) { [weak self] result in
       guard let self = self else { return }
       guard let data = result.data else { return }
-      bindUI(productDetail: .init(imgURL: data.imgURL,
+      bindUI(productDetail: .init(
+        imgURL: data.imgURL,
                                   productTitle: data.name,
                                   discountRate: data.discountRate,
                                   price: data.salePrice,
@@ -208,8 +215,11 @@ final class ProductDetailViewController: UIViewController {
                                   remainAmount: data.stockCount,
                                   infoURL: data.infoURL,
                                   interestCount: data.interestCount,
-                                  isImminent: data.isImminent)
+                                  isImminent: data.isImminent
       )
+      )
+      
+      self.optionList = data.optionList
     }
   }
   
@@ -240,16 +250,24 @@ final class ProductDetailViewController: UIViewController {
         
         
         bottomButtonView.button.rx.tap
-            .bind{
-                let optionViewController = OptionSelectViewController()
-                
-                if let sheet = optionViewController.sheetPresentationController {
+        .bind(with: self, onNext: { owner, void in
+                if self.optionList.isEmpty {
+                  let purchaseVC = PurchaseViewController()
+                  self.navigationController?.pushViewController(purchaseVC, animated: true)
+                } else {
+                  let optionViewController = OptionSelectViewController()
+                  optionViewController.option = self.optionList.map { option in
+                      .init(optionId: option.optionID, type: option.type, optionDetailList: option.optionDetailList)
+                  }
+                  if let sheet = optionViewController.sheetPresentationController {
                     sheet.detents = [.medium(), .large()]
+                  }
+                  optionViewController.delegate = self
+                  self.present(optionViewController, animated: true)
                 }
-              optionViewController.delegate = self
-                self.present(optionViewController, animated: true)
-            }
+            })
             .disposed(by: disposeBag)
+              
     }
     
 }
