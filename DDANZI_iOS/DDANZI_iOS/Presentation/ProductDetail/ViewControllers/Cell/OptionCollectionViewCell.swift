@@ -10,7 +10,7 @@ import UIKit
 import Then
 import SnapKit
 
-final class OptionCollectionViewCell: UICollectionViewListCell {
+final class OptionCollectionViewCell: UICollectionViewCell {
     /// 옵션 선택 여부
     var isSelectedOption: Bool = false {
         didSet {
@@ -24,9 +24,9 @@ final class OptionCollectionViewCell: UICollectionViewListCell {
         $0.textColor = .gray2
     }
     
-    init() {
-        super.init(frame: .zero)
-        setUI()
+    override init(frame: CGRect) {
+      super.init(frame: .zero)
+      setUI()
     }
     
     required init?(coder: NSCoder) {
@@ -49,19 +49,9 @@ final class OptionCollectionViewCell: UICollectionViewListCell {
         }
     }
     
+  func configureCell(text: String, isEnable: Bool){
+    self.titleLabel.text = text
+    self.titleLabel.textColor = isEnable ? .black : .gray2
+  }
 }
 
-
-struct OptionItem: Hashable {
-    let id = UUID()
-    var title: String
-    var subItems: [OptionItem]
-    var item: AnyHashable?
-}
-
-
-struct Option: Hashable {
-    let id = UUID()
-    var title: String
-    var isSelected: Bool
-}
