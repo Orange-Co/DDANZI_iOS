@@ -42,6 +42,9 @@ final class ProductChipView: UIView {
             $0.leading.trailing.equalToSuperview().inset(10)
             $0.top.bottom.equalToSuperview().inset(5)
         }
-        
     }
+  
+  func configureChip(text: String) {
+    label.text = text
+  }
 }
