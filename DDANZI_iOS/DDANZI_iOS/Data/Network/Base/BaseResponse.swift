@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-struct BaseResponse<T: Codable>: Codable {
+public struct BaseResponse<T: Codable>: Codable {
   var status: Int
   var message: String
   var timestamp: String
