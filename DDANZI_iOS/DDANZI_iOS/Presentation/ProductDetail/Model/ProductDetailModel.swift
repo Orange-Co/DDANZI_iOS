@@ -11,29 +11,13 @@ import RxDataSources
 
 struct ProductDetailModel {
   let imgURL: String
-    let productTitle: String
-    let discountRate: Int
-    let price: Int
-    let beforePrice: Int
-    let remainAmount: Int
+  let productTitle: String
+  let discountRate: Int
+  let price: Int
+  let beforePrice: Int
+  let remainAmount: Int
   let infoURL: String
   let interestCount: Int
   let isImminent: Bool
-  
-}
-
-// RxDataSources 섹션 모델 정의
-struct OptionSectionModel {
-    var isExpanded: Bool
-    var items: [String]
-}
-
-extension OptionSectionModel: SectionModelType {
-    typealias Item = String
-    
-    
-    init(original: OptionSectionModel, items: [Item]) {
-        self = original
-        self.items = items
-    }
+  let category: String
 }
