@@ -92,8 +92,11 @@ final class CertificationViewController: UIViewController {
     }
     
     // use for UIViewController
-    Iamport.shared.certification(viewController: self,
-                                 userCode: "", certification: certification) { [weak self] iamportResponse in
+    Iamport.shared.certification(
+      viewController: self,
+                                 userCode: Config.impCode,
+                                 certification: certification
+    ) { [weak self] iamportResponse in
       self?.iamportCallback(iamportResponse)
       self?.navigationController?.pushViewController(LoginCompletedViewController(), animated: true)
     }
