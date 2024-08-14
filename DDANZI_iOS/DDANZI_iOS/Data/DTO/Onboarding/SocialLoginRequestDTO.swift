@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+struct SocialLoginRequestDTO: Codable {
+  let token: String
+  let type: SocialLoginType
+}
+
+enum SocialLoginType: String,Codable {
+  case apple = "APPLE"
+  case kakao = "KAKAO"
+}

@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct VerificationRequestDTO: Codable {
+  let name, phone: String
+  let brith: String /// YYYY.MM,DD
+  let sex: String /// M/F
+}

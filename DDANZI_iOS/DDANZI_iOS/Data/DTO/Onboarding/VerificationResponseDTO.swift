@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+// MARK: - VerificationResponseDTO
+struct VerificationResponseDTO: Codable {
+    let nickname, phone: String
+}

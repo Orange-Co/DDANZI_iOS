@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+// MARK: - SocialLoginResponseDTO
+struct SocialLoginResponseDTO: Codable {
+    let accesstoken, refreshtoken, nickname: String
+}
