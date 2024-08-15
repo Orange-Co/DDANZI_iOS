@@ -142,6 +142,8 @@
 		36B745002C6C5652002892C4 /* VerificationRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B744FF2C6C5652002892C4 /* VerificationRequestDTO.swift */; };
 		36B745022C6C56B4002892C4 /* VerificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B745012C6C56B4002892C4 /* VerificationResponseDTO.swift */; };
 		36B745052C6C5AC2002892C4 /* UserDefaltManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B745042C6C5AC2002892C4 /* UserDefaltManager.swift */; };
+		36B745072C6D2752002892C4 /* IamportEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B745062C6D2752002892C4 /* IamportEndpoint.swift */; };
+		36B7450A2C6D2BEC002892C4 /* PortOneTokenDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B745092C6D2BEC002892C4 /* PortOneTokenDTO.swift */; };
 		36B833EC2C5CDCE4009C2C3E /* AuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B833EB2C5CDCE4009C2C3E /* AuthEndpoint.swift */; };
 		36B833EE2C5CDCFB009C2C3E /* HomeEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B833ED2C5CDCFB009C2C3E /* HomeEndpoint.swift */; };
 		36B833F02C5CDD06009C2C3E /* SearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B833EF2C5CDD05009C2C3E /* SearchEndpoint.swift */; };
@@ -306,6 +308,8 @@
 		36B744FF2C6C5652002892C4 /* VerificationRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationRequestDTO.swift; sourceTree = "<group>"; };
 		36B745012C6C56B4002892C4 /* VerificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationResponseDTO.swift; sourceTree = "<group>"; };
 		36B745042C6C5AC2002892C4 /* UserDefaltManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaltManager.swift; sourceTree = "<group>"; };
+		36B745062C6D2752002892C4 /* IamportEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IamportEndpoint.swift; sourceTree = "<group>"; };
+		36B745092C6D2BEC002892C4 /* PortOneTokenDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortOneTokenDTO.swift; sourceTree = "<group>"; };
 		36B833EA2C5CDA8F009C2C3E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		36B833EB2C5CDCE4009C2C3E /* AuthEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthEndpoint.swift; sourceTree = "<group>"; };
 		36B833ED2C5CDCFB009C2C3E /* HomeEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEndpoint.swift; sourceTree = "<group>"; };
@@ -887,6 +891,7 @@
 		369C63C42C1A7BA00021E2E0 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				36B745082C6D2BBA002892C4 /* Portone */,
 				36607DA42C4F8101003803F4 /* Foundation */,
 				36607DA32C4F80ED003803F4 /* Base */,
 				36B833F72C5CDD71009C2C3E /* Provider.swift */,
@@ -984,6 +989,15 @@
 				36B745042C6C5AC2002892C4 /* UserDefaltManager.swift */,
 			);
 			path = LocalStorage;
+			sourceTree = "<group>";
+		};
+		36B745082C6D2BBA002892C4 /* Portone */ = {
+			isa = PBXGroup;
+			children = (
+				36B745062C6D2752002892C4 /* IamportEndpoint.swift */,
+				36B745092C6D2BEC002892C4 /* PortOneTokenDTO.swift */,
+			);
+			path = Portone;
 			sourceTree = "<group>";
 		};
 		36B833F92C5CDDA8009C2C3E /* Endpoint */ = {
@@ -1234,6 +1248,7 @@
 				36542E712C2E88E900D5BFEB /* PurchaseListViewController.swift in Sources */,
 				36B745022C6C56B4002892C4 /* VerificationResponseDTO.swift in Sources */,
 				363C24372C66126C0097FCB7 /* HomeUseCase.swift in Sources */,
+				36B7450A2C6D2BEC002892C4 /* PortOneTokenDTO.swift in Sources */,
 				369C63DF2C1A84DD0021E2E0 /* Fonts.swift in Sources */,
 				36B833F02C5CDD06009C2C3E /* SearchEndpoint.swift in Sources */,
 				36B744E92C6BEEE4002892C4 /* OptionModel.swift in Sources */,
@@ -1242,6 +1257,7 @@
 				36BE65BC2C45758100CD4511 /* TermsCollectionViewCell.swift in Sources */,
 				36607DA62C4F8110003803F4 /* Config.swift in Sources */,
 				36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */,
+				36B745072C6D2752002892C4 /* IamportEndpoint.swift in Sources */,
 				364895502C62822200AAA8E2 /* ProductDetailResponseDTO.swift in Sources */,
 				36542E812C308ED000D5BFEB /* BankAccountViewController.swift in Sources */,
 				3631527E2C35EADA00DF689E /* BottomButtonView.swift in Sources */,
