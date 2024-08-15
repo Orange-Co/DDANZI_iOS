@@ -10,13 +10,10 @@ import Foundation
 import Alamofire
 import Moya
 
-///// 토큰 만료 시 자동으로 refresh를 위한 서버 통신
+/// 토큰 만료 시 자동으로 refresh를 위한 서버 통신
 final class AuthInterceptor: RequestInterceptor {
   
   private var retryLimit = 2
-  static let shared = AuthInterceptor()
-  
-  private init() {}
   
   func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
     print("---adater 진입----")
@@ -46,5 +43,3 @@ final class AuthInterceptor: RequestInterceptor {
     }
   }
 }
-  
-  
