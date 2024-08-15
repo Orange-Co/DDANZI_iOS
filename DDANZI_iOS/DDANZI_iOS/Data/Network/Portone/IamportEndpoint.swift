@@ -11,19 +11,19 @@ import Moya
 
 enum IamportEndpoint {
   case getAccessToken(body: PortoneAccessTokenRequestDTO)
-  case getCertificationInfo(id: String)
+  case getCertificationInfo(id: String, token: String)
 }
 
 extension IamportEndpoint: TargetType {
   var baseURL: URL {
-    return URL(string: "api.iamport.kr")!
+    return URL(string: "https://api.iamport.kr")!
   }
   
   var path: String {
     switch self {
     case .getAccessToken:
       return "/users/getToken"
-    case let .getCertificationInfo(id):
+    case let .getCertificationInfo(id, _):
       return "/certifications/\(id)"
     }
   }
@@ -31,8 +31,8 @@ extension IamportEndpoint: TargetType {
   var method: Moya.Method {
     switch self {
     case .getAccessToken:
-      return .get
-    case .getCertificationInfo(let id):
+      return .post
+    case .getCertificationInfo:
       return .get
     }
   }
@@ -48,18 +48,13 @@ extension IamportEndpoint: TargetType {
   
   var headers: [String : String]? {
     switch self {
-    case .getAccessToken(let body):
+    case .getAccessToken:
       return APIConstants.plain
-    case .getCertificationInfo(let id):
-      return APIConstants.portOneAuth
+    case let .getCertificationInfo(_, token):
+      return [
+        APIConstants.contentType : APIConstants.applicationJSON,
+        APIConstants.auth : "Bearer \(token)"
+      ]
     }
   }
 }
-
-
-struct PortoneAccessTokenRequestDTO: Encodable {
-  let imp_key: String
-  let imp_secret: String
-}
-
-struct PortoneBaseResponse: 
