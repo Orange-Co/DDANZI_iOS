@@ -16,6 +16,7 @@ import iamport_ios
 final class CertificationViewController: UIViewController {
   private let disposeBag = DisposeBag()
   var iamportResponse: IamportResponse?
+  private var portoneToken: String = ""
   
   private let titleLabel = UILabel().then {
     $0.text = "잠깐!"
@@ -25,7 +26,7 @@ final class CertificationViewController: UIViewController {
   private let guideLabel = UILabel().then {
     $0.text = "안전한 딴지 사용을 위해\n본인 인증을 완료해주세요"
     $0.textColor = .black
-    $0.font = .body5R14
+    $0.font = .body1B20
     $0.numberOfLines = 2
   }
   private let certificationButton = DdanziButton(title: "본인인증하러 가기")
@@ -76,6 +77,7 @@ final class CertificationViewController: UIViewController {
     certificationButton.rx.tap
       .bind { [weak self] in
         guard let self else { return }
+        self.fetchToken()
         self.requestCertification()
       }
       .disposed(by: disposeBag)
@@ -94,22 +96,49 @@ final class CertificationViewController: UIViewController {
     // use for UIViewController
     Iamport.shared.certification(
       viewController: self,
-                                 userCode: Config.impCode,
-                                 certification: certification
+      userCode: Config.impCode,
+      certification: certification
     ) { [weak self] iamportResponse in
       self?.iamportCallback(iamportResponse)
-      self?.navigationController?.pushViewController(LoginCompletedViewController(), animated: true)
     }
   }
   
   func iamportCallback(_ response: IamportResponse?) {
-      print("------------------------------------------")
-      print("결과 왔습니다~~")
-      if let res = response {
-          print("Iamport response: \(res)")
+    if let res = response {
+      print("Iamport response: \(res)")
+      fetchCertiInfo(code: res.imp_uid ?? "")
+    }
+    iamportResponse = response
+  }
+  
+  private func fetchToken() {
+    Providers.PortOneProvider.request(target: .getAccessToken(body: .init(impKey: Config.impKey, impSecret: Config.impSecret)),
+                                      instance: PortOneBaseResponse<PortOneTokenResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      self.portoneToken = data.accessToken
+    }
+  }
+  
+  private func fetchCertiInfo(code: String) {
+    Providers.PortOneProvider.request(target: .getCertificationInfo(id: code, token: portoneToken),
+                                      instance: PortOneBaseResponse<PortOneCertiResponseDTO>.self) { [self] result in
+      guard let data = result.data else { return }
+      if let name = data.name,
+         let phone = data.phone,
+         let birth = data.birthday,
+         let sex = data.gender {
+        self.postVerification(user: .init(name: name, phone: phone, brith: birth, sex: sex.uppercased()))
       }
-      print("------------------------------------------")
-
-      iamportResponse = response
+    }
+  }
+  
+  private func postVerification(user: VerificationRequestDTO) {
+    Providers.AuthProvider.request(target: .certification(user),
+                                   instance: BaseResponse<VerificationResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      UserDefaults.standard.set(data.accesstoken, forKey: .accesstoken)
+      UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
+      self.navigationController?.pushViewController(LoginViewController(), animated: true)
+    }
   }
 }
