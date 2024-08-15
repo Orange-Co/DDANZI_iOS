@@ -80,6 +80,8 @@
 		36607DAB2C4F85D7003803F4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607DAA2C4F85D7003803F4 /* LoginViewController.swift */; };
 		36607DAD2C4F85F2003803F4 /* CertificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607DAC2C4F85F2003803F4 /* CertificationViewController.swift */; };
 		3664CFCF2C6E056A007FB5DF /* Adjusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3664CFCE2C6E056A007FB5DF /* Adjusted.swift */; };
+		3664CFD42C6E1B98007FB5DF /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3664CFD22C6E1B98007FB5DF /* SplashViewController.swift */; };
+		3664CFD72C6E1BC6007FB5DF /* splash.json in Resources */ = {isa = PBXBuildFile; fileRef = 3664CFD52C6E1BC6007FB5DF /* splash.json */; };
 		3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */; };
 		3673CA2C2C286482009411A4 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA2B2C286482009411A4 /* SearchViewController.swift */; };
 		3673CA2E2C286C11009411A4 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA2D2C286C11009411A4 /* SearchCollectionViewCell.swift */; };
@@ -259,6 +261,8 @@
 		36607DAA2C4F85D7003803F4 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		36607DAC2C4F85F2003803F4 /* CertificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationViewController.swift; sourceTree = "<group>"; };
 		3664CFCE2C6E056A007FB5DF /* Adjusted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adjusted.swift; sourceTree = "<group>"; };
+		3664CFD22C6E1B98007FB5DF /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "\U0010SplashViewController.swift"; sourceTree = "<group>"; };
+		3664CFD52C6E1BC6007FB5DF /* splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = splash.json; sourceTree = "<group>"; };
 		3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		3673CA2B2C286482009411A4 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		3673CA2D2C286C11009411A4 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -637,6 +641,22 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		3664CFD32C6E1B98007FB5DF /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				3664CFD22C6E1B98007FB5DF /* SplashViewController.swift */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		3664CFD62C6E1BC6007FB5DF /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				3664CFD52C6E1BC6007FB5DF /* splash.json */,
+			);
+			path = Lottie;
+			sourceTree = "<group>";
+		};
 		3673CA2A2C286468009411A4 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -838,6 +858,7 @@
 		369C63BE2C1A7AFA0021E2E0 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				3664CFD32C6E1B98007FB5DF /* Splash */,
 				36607DA72C4F85BC003803F4 /* Onboarding */,
 				36EB5F992C1D35BD00FAF995 /* Common */,
 				3673CA2A2C286468009411A4 /* Search */,
@@ -915,6 +936,7 @@
 		369C63C72C1A7DC30021E2E0 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				3664CFD62C6E1BC6007FB5DF /* Lottie */,
 				368833A82C20A9AE000F3A45 /* Literals */,
 				369C63C92C1A7DDF0021E2E0 /* DesignSystem */,
 				369C63C82C1A7DDA0021E2E0 /* Fonts */,
@@ -1216,6 +1238,7 @@
 				369C63942C1A7A270021E2E0 /* Assets.xcassets in Resources */,
 				369C63DB2C1A7E320021E2E0 /* Pretendard-ExtraBold.otf in Resources */,
 				369C63D72C1A7E320021E2E0 /* Pretendard-Bold.otf in Resources */,
+				3664CFD72C6E1BC6007FB5DF /* splash.json in Resources */,
 				369C63DA2C1A7E320021E2E0 /* Pretendard-Medium.otf in Resources */,
 				369C63D62C1A7E320021E2E0 /* Pretendard-Light.otf in Resources */,
 				369C63D52C1A7E320021E2E0 /* Pretendard-Regular.otf in Resources */,
@@ -1337,6 +1360,7 @@
 				36BE65B42C456A8400CD4511 /* PurchaseViewController.swift in Sources */,
 				363C24272C651F600097FCB7 /* AddressFormTableViewCell.swift in Sources */,
 				36BE65B12C4510FE00CD4511 /* AccountViewController.swift in Sources */,
+				3664CFD42C6E1B98007FB5DF /* SplashViewController.swift in Sources */,
 				3673CA302C286E27009411A4 /* RankCollectionViewCell.swift in Sources */,
 				363152922C3DB3BD00DF689E /* StatusView.swift in Sources */,
 				36607DA92C4F85CC003803F4 /* LoginCompletedViewController.swift in Sources */,
