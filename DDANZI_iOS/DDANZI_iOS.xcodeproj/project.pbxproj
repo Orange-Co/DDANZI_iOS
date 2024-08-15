@@ -82,6 +82,7 @@
 		3664CFCF2C6E056A007FB5DF /* Adjusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3664CFCE2C6E056A007FB5DF /* Adjusted.swift */; };
 		3664CFD42C6E1B98007FB5DF /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3664CFD22C6E1B98007FB5DF /* SplashViewController.swift */; };
 		3664CFD72C6E1BC6007FB5DF /* splash.json in Resources */ = {isa = PBXBuildFile; fileRef = 3664CFD52C6E1BC6007FB5DF /* splash.json */; };
+		3664CFDA2C6E2179007FB5DF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3664CFD92C6E2179007FB5DF /* Lottie */; };
 		3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */; };
 		3673CA2C2C286482009411A4 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA2B2C286482009411A4 /* SearchViewController.swift */; };
 		3673CA2E2C286C11009411A4 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA2D2C286C11009411A4 /* SearchCollectionViewCell.swift */; };
@@ -357,6 +358,7 @@
 				368E36A02C4A3B61003FA911 /* RxCocoa in Frameworks */,
 				36B744F92C6C50D3002892C4 /* RxKakaoSDKCommon in Frameworks */,
 				36B744F22C6C4CD2002892C4 /* KakaoSDKCommon in Frameworks */,
+				3664CFDA2C6E2179007FB5DF /* Lottie in Frameworks */,
 				368E36A82C4A3BBE003FA911 /* RxDataSources in Frameworks */,
 				368E36992C4A3B55003FA911 /* Moya in Frameworks */,
 				363C243C2C6619950097FCB7 /* Kingfisher in Frameworks */,
@@ -1133,6 +1135,7 @@
 				36B744F42C6C50D3002892C4 /* RxKakaoSDK */,
 				36B744F62C6C50D3002892C4 /* RxKakaoSDKAuth */,
 				36B744F82C6C50D3002892C4 /* RxKakaoSDKCommon */,
+				3664CFD92C6E2179007FB5DF /* Lottie */,
 			);
 			productName = DDANZI_iOS;
 			productReference = 369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */;
@@ -1217,6 +1220,7 @@
 				363C243A2C6619950097FCB7 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				36B744EC2C6C4CD2002892C4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				36B744F32C6C50D3002892C4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				3664CFD82C6E2179007FB5DF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 369C63882C1A7A240021E2E0 /* Products */;
 			projectDirPath = "";
@@ -1747,6 +1751,14 @@
 				minimumVersion = 7.12.0;
 			};
 		};
+		3664CFD82C6E2179007FB5DF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 		368E36942C4A3B3D003FA911 /* XCRemoteSwiftPackageReference "iamport-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/iamport/iamport-ios";
@@ -1826,6 +1838,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 363C243A2C6619950097FCB7 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		3664CFD92C6E2179007FB5DF /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3664CFD82C6E2179007FB5DF /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 		368E36952C4A3B3D003FA911 /* iamport-ios */ = {
 			isa = XCSwiftPackageProductDependency;
