@@ -17,6 +17,10 @@
 	</array>
 	<key>IMP_CODE</key>
 	<string>$(IMP_CODE)</string>
+	<key>IMP_KEY</key>
+	<string>$(IMP_KEY)</string>
+	<key>IMP_SECRET</key>
+	<string>$(IMP_SECRET)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaoplus</string>

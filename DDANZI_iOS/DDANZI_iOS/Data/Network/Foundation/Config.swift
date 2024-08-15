@@ -13,6 +13,8 @@ enum Config {
             static let baseURL = "BASE_URL"
             static let kakaoAppKey = "NATIVE_APP_KEY"
           static let impCode = "IMP_CODE"
+          static let impKey = "IMP_KEY"
+          static let impSecret = "IMP_SECRET"
         }
     }
     
@@ -40,6 +42,20 @@ enum Config {
   static let impCode: String = {
       guard let key = Config.infoDictionary[Keys.Plist.impCode] as? String else {
           fatalError("impCode is not set in plist for this configuration.")
+      }
+      return key
+  }()
+  
+  static let impKey: String = {
+      guard let key = Config.infoDictionary[Keys.Plist.impKey] as? String else {
+          fatalError("impKey is not set in plist for this configuration.")
+      }
+      return key
+  }()
+  
+  static let impSecret: String = {
+      guard let key = Config.infoDictionary[Keys.Plist.impSecret] as? String else {
+          fatalError("impSecret is not set in plist for this configuration.")
       }
       return key
   }()
