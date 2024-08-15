@@ -9,5 +9,5 @@ import Foundation
 
 // MARK: - VerificationResponseDTO
 struct VerificationResponseDTO: Codable {
-    let nickname, phone: String
+  let accesstoken, refreshtoken, name: String
 }
