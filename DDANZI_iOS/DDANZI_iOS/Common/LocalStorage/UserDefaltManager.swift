@@ -14,6 +14,7 @@ enum UserDefaultsKeyType: String {
   case accesstoken = "accesstoken"
   case nickName = "nickName"
   case portoneAccessToken = "portoneAccessToken"
+  case isLogin
 }
 
 extension UserDefaults {

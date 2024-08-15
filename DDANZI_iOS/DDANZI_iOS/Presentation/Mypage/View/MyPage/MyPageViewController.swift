@@ -15,14 +15,16 @@ final class MyPageViewController: UIViewController {
   private let disposeBag = DisposeBag()
   let viewModel = MyPageViewModel()
   
-  private let navigationBar = CustomNavigationBarView(navigationBarType: .setting)
+  private lazy var navigationBar = viewModel.isLogin ? CustomNavigationBarView(navigationBarType: .setting) :  CustomNavigationBarView(navigationBarType: .none)
   private lazy var headerView = viewModel.isLogin ? MyPageHeaderView() : LoginHeaderView()
-  private let tableView = UITableView(frame: .zero, style: .plain).then {
+  private let tableView = UITableView(frame: .zero, style: .grouped).then {
     $0.separatorStyle = .none
-    $0.rowHeight = 52
+    $0.rowHeight = 52.adjusted
+    $0.sectionHeaderHeight = 48
     $0.register(MyPageTableViewCell.self,
                 forCellReuseIdentifier: MyPageTableViewCell.identifier)
     $0.backgroundColor = .white
+    $0.isScrollEnabled = false
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -52,14 +54,14 @@ final class MyPageViewController: UIViewController {
   
   private func setConstraints() {
     navigationBar.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaInsets.top)
+      $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.leading.trailing.equalToSuperview()
     }
     
     headerView.snp.makeConstraints {
       $0.top.equalTo(navigationBar.snp.bottom)
       $0.leading.trailing.equalToSuperview()
-      $0.height.equalTo(148)
+      $0.height.equalTo(148.adjusted)
     }
     
     tableView.snp.makeConstraints {

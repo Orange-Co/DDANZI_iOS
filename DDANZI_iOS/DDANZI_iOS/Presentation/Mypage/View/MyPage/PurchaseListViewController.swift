@@ -70,7 +70,7 @@ final class PurchaseListViewController: UIViewController {
   
   private func setConstraints() {
     navigationBar.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
+      $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
     
     headerView.snp.makeConstraints {

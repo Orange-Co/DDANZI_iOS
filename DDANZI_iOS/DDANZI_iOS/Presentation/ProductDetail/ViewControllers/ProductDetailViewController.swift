@@ -131,7 +131,7 @@ final class ProductDetailViewController: UIViewController {
   
   private func setConstraints() {
     customNavigationBar.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaInsets.top)
+      $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.leading.trailing.equalToSuperview()
     }
     

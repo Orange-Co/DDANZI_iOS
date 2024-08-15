@@ -72,7 +72,7 @@ final class CsCenterViewController: UIViewController {
     
     private func setConstraints() {
         navigaionBar.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
         
         titleLabel.snp.makeConstraints {

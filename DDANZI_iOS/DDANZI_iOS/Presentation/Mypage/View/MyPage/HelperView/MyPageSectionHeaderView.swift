@@ -48,7 +48,7 @@ final class MyPageSectionHeaderView: UIView {
         
         lineView.snp.makeConstraints {
             $0.height.equalTo(1)
-            $0.bottom.equalToSuperview()
+          $0.top.equalTo(titleLabel.snp.bottom).offset(5)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
     }
