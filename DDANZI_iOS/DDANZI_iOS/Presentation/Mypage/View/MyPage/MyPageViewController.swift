@@ -79,6 +79,14 @@ final class MyPageViewController: UIViewController {
         self?.navigationController?.pushViewController(InfoSettingViewController(), animated: true)
       })
       .disposed(by: disposeBag)
+    
+    if let headerView = headerView as? LoginHeaderView {
+      headerView.loginButtonTapped
+        .subscribe(with: self) { owner, _ in
+          owner.navigationController?.pushViewController(LoginViewController(), animated: true)
+        }
+        .disposed(by: disposeBag)
+    }
   }
 }
 

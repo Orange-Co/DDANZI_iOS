@@ -9,9 +9,12 @@ import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 final class LoginHeaderView: UIView {
-  let loginButton = UIButton().then {
+  
+  private let loginButton = UIButton().then {
     $0.setImage(.blueArrow, for: .normal)
     $0.setTitleColor(.black, for: .normal)
     $0.semanticContentAttribute = .forceRightToLeft
@@ -31,9 +34,15 @@ final class LoginHeaderView: UIView {
     $0.configuration = config
   }
   
+  private let disposeBag = DisposeBag()
+  
+  private let loginButtonSubject = PublishSubject<Void>()
+  var loginButtonTapped: Observable<Void> { loginButtonSubject.asObservable() }
+  
   init() {
     super.init(frame: .zero)
     setUI()
+    bind()
   }
   
   required init?(coder: NSCoder) {
@@ -54,6 +63,12 @@ final class LoginHeaderView: UIView {
       $0.leading.equalToSuperview().offset(20)
       $0.centerY.equalToSuperview()
     }
+  }
+  
+  private func bind() {
+    loginButton.rx.tap
+      .bind(to: loginButtonSubject)
+      .disposed(by: disposeBag)
   }
 }
 
