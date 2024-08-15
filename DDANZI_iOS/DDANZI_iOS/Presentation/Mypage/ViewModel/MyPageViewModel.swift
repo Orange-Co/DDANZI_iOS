@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 
 final class MyPageViewModel: ObservableObject {
-    var isLogin: Bool = true
+  var isLogin: Bool = UserDefaults.standard.bool(forKey: .isLogin)
     
     func tapSettingButton() {
         

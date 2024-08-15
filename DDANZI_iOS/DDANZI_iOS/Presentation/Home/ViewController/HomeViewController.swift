@@ -51,12 +51,13 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   
   // MARK: LayoutHelper
   private func setUI() {
+    self.view.backgroundColor = .white
     view.addSubviews(navigationBarView,
                      homeViewCollectionView,
                      sellButton)
     
     navigationBarView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
+      $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
     
     homeViewCollectionView.snp.makeConstraints {

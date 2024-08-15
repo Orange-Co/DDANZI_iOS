@@ -65,7 +65,7 @@ class SalesDetailViewController: UIViewController {
   
   private func setConstraints() {
     navigaitonBar.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
+      $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
     
     collectionView.snp.makeConstraints {

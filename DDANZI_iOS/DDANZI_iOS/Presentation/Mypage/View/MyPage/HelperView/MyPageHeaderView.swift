@@ -51,18 +51,18 @@ final class MyPageHeaderView: UIView {
     
     private func setConstraints() {
         greetingLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(33)
-            $0.leading.equalToSuperview().offset(20)
+          $0.top.equalToSuperview().offset(33.adjusted)
+          $0.leading.equalToSuperview().offset(20.adjusted)
         }
         
         nickNameLabel.snp.makeConstraints {
-            $0.top.equalTo(greetingLabel.snp.bottom).offset(15)
-            $0.leading.equalToSuperview().offset(20)
+          $0.top.equalTo(greetingLabel.snp.bottom).offset(15.adjusted)
+          $0.leading.equalToSuperview().offset(20.adjusted)
         }
         
         surfixLabel.snp.makeConstraints {
             $0.bottom.equalTo(nickNameLabel.snp.bottom)
-            $0.leading.equalTo(nickNameLabel.snp.trailing).offset(5)
+          $0.leading.equalTo(nickNameLabel.snp.trailing).offset(5.adjusted)
         }
     }
 }

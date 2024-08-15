@@ -84,7 +84,7 @@ class BankAccountViewController: UIViewController {
   
   private func setConstraints() {
     navigationBarView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
+      $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
     
     headerView.snp.makeConstraints {

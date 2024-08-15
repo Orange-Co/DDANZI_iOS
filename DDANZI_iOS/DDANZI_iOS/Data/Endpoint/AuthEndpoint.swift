@@ -10,8 +10,8 @@ import Foundation
 import Moya
 
 enum AuthEndpoint {
-  case socialLogin
-  case certification
+  case socialLogin(SocialLoginRequestDTO)
+  case certification(VerificationRequestDTO)
   case revoke
   case logout
 }
@@ -58,10 +58,10 @@ extension AuthEndpoint: BaseTargetType {
   
   var task: Moya.Task {
     switch self {
-    case .socialLogin:
-      return .requestPlain
-    case .certification:
-      return .requestPlain
+    case let .socialLogin(dto):
+      return .requestJSONEncodable(dto)
+    case let .certification(dto):
+      return .requestJSONEncodable(dto)
     case .revoke:
       return .requestPlain
     case .logout:
