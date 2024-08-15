@@ -104,9 +104,9 @@ final class LoginViewController: UIViewController {
     let authDTO = SocialLoginRequestDTO(token: token, type: .kakao)
     Providers.AuthProvider.request(target: .socialLogin(authDTO), instance: BaseResponse<SocialLoginResponseDTO>.self) { result in
       guard let data = result.data else { return }
-      UserDefaults.standard.setValue(data.nickname, forKey: "nickName")
-      UserDefaults.standard.setValue(data.accesstoken, forKey: "accesstoken")
-      UserDefaults.standard.setValue(data.refreshtoken, forKey: "refreshtoken")
+      UserDefaults.standard.set(data.nickname, forKey: .nickName)
+      UserDefaults.standard.set(data.accesstoken, forKey: .accesstoken)
+      UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
     }
   }
   
