@@ -22,6 +22,7 @@ enum NavigationBarType {
     case setting
     case searching
     case logo
+    case none
 }
 
 final class CustomNavigationBarView: UIView {
@@ -33,7 +34,7 @@ final class CustomNavigationBarView: UIView {
     private let backButtonSubject = PublishSubject<Void>()
     private let cancelButtonSubject = PublishSubject<Void>()
     private let homeButtonSubject = PublishSubject<Void>()
-    private let searchButtonSubject = PublishSubject<Void>()    
+    private let searchButtonSubject = PublishSubject<Void>()
     private let settingButtonSubject = PublishSubject<Void>()
     private let searchBarSubject = PublishSubject<Void>()
     
@@ -56,26 +57,32 @@ final class CustomNavigationBarView: UIView {
     
     private let backButton = UIButton().then {
         $0.setImage(.leftBtn, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
     }
     
     private let cancelButton = UIButton().then {
         $0.setImage(.icCancel, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
     }
     
     private let homeButton = UIButton().then {
         $0.setImage(.home, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
     }
     
-    private let logoButton = UIButton().then {
-      $0.setImage(.logo, for: .normal)
+    private let logoButton = UIImageView().then {
+        $0.image = .logo
+        $0.contentMode = .scaleAspectFit
     }
     
     private let searchButton = UIButton().then {
         $0.setImage(.icSearch, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
     }
     
     private let settingButton = UIButton().then {
         $0.setImage(.icSetting, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
     }
     
     let searchTextField = UISearchTextField()
@@ -155,36 +162,40 @@ final class CustomNavigationBarView: UIView {
             self.addSubviews(searchTextField)
             searchTextField.snp.makeConstraints {
                 $0.top.equalTo(leftView.snp.top)
-                $0.leading.equalTo(leftView.snp.trailing).offset(10)
-                $0.trailing.equalToSuperview().inset(20)
+                $0.leading.equalTo(leftView.snp.trailing).offset(10.adjusted)
+                $0.trailing.equalToSuperview().inset(20.adjusted)
             }
         case .logo:
             leftView.addSubview(logoButton)
             logoButton.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
+        case .none:
+          break
         }
     }
     
     private func setConstraints() {
         self.snp.makeConstraints {
-            $0.height.equalTo(110)
+            $0.height.equalTo(58.adjusted)
         }
         
         leftView.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(26)
-            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20.adjusted)
+            $0.height.equalTo(20)
         }
         
         rightView.snp.makeConstraints {
-            $0.centerY.equalTo(leftView.snp.centerY)
-            $0.trailing.equalToSuperview().inset(20)
-            $0.size.equalTo(25)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20.adjusted)
+            $0.height.equalTo(20)
         }
         
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalTo(leftView.snp.centerY)
+            $0.height.equalTo(20)
         }
 
     }
