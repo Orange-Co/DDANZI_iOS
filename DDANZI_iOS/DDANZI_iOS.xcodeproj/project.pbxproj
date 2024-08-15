@@ -79,6 +79,7 @@
 		36607DA92C4F85CC003803F4 /* LoginCompletedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607DA82C4F85CC003803F4 /* LoginCompletedViewController.swift */; };
 		36607DAB2C4F85D7003803F4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607DAA2C4F85D7003803F4 /* LoginViewController.swift */; };
 		36607DAD2C4F85F2003803F4 /* CertificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607DAC2C4F85F2003803F4 /* CertificationViewController.swift */; };
+		3664CFCF2C6E056A007FB5DF /* Adjusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3664CFCE2C6E056A007FB5DF /* Adjusted.swift */; };
 		3673CA272C2834D4009411A4 /* OptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */; };
 		3673CA2C2C286482009411A4 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA2B2C286482009411A4 /* SearchViewController.swift */; };
 		3673CA2E2C286C11009411A4 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA2D2C286C11009411A4 /* SearchCollectionViewCell.swift */; };
@@ -257,6 +258,7 @@
 		36607DA82C4F85CC003803F4 /* LoginCompletedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCompletedViewController.swift; sourceTree = "<group>"; };
 		36607DAA2C4F85D7003803F4 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		36607DAC2C4F85F2003803F4 /* CertificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationViewController.swift; sourceTree = "<group>"; };
+		3664CFCE2C6E056A007FB5DF /* Adjusted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adjusted.swift; sourceTree = "<group>"; };
 		3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		3673CA2B2C286482009411A4 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		3673CA2D2C286C11009411A4 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -968,6 +970,7 @@
 				363C242A2C6528A50097FCB7 /* UITextField+.swift */,
 				363C243D2C6619F50097FCB7 /* Int+.swift */,
 				363C243F2C661ED30097FCB7 /* UIImageView+.swift */,
+				3664CFCE2C6E056A007FB5DF /* Adjusted.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1312,6 +1315,7 @@
 				3631527F2C35EADA00DF689E /* ProductChipView.swift in Sources */,
 				36EB5FA12C1EC9E900FAF995 /* HomeViewReactor.swift in Sources */,
 				368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */,
+				3664CFCF2C6E056A007FB5DF /* Adjusted.swift in Sources */,
 				363152832C36E73800DF689E /* MyProductCollectionViewCell.swift in Sources */,
 				36607DAD2C4F85F2003803F4 /* CertificationViewController.swift in Sources */,
 				363152812C35EAF400DF689E /* DdanziButton.swift in Sources */,
