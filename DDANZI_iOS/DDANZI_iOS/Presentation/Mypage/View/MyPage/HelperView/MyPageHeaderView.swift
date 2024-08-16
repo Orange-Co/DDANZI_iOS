@@ -18,7 +18,6 @@ final class MyPageHeaderView: UIView {
     }
     
     private let nickNameLabel = UILabel().then {
-        $0.text = "1224832947"
         $0.textColor = .black
         $0.font = .title2R32
     }
@@ -65,5 +64,9 @@ final class MyPageHeaderView: UIView {
           $0.leading.equalTo(nickNameLabel.snp.trailing).offset(5.adjusted)
         }
     }
+  
+  func setNickname(nickname: String) {
+    self.nickNameLabel.text = nickname
+  }
 }
 
