@@ -15,6 +15,9 @@ import RxDataSources
 
 class AddressSettingViewController: UIViewController {
   private let disposeBag = DisposeBag()
+  private var addressList: [Address] = []
+  private let addressListSubject = BehaviorSubject<[Address]>(value: [])
+  private var addressId = 0
   
   private let navigationBarView = CustomNavigationBarView(navigationBarType: .normal)
   private let headerView = MyPageSectionHeaderView()
@@ -37,9 +40,14 @@ class AddressSettingViewController: UIViewController {
     $0.isHidden = true // 초기에는 숨겨둡니다.
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    fetchAddress()
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    fetchAddress()
     setUI()
     configureCollectionView()
     bind()
@@ -80,49 +88,45 @@ class AddressSettingViewController: UIViewController {
       $0.height.equalTo(150)
     }
   }
+  
   private func configureCollectionView() {
     collectionView.delegate = nil
     
-    let dummy: [Address] = [] // 데이터가 없는 상태를 가정
-    
-    let sections: [SectionModel<String, Any>] = [
-      SectionModel(model: "배송지 관리", items: dummy)
-    ]
-    
-    headerView.setTitleLabel(title: sections[0].model)
-    
-    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
+    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Address>>(
       configureCell: { dataSource, collectionView, indexPath, item in
-        if indexPath.section == 0 {
-          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddressCollectionViewCell.className, for: indexPath) as? AddressCollectionViewCell
-          if let cell {
-            if let address = item as? Address {
-              cell.configureView(name: address.name, address: address.address, phone: address.phone, isEditable: true)
-            }
-            return cell
-          }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddressCollectionViewCell.className, for: indexPath) as! AddressCollectionViewCell
+        if let address = item as? Address {
+          cell.configureView(name: address.name, address: address.address, phone: address.phone, isEditable: true)
+          cell.deleteButtonTap
+            .subscribe(onNext: { [weak self] in
+              // 해당 주소 삭제 로직
+              self?.deleteAddress(at: indexPath)
+            })
+            .disposed(by: cell.disposeBag)
         }
-        return UICollectionViewCell()
+        return cell
       }
     )
     
-    let items = Observable.just(sections)
-    
-    items.bind(to: collectionView.rx.items(dataSource: dataSource))
+    addressListSubject
+      .map { [SectionModel(model: "배송지 관리", items: $0)] }
+      .bind(to: collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
+    
+    headerView.setTitleLabel(title: "배송지 관리")
     
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
     
-    items.subscribe(onNext: { [weak self] sections in
-      guard let self = self else { return }
-      let isEmpty = sections.first?.items.isEmpty ?? true
-      self.collectionView.isHidden = isEmpty
-      self.addButton.isHidden = !isEmpty
-    })
-    .disposed(by: disposeBag)
+    addressListSubject
+      .subscribe(onNext: { [weak self] addressList in
+        guard let self = self else { return }
+        let isEmpty = addressList.isEmpty
+        self.collectionView.isHidden = isEmpty
+        self.addButton.isHidden = !isEmpty
+      })
+      .disposed(by: disposeBag)
   }
-  
   
   private func bind() {
     navigationBarView.backButtonTap
@@ -136,6 +140,34 @@ class AddressSettingViewController: UIViewController {
         self?.navigationController?.pushViewController(AddressFormViewController(), animated: true)
       })
       .disposed(by: disposeBag)
+  }
+  
+  private func fetchAddress() {
+    Providers.MypageProvider.request(target: .fetchUserAddress,
+                                     instance: BaseResponse<UserAddressResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      let newAddress = Address(name: data.recipient ?? "",
+                               address: "(\(data.zipCode) \(data.address), \(data.detailAddress))",
+                               phone: data.recipientPhone)
+      
+      var currentList = (try? self.addressListSubject.value()) ?? []
+      currentList.append(newAddress)
+      self.addressId = data.addressID ?? 0
+      
+      self.addressListSubject.onNext(currentList)
+    }
+  }
+  
+  private func deleteAddress(at indexPath: IndexPath) {
+    Providers.MypageProvider.request(target: .deleteUserAddress(addressId),
+                                     instance: BaseResponse<Bool>.self) { result in
+      if result.data ?? false {
+        // addressListSubject에서 해당 주소 삭제 로직
+        var currentList = (try? self.addressListSubject.value()) ?? []
+        currentList.remove(at: indexPath.item)
+        self.addressListSubject.onNext(currentList)
+      }
+    }
   }
 }
 
