@@ -9,20 +9,24 @@ import Foundation
 
 // MARK: - SearchItemsResponseDTO
 struct SearchItemsResponseDTO: Codable {
-    let topSearchedList: [String]
-    let recentlyViewedList: [RecentlyViewedItem]
+  let topSearchedList: [String]
+  let recentlyViewedList: [RecentlyViewedList]
 }
 
-// MARK: - RecentlyViewedItem
-struct RecentlyViewedItem: Codable {
-    let productID: Int
-    let name, imgURL: String
-    let originPrice, salePrice, interestCount: Int
-
-    enum CodingKeys: String, CodingKey {
-        case productID = "productId"
-        case name
-        case imgURL = "imgUrl"
-        case originPrice, salePrice, interestCount
-    }
+// MARK: - RecentlyViewedList
+struct RecentlyViewedList: Codable {
+  let productID: String
+  let kakaoProductID: Int
+  let name: String
+  let imgURL: String
+  let originPrice, salePrice, interestCount: Int
+  let isInterested: Bool
+  
+  enum CodingKeys: String, CodingKey {
+    case productID = "productId"
+    case kakaoProductID = "kakaoProductId"
+    case name
+    case imgURL = "imgUrl"
+    case originPrice, salePrice, interestCount, isInterested
+  }
 }
