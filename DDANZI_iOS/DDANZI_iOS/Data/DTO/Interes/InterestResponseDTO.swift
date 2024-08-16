@@ -10,5 +10,5 @@ import Foundation
 /// 관심 등록 삭제에 모두 사용됩니다.
 struct InterestResponseDTO: Codable {
   var nickname: String
-  var productId: Int
+  var productId: String
 }

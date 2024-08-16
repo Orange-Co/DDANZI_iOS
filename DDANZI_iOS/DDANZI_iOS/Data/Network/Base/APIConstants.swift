@@ -13,6 +13,7 @@ struct APIConstants {
   static let applicationJSON = "application/json"
   static let auth = "Authorization"
   static let deviceToken = "devicetoken"
+  static let nickname = "nickname"
   
   static var accessToken: String {
     return "Bearer \(UserDefaults.standard.string(forKey: .accesstoken) ?? "")"
@@ -26,7 +27,8 @@ struct APIConstants {
     return ""
   }
   
-  static var deviceTokenValue: String = UUID().uuidString
+  static var deviceTokenValue: String = KeychainWrapper.shared.deviceUUID
+  static var nickNameValue: String = UserDefaults.standard.string(forKey: .nickName) ?? ""
   
   static let OS = "OS"
   static let iOS = "iOS"
@@ -61,6 +63,13 @@ extension APIConstants {
   static var hasDeviceToken: [String: String] {
     return [contentType: applicationJSON,
                    auth: refreshToken,
+            deviceToken: deviceTokenValue]
+  }
+  
+  static var hasNickname: [String: String] {
+    return [contentType: applicationJSON,
+                   auth: accessToken,
+               nickname: nickNameValue,
             deviceToken: deviceTokenValue]
   }
   

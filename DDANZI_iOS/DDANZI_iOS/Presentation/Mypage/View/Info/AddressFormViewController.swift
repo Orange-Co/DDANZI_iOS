@@ -16,8 +16,10 @@ import RxCocoa
 final class AddressFormViewController: UIViewController {
   
   private let disposeBag = DisposeBag()
-  private let titles: [String] = ["우편번호", "주소지", "상세주소", "아룸", "휴대폰 번호"]
-  private let userInfo = UserInfoModel(name: "이단지", phone: "010-1234-8314", nickName: "")
+  private let titles: [String] = ["우편번호", "주소지", "상세주소", "이름", "휴대폰 번호"]
+  private let userInfo = UserInfoModel(name: UserDefaults.standard.string(forKey: .name) ?? "",
+                                       phone: UserDefaults.standard.string(forKey: .phone) ?? "",
+                                       nickName: UserDefaults.standard.string(forKey: .nickName) ?? "")
   private var zoneCode: String?
   private var roadAddress: String?
   private lazy var addressDetails: [String?] = [zoneCode, roadAddress, nil, userInfo.name, userInfo.phone]
@@ -92,11 +94,24 @@ final class AddressFormViewController: UIViewController {
     
     nexButton.rx.tap
       .subscribe(with: self, onNext: { owner, event  in
-        print("다음 버튼 눌림")
         print(owner.addressDetails)
-        self.navigationController?.popViewController(animated: true)
+        let addressInfo: [String] = owner.addressDetails.map {
+          guard let addressInfo = $0 else { return "" }
+          return addressInfo
+        }
+        let body = UserAddressRequestDTO(recipient: addressInfo[3], zipCode: addressInfo[0], type: .road, address: addressInfo[1] , detailAddress: addressInfo[2], recipientPhone: addressInfo[4])
+        owner.postAddress(body: body)
+        
       })
       .disposed(by: disposeBag)
+  }
+  
+  private func postAddress(body: UserAddressRequestDTO) {
+    Providers.MypageProvider.request(target: .addUserAddress(body), instance: BaseResponse<UserAddressResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      
+      self.navigationController?.popViewController(animated: true)
+    }
   }
   
   private func setDelegate() {

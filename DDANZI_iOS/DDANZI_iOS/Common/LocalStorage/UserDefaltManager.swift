@@ -15,6 +15,8 @@ enum UserDefaultsKeyType: String {
   case nickName = "nickName"
   case portoneAccessToken = "portoneAccessToken"
   case isLogin
+  case name = "name"
+  case phone = "phone"
 }
 
 extension UserDefaults {
@@ -51,5 +53,11 @@ extension UserDefaults {
   
   func removeObject(forKey key: UserDefaultsKeyType) {
     removeObject(forKey: key.rawValue)
+  }
+  
+  func clearAll() {
+    guard let appDomain = Bundle.main.bundleIdentifier else { return }
+    removePersistentDomain(forName: appDomain)
+    synchronize()
   }
 }

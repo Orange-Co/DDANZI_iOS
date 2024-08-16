@@ -20,4 +20,5 @@ struct ProductDetailModel {
   let interestCount: Int
   let isImminent: Bool
   let category: String
+  let isInterest: Bool
 }

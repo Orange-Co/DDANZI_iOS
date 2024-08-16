@@ -15,7 +15,7 @@ final class InfoSettingViewController: UIViewController {
   private let titles = ["내 정보", "내 정보 관리"]
   private let infoTitles = ["배송지 관리", "계좌 관리", "계정 관리"]
   private let myInfoTitles = ["이름", "휴대폰 번호", "닉네임"]
-  private let userInfo = UserInfoModel(name: "ㅇㅇㅇ", phone: "010-1234-2342", nickName: "Ddanzi123")
+  private var userInfo = UserInfoModel(name: "", phone: "", nickName: "")
   private let disposeBag = DisposeBag()
   
   private let navigationBar = CustomNavigationBarView(navigationBarType: .normal, title: "정보 관리")
@@ -36,6 +36,7 @@ final class InfoSettingViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
+    fetchUserInfo()
     setUI()
     configureTableView()
     bind()
@@ -74,6 +75,17 @@ final class InfoSettingViewController: UIViewController {
       })
       .disposed(by: disposeBag)
   }
+  
+  private func fetchUserInfo() {
+    Providers.MypageProvider.request(target: .fetchUerSetting, instance: BaseResponse<UserSettingResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      self.userInfo = UserInfoModel(name: data.name, phone: data.phone, nickName: data.nickname)
+      UserDefaults.standard.set(data.name, forKey: .name)
+      UserDefaults.standard.set(data.phone, forKey: .phone)
+      self.tableView.reloadData()
+    }
+  }
+  
 }
 
 extension InfoSettingViewController: UITableViewDataSource {

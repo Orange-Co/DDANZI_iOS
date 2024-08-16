@@ -10,8 +10,8 @@ import Foundation
 import Moya
 
 enum InterestEndpoint {
-  case addInterest(Int)
-  case deleteInterest(Int)
+  case addInterest(String)
+  case deleteInterest(String)
 }
 
 extension InterestEndpoint: BaseTargetType {

@@ -89,7 +89,6 @@ final class LoginViewController: UIViewController {
         .subscribe(with: self, onNext: { owner, oauthToken in
           print("카카오계정으로 로그인 성공👏")
           self.postSocialLogin(token: oauthToken.accessToken)
-          self.navigationController?.pushViewController(CertificationViewController(), animated: true)
         }, onError: { owner, error in
           print(error)
         })
@@ -99,7 +98,6 @@ final class LoginViewController: UIViewController {
         .subscribe(with: self, onNext: { owner, oauthToken in
           print("카카오계정으로 로그인 성공👏")
           self.postSocialLogin(token: oauthToken.accessToken)
-          self.navigationController?.pushViewController(CertificationViewController(), animated: true)
         }, onError: { owner, error in
           print(error)
         })
@@ -114,6 +112,12 @@ final class LoginViewController: UIViewController {
       UserDefaults.standard.set(data.nickname, forKey: .nickName)
       UserDefaults.standard.set(data.accesstoken, forKey: .accesstoken)
       UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
+      if data.status == "ACTIVATE" {
+        UserDefaults.standard.set(true, forKey: .isLogin)
+        self.navigationController?.popToRootViewController(animated: true)
+      } else {
+        self.navigationController?.pushViewController(CertificationViewController(), animated: true)
+      }
     }
   }
   

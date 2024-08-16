@@ -25,6 +25,8 @@ final class ProductDetailViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private var productId: String
   private var optionList: [OptionList] = []
+  private var isInterest: Bool = false
+  private var interestCount = 0
   
   // MARK: Compenets
   private let customNavigationBar = CustomNavigationBarView(navigationBarType: .home)
@@ -216,10 +218,12 @@ final class ProductDetailViewController: UIViewController {
         infoURL: data.infoURL,
         interestCount: data.interestCount,
         isImminent: data.isImminent,
-        category: data.category
+        category: data.category,
+        isInterest: data.isInterested ?? false
       )
       )
-      
+      self.isInterest = data.isInterested ?? false
+      self.interestCount = data.interestCount
       self.optionList = data.optionList
     }
   }
@@ -232,6 +236,8 @@ final class ProductDetailViewController: UIViewController {
     beforePriceLabel.attributedText = productDetail.beforePrice.toKoreanWon().strikeThrough()
     labelView.configureChip(text: productDetail.category)
     amountLabel.text = "\(productDetail.remainAmount)개"
+    bottomButtonView.heartCountLabel.text = "\(productDetail.interestCount)"
+    bottomButtonView.heartButton.isSelected = productDetail.isInterest
   }
   
   private func bind() {
@@ -247,6 +253,13 @@ final class ProductDetailViewController: UIViewController {
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
         sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: homeViewController)
       })
+      .disposed(by: disposeBag)
+    
+    bottomButtonView.heartButtonTap
+      .subscribe(with: self) { owner, _ in
+        let id = owner.productId
+        owner.isInterest ? owner.deleteInterest(id: id) : owner.addInterest(id: id)
+      }
       .disposed(by: disposeBag)
     
     
@@ -269,6 +282,24 @@ final class ProductDetailViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+  }
+  
+  private func addInterest(id: String) {
+    Providers.InterestProvider.request(target: .addInterest(id),
+                                       instance: BaseResponse<InterestResponseDTO>.self) { result in
+      print(result.data?.nickname)
+      self.bottomButtonView.heartButton.isSelected = true
+      self.bottomButtonView.heartCountLabel.text = "\(self.interestCount + 1)"
+    }
+  }
+  
+  private func deleteInterest(id: String) {
+    Providers.InterestProvider.request(target: .deleteInterest(id),
+                                       instance: BaseResponse<InterestResponseDTO>.self) { result in
+      print(result.data?.nickname)
+      self.bottomButtonView.heartButton.isSelected = false
+      self.bottomButtonView.heartCountLabel.text = "\(self.interestCount - 1)"
+    }
   }
   
 }

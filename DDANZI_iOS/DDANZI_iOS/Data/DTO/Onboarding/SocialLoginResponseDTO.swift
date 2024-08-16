@@ -9,5 +9,5 @@ import Foundation
 
 // MARK: - SocialLoginResponseDTO
 struct SocialLoginResponseDTO: Codable {
-    let accesstoken, refreshtoken, nickname: String
+    let accesstoken, refreshtoken, nickname, status: String
 }

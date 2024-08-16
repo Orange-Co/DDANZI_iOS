@@ -13,10 +13,16 @@ import SnapKit
 
 final class MyPageViewController: UIViewController {
   private let disposeBag = DisposeBag()
-  let viewModel = MyPageViewModel()
+  private var isLogin: Bool {
+    get { UserDefaults.standard.bool(forKey: .isLogin) }
+    set {
+      UserDefaults.standard.set(newValue, forKey: .isLogin)
+      updateUI()
+    }
+  }
   
-  private lazy var navigationBar = viewModel.isLogin ? CustomNavigationBarView(navigationBarType: .setting) :  CustomNavigationBarView(navigationBarType: .none)
-  private lazy var headerView = viewModel.isLogin ? MyPageHeaderView() : LoginHeaderView()
+  private lazy var navigationBar = createNavigationBar()
+  private lazy var headerView = createHeaderView()
   private let tableView = UITableView(frame: .zero, style: .grouped).then {
     $0.separatorStyle = .none
     $0.rowHeight = 52.adjusted
@@ -31,6 +37,9 @@ final class MyPageViewController: UIViewController {
     super.viewWillAppear(animated)
     self.tabBarController?.tabBar.isHidden = false
     self.navigationController?.navigationBar.isHidden = true
+    
+    fetchUser()
+    isLogin = UserDefaults.standard.bool(forKey: .isLogin)
   }
   
   override func viewDidLoad() {
@@ -38,6 +47,14 @@ final class MyPageViewController: UIViewController {
     setUI()
     bind()
     configureTableView()
+  }
+  
+  private func createNavigationBar() -> CustomNavigationBarView {
+    return isLogin ? CustomNavigationBarView(navigationBarType: .setting) : CustomNavigationBarView(navigationBarType: .none)
+  }
+  
+  private func createHeaderView() -> UIView {
+    return isLogin ? MyPageHeaderView() : LoginHeaderView()
   }
   
   private func setUI() {
@@ -90,17 +107,49 @@ final class MyPageViewController: UIViewController {
         .disposed(by: disposeBag)
     }
   }
+  
+  private func fetchUser() {
+    Providers.MypageProvider.request(target: .fetchUser, instance: BaseResponse<MypageResponseDTO>.self) { result in
+      if result.status == 403 {
+        self.isLogin = false
+        self.tableView.reloadData()
+      }
+      guard let data = result.data else { return }
+      if data.nickname != "" {
+        self.isLogin = true
+        if let headerView = self.headerView as? MyPageHeaderView {
+          headerView.setNickname(nickname: data.nickname)
+        }
+      }
+    }
+  }
+  
+  private func updateUI() {
+    // Update navigation bar and header view
+    navigationBar.removeFromSuperview()
+    headerView.removeFromSuperview()
+    navigationBar = createNavigationBar()
+    headerView = createHeaderView()
+    setHierarchy()
+    setConstraints()
+    
+    // Rebind header view actions
+    bind()
+    
+    // Reload table view
+    tableView.reloadData()
+  }
 }
 
 extension MyPageViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 2
+    return isLogin ? 2 : 1
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     switch section {
     case 0:
-      return 3
+      return isLogin ? 3 : 2
     case 1:
       return 2
     default:
@@ -109,66 +158,49 @@ extension MyPageViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    switch section {
-    case 0:
-      let header = MyPageSectionHeaderView()
-      header.setTitleLabel(title: "히스토리")
-      return header
-    case 1:
-      let header = MyPageSectionHeaderView()
-      header.setTitleLabel(title: "고객 센터")
-      return header
-    default:
-      return UIView()
-    }
+    let header = MyPageSectionHeaderView()
+    let title = (section == 0) ? (isLogin ? "히스토리" : "고객센터") : "고객 센터"
+    header.setTitleLabel(title: title)
+    return header
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let section = indexPath.section
-    switch section {
-    case 0:
-      switch indexPath.item {
-      case 0:
-        navigationController?.pushViewController(PurchaseListViewController(), animated: true)
-      case 1:
-        navigationController?.pushViewController(SellListViewController(), animated: true)
-      case 2:
-        navigationController?.pushViewController(FavoriteViewController(), animated: true)
-      default:
-        break
+    if section == 0 {
+      if isLogin {
+        switch indexPath.row {
+        case 0: navigationController?.pushViewController(PurchaseListViewController(), animated: true)
+        case 1: navigationController?.pushViewController(SellListViewController(), animated: true)
+        case 2: navigationController?.pushViewController(FavoriteViewController(), animated: true)
+        default: break
+        }
+      } else {
+        switch indexPath.row {
+        case 0: break // 외부 페이지 연결
+        case 1: navigationController?.pushViewController(CsCenterViewController(), animated: true)
+        default: break
+        }
       }
-    case 1:
-      switch indexPath.item {
-      case 0:
-        break
-        // 외부 페이지 연결
-      case 1:
-        navigationController?.pushViewController(CsCenterViewController(), animated: true)
-      default:
-        break
+    } else if section == 1 {
+      switch indexPath.row {
+      case 0: break // 외부 페이지 연결
+      case 1: navigationController?.pushViewController(CsCenterViewController(), animated: true)
+      default: break
       }
-    default:
-      return
     }
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
     guard let cell = tableView.dequeueReusableCell(withIdentifier: MyPageTableViewCell.identifier, for: indexPath) as? MyPageTableViewCell else {
       return UITableViewCell()
     }
     cell.selectionStyle = .none
     
-    switch indexPath.section {
-    case 0:
-      let historyTitles = ["구매 내역", "판매 내역", "내 관심"]
-      cell.setTitleLabel(title: historyTitles[indexPath.item])
-    case 1:
-      let customerTitles = ["자주 묻는 질문", "1:1 상담 센터 "]
-      cell.setTitleLabel(title: customerTitles[indexPath.item])
-    default:
-      return UITableViewCell()
-    }
+    let historyTitles = ["구매 내역", "판매 내역", "내 관심"]
+    let customerTitles = ["자주 묻는 질문", "1:1 상담 센터"]
+    let titles = (indexPath.section == 0) ? (isLogin ? historyTitles : customerTitles) : customerTitles
+    cell.setTitleLabel(title: titles[indexPath.row])
+    
     return cell
   }
 }

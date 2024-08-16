@@ -7,18 +7,19 @@
 
 import UIKit
 
-struct ProductModel {
-  let image: UIImage?
+struct ProductInfoModel {
+  let id: String
+  let imageURL: String
   let title: String
   let beforePrice: String
   let price: String
   let heartCount: Int
 }
 
-struct SearchProductModel {
-  let imageURL: String
-  let title: String
+struct PurchaseProductModel {
+  let productID: Int
+  let name, imgURL: String
   let beforePrice: String
   let price: String
-  let heartCount: Int
+  let completedAt: String
 }

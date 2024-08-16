@@ -17,7 +17,7 @@ final class SplashViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setUI()
-    splashView.loopMode = .loop
+    splashView.loopMode = .playOnce
     splashView.play()
   }
   

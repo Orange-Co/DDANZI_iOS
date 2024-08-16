@@ -7,6 +7,11 @@
 
 import UIKit
 
+import Then
+import SnapKit
+import RxSwift
+import RxCocoa
+
 class BottomButtonView: UIView {
     let backgroundView = UIView().then {
         $0.backgroundColor = .white
@@ -22,12 +27,17 @@ class BottomButtonView: UIView {
     
     let heartButton = UIButton().then {
         $0.setImage(.icBlackEmptyHeart, for: .normal)
+      $0.setImage(.icFillHeartYellow, for: .selected)
     }
     
     let heartCountLabel = UILabel().then {
         $0.textColor = .black
         $0.font = .body6M12
     }
+  
+    private let disposeBag = DisposeBag()
+    private let heartButtonSubject = PublishSubject<Void>()
+    var heartButtonTap: Observable<Void> { heartButtonSubject.asObservable() }
     
   init(buttonText: String, heartCount: Int = 0, isEnable: Bool = false) {
         super.init(frame: .zero)
@@ -36,6 +46,7 @@ class BottomButtonView: UIView {
         self.button.isEnabled = isEnable
         self.button.backgroundColor = isEnable ? .black : .gray2
         setUI()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -77,5 +88,11 @@ class BottomButtonView: UIView {
             $0.trailing.equalToSuperview().inset(23)
             $0.height.equalTo(50)
         }
+    }
+  
+    private func bind() {
+      heartButton.rx.tap
+        .bind(to: heartButtonSubject)
+        .disposed(by: disposeBag)
     }
 }

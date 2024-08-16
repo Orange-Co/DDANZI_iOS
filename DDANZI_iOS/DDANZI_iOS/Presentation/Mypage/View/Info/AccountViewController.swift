@@ -9,6 +9,7 @@ import UIKit
 
 import SnapKit
 import Then
+import KakaoSDKUser
 import RxSwift
 import RxCocoa
 import RxDataSources
@@ -92,10 +93,27 @@ extension AccountViewController: UITableViewDataSource {
     header.setTitleLabel(title: "계정 관리")
     return header
   }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if indexPath.row == 0 {
+      UserApi.shared.logout {(error) in
+        if let error = error {
+          print(error)
+        }
+        else {
+          UserDefaults.standard.clearAll()
+          
+          UserDefaults.standard.set(false, forKey: .isLogin)
+          self.navigationController?.popToRootViewController(animated: true)
+          print("logout() success.")
+        }
+      }
+    }
+  }
 }
 
 
 extension AccountViewController: UITableViewDelegate {
-
+  
 }
 

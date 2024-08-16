@@ -15,7 +15,7 @@ struct UserSaleResponseDTO: Codable {
 
 // MARK: - ItemProductList
 struct ItemProductList: Codable {
-    let productID: Int
+    let productID: String
     let name, imgURL: String
     let originPrice, salePrice: Int
     let completedAt: String

@@ -13,6 +13,7 @@ struct ProductDetailResponseDTO: Codable {
     let imgURL: String
     let category: String
     let isOptionExist, isImminent: Bool
+  let isInterested: Bool?
     let discountRate, originPrice, salePrice, stockCount: Int
     let infoURL: String
     let interestCount: Int
@@ -23,7 +24,7 @@ struct ProductDetailResponseDTO: Codable {
         case imgURL = "imgUrl"
         case category, isOptionExist, isImminent, discountRate, originPrice, salePrice, stockCount
         case infoURL = "infoUrl"
-        case interestCount, optionList
+        case interestCount, optionList, isInterested
     }
 }
 

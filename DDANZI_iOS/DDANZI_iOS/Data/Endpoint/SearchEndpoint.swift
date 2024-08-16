@@ -18,7 +18,7 @@ extension SearchEndpoint: BaseTargetType {
   var headers: Parameters? {
     switch self {
     case .loadInitalSearch:
-      return APIConstants.hasAccessTokenHeader
+      return APIConstants.hasDeviceToken
     case .loadSearchResult:
       return APIConstants.hasAccessTokenHeader
     }
