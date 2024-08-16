@@ -17,15 +17,7 @@ import RxDataSources
 final class SellListViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private let listTypeRelay = BehaviorRelay<ListType>(value: .sales)
-  
-  private let dummy = [
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78)]
+  private let sellProductRelay = BehaviorRelay<[ProductInfoModel]>(value: [])
   
   
   private let navigationBar = CustomNavigationBarView(navigationBarType: .normal,
@@ -39,19 +31,22 @@ final class SellListViewController: UIViewController {
   }
   
   override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.tabBarController?.tabBar.isHidden = true
+    fetchSaleProduct()
   }
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
+    fetchSaleProduct()
     setUI()
     configureCollectionView()
     bind()
   }
   
   private func setUI() {
-    headerView.setCount(count: dummy.count)
     setHierarchy()
     setConstraints()
   }
@@ -93,53 +88,51 @@ final class SellListViewController: UIViewController {
     layout.sectionInset = .init(top: 0, left: 20, bottom: 0, right: 20)
     collectionView.collectionViewLayout = layout
     
-    
-    let sections: [SectionModel<String, Any>] = [
-      SectionModel(model: "Section 1", items: dummy)
-    ]
-    
-    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
-      configureCell: { dataSource, collectionView, indexPath, item in
+    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, ProductInfoModel>>(
+      configureCell: { [weak self] dataSource, collectionView, indexPath, item in
+        guard let self = self else { return UICollectionViewCell() }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyProductCollectionViewCell.identifier, for: indexPath) as! MyProductCollectionViewCell
-        if let product = item as? ProductModel {
-          cell.bindData(image: product.image,
-                        title: product.title,
-                        beforePrice: product.beforePrice,
-                        price: product.price,
-                        heartCount: product.heartCount)
-          
-            cell.listType = self.listTypeRelay.value
-          //          cell.heartButtonTap
-          //            .subscribe(onNext: {
-          //              print("Heart button tapped on row \(indexPath.row)")
-          //              // Handle heart button tap
-          //            })
-          //            .disposed(by: cell.disposeBag)
-        }
+        cell.bindData(image: item.imageURL,
+                      title: item.title,
+                      beforePrice: item.beforePrice,
+                      price: item.price,
+                      heartCount: item.heartCount)
+        cell.listType = self.listTypeRelay.value
         return cell
       }
     )
     
-    let items = Observable.just(sections)
-    items.bind(to: collectionView.rx.items(dataSource: dataSource))
+    sellProductRelay
+      .map { [SectionModel(model: "Section 1", items: $0)] }
+      .bind(to: collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
     
-    collectionView.rx.setDelegate(self)
+    
+    collectionView.rx.modelSelected(ProductInfoModel.self)
+      .subscribe(onNext: { [weak self] product in
+        guard let self = self else { return }
+        let detailVC = ProductDetailViewController(productId: "\(product.id)")
+        self.navigationController?.pushViewController(detailVC, animated: true)
+      })
       .disposed(by: disposeBag)
     
     listTypeRelay.accept(.sales)
     collectionView.reloadData()
-    
-    collectionView.rx.itemSelected
-      .subscribe(onNext: { [weak self] indexPath in
-        guard let self = self else { return }
-        if indexPath.section == 0 {
-          let detailVC = ProductDetailViewController(productId: "09887")
-          self.navigationController?.pushViewController(detailVC, animated: true)
-        }
-      })
-      .disposed(by: disposeBag)
   }
+  
+  
+  private func fetchSaleProduct() {
+    Providers.MypageProvider.request(target: .fetchUserSale, instance: BaseResponse<UserSaleResponseDTO>.self) { [weak self] result in
+      guard let self = self else { return }
+      guard let data = result.data else { return }
+      
+      let products: [ProductInfoModel] = data.itemProductList.map { product in
+          .init(id: product.productID, imageURL: product.imgURL, title: product.name, beforePrice: product.originPrice.toKoreanWon(), price: product.salePrice.toKoreanWon(), heartCount: product.interestCount)
+      }
+      
+      headerView.setCount(count: data.totalCount)
+      self.sellProductRelay.accept(products)
+    }
+  }
+  
 }
-
-extension SellListViewController: UICollectionViewDelegate { }
