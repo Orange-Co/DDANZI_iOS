@@ -14,9 +14,9 @@ struct PurchaseSectionModel {
 }
 
 extension PurchaseSectionModel: SectionModelType {
-  typealias Item = ProductModel
+  typealias Item = ProductInfoModel
 
-  init(original: PurchaseSectionModel, items: [ProductModel]) {
+  init(original: PurchaseSectionModel, items: [ProductInfoModel]) {
     self = original
     self.items = items
   }

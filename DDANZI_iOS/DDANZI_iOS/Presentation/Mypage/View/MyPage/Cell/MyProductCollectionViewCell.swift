@@ -143,7 +143,6 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
   
   private func setPurchaseConstraints() {
     self.addSubviews(purchaseDateLabel)
-    purchaseDateLabel.text = "2024년 05월 12일 구매"
     
     purchaseDateLabel.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(5)
@@ -209,8 +208,15 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
           .disposed(by: disposeBag)
   }
   
-  func bindData(image: UIImage?, title: String, beforePrice: String, price: String, heartCount: Int) {
-    imageView.image = image
+  func bindData(
+    image: String,
+    title: String,
+    beforePrice: String,
+    price: String,
+    heartCount: Int,
+    completedAt: String = ""
+  ) {
+    imageView.setImage(with: image)
     titleLabel.text = title
     beforeLabel.text = beforePrice
     priceLabel.text = price
@@ -218,6 +224,9 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     
     
     beforeLabel.attributedText = beforeLabel.text?.strikeThrough()
+    
+    
+    purchaseDateLabel.text = completedAt
   }
 }
 
