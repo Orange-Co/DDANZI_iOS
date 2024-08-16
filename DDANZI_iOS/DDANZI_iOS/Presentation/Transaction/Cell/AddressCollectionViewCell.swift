@@ -9,8 +9,15 @@ import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 final class AddressCollectionViewCell: UICollectionViewCell {
+  
+  let disposeBag = DisposeBag()
+  private let deleteSubject = PublishSubject<Void>()
+  var deleteButtonTap: Observable<Void> { deleteSubject.asObservable() }
+  
   private let nameLabel = UILabel().then {
     $0.font = .body2Sb18
     $0.textColor = .black
@@ -42,6 +49,7 @@ final class AddressCollectionViewCell: UICollectionViewCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setUI()
+    bind()
   }
   
   required init?(coder: NSCoder) {
@@ -69,6 +77,12 @@ final class AddressCollectionViewCell: UICollectionViewCell {
       $0.centerY.equalToSuperview()
       $0.horizontalEdges.equalToSuperview().inset(20)
     }
+  }
+  
+  private func bind() {
+    deleteButton.rx.tap
+      .bind(to: deleteSubject)
+      .disposed(by: disposeBag)
   }
   
   func configureView(name: String, address: String, phone: String, isEditable: Bool = false){
