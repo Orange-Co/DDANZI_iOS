@@ -127,7 +127,7 @@ final class CertificationViewController: UIViewController {
          let phone = data.phone,
          let birth = data.birthday,
          let sex = data.gender {
-        self.postVerification(user: .init(name: name, phone: phone, brith: birth, sex: sex.uppercased()))
+        self.postVerification(user: .init(name: name, phone: phone, birth: birth, sex: sex.uppercased()))
       }
     }
   }
@@ -136,8 +136,7 @@ final class CertificationViewController: UIViewController {
     Providers.AuthProvider.request(target: .certification(user),
                                    instance: BaseResponse<VerificationResponseDTO>.self) { result in
       guard let data = result.data else { return }
-      UserDefaults.standard.set(data.accesstoken, forKey: .accesstoken)
-      UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
+      UserDefaults.standard.set(true, forKey: .isLogin)
       self.navigationController?.pushViewController(LoginViewController(), animated: true)
     }
   }
