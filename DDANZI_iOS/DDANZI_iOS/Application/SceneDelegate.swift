@@ -29,8 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     let tabBarVC = DdanziTabBarController()
     
-    // 스플래시 화면 2초 노출
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
       let navigationController = UINavigationController(rootViewController: tabBarVC)
       
       self.window?.rootViewController = navigationController
