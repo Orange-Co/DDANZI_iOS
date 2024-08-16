@@ -14,17 +14,11 @@ import RxDataSources
 final class FavoriteViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private let listTypeRelay = BehaviorRelay<ListType>(value: .interest)
-  
-  private let dummy = [
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78),
-    ProductModel(image: UIImage(resource: .image2), title: "상품명", beforePrice: "54,000원", price: "48,000원", heartCount: 78)]
+  private let interestProductRelay = BehaviorRelay<[ProductInfoModel]>(value: [])
   
   
   private let navigationBar = CustomNavigationBarView(navigationBarType: .normal,
-                                                      title: "구매 목록")
+                                                      title: "내 관심 ")
   private let headerView = ProductListHeaderView(isEditable: false)
   private let collectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: .init()).then {
@@ -34,7 +28,9 @@ final class FavoriteViewController: UIViewController {
   }
   
   override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.tabBarController?.tabBar.isHidden = true
+    fetchInterest()
   }
   
   override func viewDidLoad() {
@@ -43,10 +39,10 @@ final class FavoriteViewController: UIViewController {
     setUI()
     configureCollectionView()
     bind()
+    fetchInterest()
   }
   
   private func setUI() {
-    headerView.setCount(count: dummy.count)
     setHierarchy()
     setConstraints()
   }
@@ -73,67 +69,66 @@ final class FavoriteViewController: UIViewController {
       $0.leading.trailing.bottom.equalToSuperview()
     }
   }
+  
   private func bind() {
     navigationBar.backButtonTap
       .subscribe(onNext: { [weak self] in
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    
   }
   
   private func configureCollectionView() {
+    collectionView.delegate = nil
+    collectionView.dataSource = nil
+    
     let layout = UICollectionViewFlowLayout()
-    layout.itemSize = CGSize(width: (view.frame.width-50)/2, height: 260)
+    layout.itemSize = CGSize(width: (view.frame.width - 50) / 2, height: 260)
     layout.sectionInset = .init(top: 0, left: 20, bottom: 0, right: 20)
     collectionView.collectionViewLayout = layout
     
-    
-    let sections: [SectionModel<String, Any>] = [
-      SectionModel(model: "Section 1", items: dummy)
-    ]
-    
-    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
-      configureCell: { dataSource, collectionView, indexPath, item in
+    let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, ProductInfoModel>>(
+      configureCell: { [weak self] dataSource, collectionView, indexPath, item in
+        guard let self = self else { return UICollectionViewCell() }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyProductCollectionViewCell.identifier, for: indexPath) as! MyProductCollectionViewCell
-        if let product = item as? ProductModel {
-          cell.bindData(image: product.image,
-                        title: product.title,
-                        beforePrice: product.beforePrice,
-                        price: product.price,
-                        heartCount: product.heartCount)
-          
-            cell.listType = self.listTypeRelay.value
-          //          cell.heartButtonTap
-          //            .subscribe(onNext: {
-          //              print("Heart button tapped on row \(indexPath.row)")
-          //              // Handle heart button tap
-          //            })
-          //            .disposed(by: cell.disposeBag)
-        }
+        cell.bindData(image: item.imageURL,
+                      title: item.title,
+                      beforePrice: item.beforePrice,
+                      price: item.price,
+                      heartCount: item.heartCount)
+        cell.listType = self.listTypeRelay.value
         return cell
       }
     )
     
-    let items = Observable.just(sections)
-    items.bind(to: collectionView.rx.items(dataSource: dataSource))
+    interestProductRelay
+      .map { [SectionModel(model: "Section 1", items: $0)] }
+      .bind(to: collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
     
-    listTypeRelay.accept(.interest)
-    collectionView.reloadData()
-    
-    collectionView.rx.setDelegate(self)
-      .disposed(by: disposeBag)
-    
-    
-    collectionView.rx.itemSelected
-      .subscribe(onNext: { [weak self] indexPath in
+    collectionView.rx.modelSelected(ProductInfoModel.self)
+      .subscribe(onNext: { [weak self] product in
         guard let self = self else { return }
-        if indexPath.section == 0 {
-          let detailVC = ProductDetailViewController(productId: "4647")
-          self.navigationController?.pushViewController(detailVC, animated: true)
-        }
+        let detailVC = ProductDetailViewController(productId: "\(product.id)")
+        self.navigationController?.pushViewController(detailVC, animated: true)
       })
       .disposed(by: disposeBag)
+  }
+  
+  private func fetchInterest() {
+    Providers.MypageProvider.request(target: .fetchUserInterest, instance: BaseResponse<UserInterestResponesDTO>.self) { [weak self] result in
+      guard let self = self else { return }
+      guard let data = result.data else { return }
+      
+      let products: [ProductInfoModel] = data.productList.map { product in
+          .init(id: product.productID, imageURL: product.imgURL, title: product.name, beforePrice: product.originPrice.toKoreanWon(), price: product.salePrice.toKoreanWon(), heartCount: product.interestCount)
+      }
+      
+      headerView.setCount(count: data.totalCount)
+      self.interestProductRelay.accept(products)
+    }
   }
 }
 
