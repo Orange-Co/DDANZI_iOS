@@ -66,6 +66,7 @@ class SearchViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     bindNavigation()
+    navigationBar.searchTextField.becomeFirstResponder()
     bindCollectionView()
     bindSearchResultsCollectionView()
     currentState = .normal
@@ -195,11 +196,21 @@ class SearchViewController: UIViewController {
       .disposed(by: disposeBag)
     
     collectionView.rx.itemSelected
-      .subscribe(onNext: { [weak self] indexPath in
-        guard let self = self else { return }
-        if indexPath.section == 1 {
-          let detailVC = ProductDetailViewController(productId: "")
-          self.navigationController?.pushViewController(detailVC, animated: true)
+      .subscribe(with: self, onNext: { owner, indexPath in
+        if indexPath.section == 0 {
+          let topSearchedList = owner.searchData.value.topSearchedList
+          let selectedKeyword = topSearchedList[indexPath.row]
+          
+          owner.searchKeyword = selectedKeyword
+          owner.fetchSearchData(keyword: selectedKeyword)
+        } else if indexPath.section == 1 {
+          let recentlyViewedItems = owner.searchData.value.recentlyViewedList
+          
+          let selectedProduct = recentlyViewedItems[indexPath.row]
+          let productId = selectedProduct.productID
+          
+          let detailVC = ProductDetailViewController(productId: productId)
+          owner.navigationController?.pushViewController(detailVC, animated: true)
         }
       })
       .disposed(by: disposeBag)
@@ -236,10 +247,22 @@ class SearchViewController: UIViewController {
     
     searchResultsCollectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
+    
+    searchResultsCollectionView.rx.itemSelected
+      .subscribe(with: self, onNext: { owner, indexPath in
+          let recentlyViewedItems = owner.searchResults.value
+          
+          let selectedProduct = recentlyViewedItems[indexPath.row]
+          let productId = selectedProduct.id
+          
+          let detailVC = ProductDetailViewController(productId: productId)
+          owner.navigationController?.pushViewController(detailVC, animated: true)
+        })
+      .disposed(by: disposeBag)
   }
   
   
-  private func updateSearchResults(_ results: [SearchProductModel]) {
+  private func updateSearchResults(_ results: [ProductInfoModel]) {
     let sections: [SectionModel<String, Any>] = [
       SectionModel(model: "\"\(searchKeyword)\" 검색 결과", items: results)
     ]
