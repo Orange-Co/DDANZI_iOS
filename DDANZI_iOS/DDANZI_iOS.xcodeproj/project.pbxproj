@@ -1835,16 +1835,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.22.5;
+				kind = exactVersion;
+				version = 2.22.0;
 			};
 		};
 		36B744F32C6C50D3002892C4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.22.5;
+				kind = exactVersion;
+				version = 2.22.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
