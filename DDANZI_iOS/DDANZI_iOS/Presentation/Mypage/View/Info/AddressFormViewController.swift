@@ -108,8 +108,7 @@ final class AddressFormViewController: UIViewController {
   
   private func postAddress(body: UserAddressRequestDTO) {
     Providers.MypageProvider.request(target: .addUserAddress(body), instance: BaseResponse<UserAddressResponseDTO>.self) { result in
-      guard let data = result.data else { return }
-      
+
       self.navigationController?.popViewController(animated: true)
     }
   }

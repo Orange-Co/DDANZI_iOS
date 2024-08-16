@@ -287,7 +287,6 @@ final class ProductDetailViewController: UIViewController {
   private func addInterest(id: String) {
     Providers.InterestProvider.request(target: .addInterest(id),
                                        instance: BaseResponse<InterestResponseDTO>.self) { result in
-      print(result.data?.nickname)
       self.bottomButtonView.heartButton.isSelected = true
       self.bottomButtonView.heartCountLabel.text = "\(self.interestCount + 1)"
     }
@@ -296,7 +295,6 @@ final class ProductDetailViewController: UIViewController {
   private func deleteInterest(id: String) {
     Providers.InterestProvider.request(target: .deleteInterest(id),
                                        instance: BaseResponse<InterestResponseDTO>.self) { result in
-      print(result.data?.nickname)
       self.bottomButtonView.heartButton.isSelected = false
       self.bottomButtonView.heartCountLabel.text = "\(self.interestCount - 1)"
     }

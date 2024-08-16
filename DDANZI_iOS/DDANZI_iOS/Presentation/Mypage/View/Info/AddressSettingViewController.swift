@@ -95,15 +95,14 @@ class AddressSettingViewController: UIViewController {
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Address>>(
       configureCell: { dataSource, collectionView, indexPath, item in
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddressCollectionViewCell.className, for: indexPath) as! AddressCollectionViewCell
-        if let address = item as? Address {
-          cell.configureView(name: address.name, address: address.address, phone: address.phone, isEditable: true)
-          cell.deleteButtonTap
-            .subscribe(onNext: { [weak self] in
-              // 해당 주소 삭제 로직
-              self?.deleteAddress(at: indexPath)
-            })
-            .disposed(by: cell.disposeBag)
-        }
+        let address = item as Address
+        cell.configureView(name: address.name, address: address.address, phone: address.phone, isEditable: true)
+        cell.deleteButtonTap
+          .subscribe(onNext: { [weak self] in
+            // 해당 주소 삭제 로직
+            self?.deleteAddress(at: indexPath)
+          })
+          .disposed(by: cell.disposeBag)
         return cell
       }
     )

@@ -55,7 +55,7 @@ class DdanziTabBarController: UITabBarController {
     
         tabBar.roundCorners(cornerRadius: 10, maskedCorners: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
         
-        let myFont = UIFont(name: "Pretendard-Bold", size: 10.0)!
+        let myFont = UIFont.body7M10
         let fontAttributes = [NSAttributedString.Key.font: myFont]
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
         
@@ -67,15 +67,15 @@ extension DdanziTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         
         if let selectedViewController = tabBarController.selectedViewController {
-            let myFont = UIFont(name: "Pretendard-Bold", size: 10.0)!
-            let selectedFontAttributes = [NSAttributedString.Key.font: myFont]
+          let myFont = UIFont.body7M10
+          let selectedFontAttributes = [NSAttributedString.Key.font: myFont]
             selectedViewController.tabBarItem.setTitleTextAttributes(selectedFontAttributes, for: .normal)
         }
         
         for (index, controller) in tabBarController.viewControllers!.enumerated() {
             if let tabBarItem = controller.tabBarItem {
                 if index != tabBarController.selectedIndex {
-                    let myFont = UIFont(name: "Pretendard-Medium", size: 10.0)!
+                    let myFont = UIFont.body7M10
                     let defaultFontAttributes = [NSAttributedString.Key.font: myFont]
                     tabBarItem.setTitleTextAttributes(defaultFontAttributes, for: .normal)
                 }
