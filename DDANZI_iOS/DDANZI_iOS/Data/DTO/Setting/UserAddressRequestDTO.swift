@@ -8,10 +8,12 @@
 import Foundation
 
 struct UserAddressRequestDTO: Codable {
+    var recipient: String
     var zipCode: String
     var type: AddressType
     var address: String
     var detailAddress: String
+    var recipientPhone: String
 }
 
 enum AddressType: String, Codable {

@@ -19,7 +19,7 @@ enum MypageEndpoint {
   
   /// 주소 관련 API
   case fetchUserAddress
-  case addUserAddress
+  case addUserAddress(UserAddressRequestDTO)
   case editUserAddress(Int)
   case deleteUserAddress(Int)
   case settingUserNoti
@@ -94,8 +94,8 @@ extension MypageEndpoint: BaseTargetType {
         return .requestPlain
       case .fetchUserAddress:
         return .requestPlain
-      case .addUserAddress:
-        return .requestPlain
+      case let .addUserAddress(body):
+        return .requestJSONEncodable(body)
       case .editUserAddress:
         return .requestPlain
       case .deleteUserAddress:
