@@ -20,7 +20,7 @@ extension HomeEndpoint: BaseTargetType {
       case .loadHomeItems:
         return APIConstants.hasAccessTokenHeader
       case .loadItemsDetail:
-        return APIConstants.hasDeviceToken
+        return APIConstants.hasNickname
       }
     }
     
