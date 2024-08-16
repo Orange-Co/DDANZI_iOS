@@ -135,7 +135,6 @@ final class CertificationViewController: UIViewController {
   private func postVerification(user: VerificationRequestDTO) {
     Providers.AuthProvider.request(target: .certification(user),
                                    instance: BaseResponse<VerificationResponseDTO>.self) { result in
-      guard let data = result.data else { return }
       UserDefaults.standard.set(true, forKey: .isLogin)
       self.navigationController?.pushViewController(LoginViewController(), animated: true)
     }

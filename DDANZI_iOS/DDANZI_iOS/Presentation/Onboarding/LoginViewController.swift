@@ -49,6 +49,7 @@ final class LoginViewController: UIViewController {
     view.addSubviews(imageView,
                      kakaoLoginButton,
                      appleLoginButton)
+    appleLoginButton.isHidden = true
   }
   
   private func setConstraints() {

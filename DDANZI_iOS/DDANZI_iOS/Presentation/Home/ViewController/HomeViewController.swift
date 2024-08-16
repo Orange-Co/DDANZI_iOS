@@ -105,7 +105,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   }
   
   private func bindCollectionView() {
-    let colorDummy: [UIColor] = [.red, .blue, .yellow]
+    let colorDummy: [UIColor] = [.gray1, .gray2, .gray3]
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
       configureCell: { dataSource, collectionView, indexPath, item in
         if indexPath.section == 0 {

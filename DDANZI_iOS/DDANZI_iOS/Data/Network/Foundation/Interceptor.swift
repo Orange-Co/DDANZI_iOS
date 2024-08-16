@@ -22,9 +22,9 @@ final class AuthInterceptor: RequestInterceptor {
   
   func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
     print("-------🔧retry 시작🔧-------")
-    guard let statusCode = request.response?.statusCode
+    guard (request.response?.statusCode) != nil
     else {
-      print("🚨재시도 횟수가 너무 많습니다")
+      print("🚨status code 오류")
       return completion(.doNotRetry)
     }
   
