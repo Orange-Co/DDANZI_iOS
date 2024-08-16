@@ -18,9 +18,9 @@ final class PurchaseListViewModel {
   
   // Output
   let isEditMode: BehaviorRelay<Bool>
-  let products: BehaviorRelay<[ProductModel]>
+  let products: BehaviorRelay<[PurchaseProductModel]>
   
-  init(products: [ProductModel]) {
+  init(products: [PurchaseProductModel]) {
     self.products = BehaviorRelay(value: products)
     self.isEditMode = BehaviorRelay(value: false)
     
