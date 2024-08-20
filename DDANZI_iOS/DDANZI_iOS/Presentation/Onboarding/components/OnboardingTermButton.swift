@@ -10,14 +10,14 @@ import UIKit
 import Then
 import SnapKit
 
-final class OnboardingTermButton: UIView {
+final class OnboardingTermButton: UIButton {
   
-  private let checkButton = UIButton().then {
+  let checkButton = UIButton().then {
     $0.setImage(.checkButton, for: .normal)
     $0.setImage(.checkButton.withTintColor(.black), for: .selected)
   }
   
-  private let titleLabel = UILabel().then {
+  private let termTitleLabel = UILabel().then {
     $0.textColor = .gray2
     $0.font = .body4R16
   }
@@ -45,7 +45,7 @@ final class OnboardingTermButton: UIView {
   private func setHierarchy() {
     addSubviews(
       checkButton,
-      titleLabel,
+      termTitleLabel,
       moreButton
     )
   }
@@ -60,7 +60,7 @@ final class OnboardingTermButton: UIView {
       $0.leading.equalToSuperview()
     }
     
-    titleLabel.snp.makeConstraints {
+    termTitleLabel.snp.makeConstraints {
       $0.leading.equalTo(checkButton.snp.trailing).offset(12)
       $0.centerY.equalToSuperview()
     }
@@ -71,7 +71,13 @@ final class OnboardingTermButton: UIView {
     }
   }
   
-  func configureButton(title: String, moreLink: String) {
-    titleLabel.text = title
+  func configureButton(terms: TermModel) {
+    termTitleLabel.text = terms.title
+    moreButton.isHidden = !terms.isRequired
+  }
+  
+  func selectedButton(isSelect: Bool) {
+    termTitleLabel.textColor = isSelect ? .black : .gray2
+    checkButton.isSelected = isSelect
   }
 }
