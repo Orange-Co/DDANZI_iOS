@@ -78,9 +78,18 @@ final class CertificationViewController: UIViewController {
       .bind { [weak self] in
         guard let self else { return }
         self.fetchToken()
-        self.requestCertification()
+        self.presentTermViewController()
       }
       .disposed(by: disposeBag)
+  }
+  
+  private func presentTermViewController() {
+    let termViewController = AgreeTermsViewController()
+    if let sheet = termViewController.sheetPresentationController {
+      sheet.detents = [.medium()]
+    }
+    termViewController.delegate = self
+    self.present(termViewController, animated: true)
   }
   
   private func requestCertification() {
@@ -135,8 +144,16 @@ final class CertificationViewController: UIViewController {
   private func postVerification(user: VerificationRequestDTO) {
     Providers.AuthProvider.request(target: .certification(user),
                                    instance: BaseResponse<VerificationResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      UserDefaults.standard.set(data.nickname, forKey: .nickName)
       UserDefaults.standard.set(true, forKey: .isLogin)
       self.navigationController?.pushViewController(LoginViewController(), animated: true)
     }
+  }
+}
+
+extension CertificationViewController: AgreeTermsViewControllerDelegate {
+  func termsViewControllerDidFinish(_ viewController: AgreeTermsViewController) {
+    requestCertification()
   }
 }
