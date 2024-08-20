@@ -167,6 +167,7 @@
 		36BE65C22C458FA600CD4511 /* TermsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BE65C12C458FA600CD4511 /* TermsTableViewCell.swift */; };
 		36BE65C62C4591F500CD4511 /* PurchaseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BE65C52C4591F500CD4511 /* PurchaseHeaderView.swift */; };
 		36BE65C82C46618400CD4511 /* PushSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BE65C72C46618400CD4511 /* PushSettingViewController.swift */; };
+		36D514372C73FF8E003E1B65 /* AgreeTermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D514362C73FF8E003E1B65 /* AgreeTermsViewController.swift */; };
 		36D514392C7407E6003E1B65 /* OnboardingTermButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D514382C7407E6003E1B65 /* OnboardingTermButton.swift */; };
 		36D5143D2C740EB4003E1B65 /* TermModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D5143C2C740EB4003E1B65 /* TermModel.swift */; };
 		36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */; };
@@ -341,6 +342,7 @@
 		36BE65C12C458FA600CD4511 /* TermsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsTableViewCell.swift; sourceTree = "<group>"; };
 		36BE65C52C4591F500CD4511 /* PurchaseHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseHeaderView.swift; sourceTree = "<group>"; };
 		36BE65C72C46618400CD4511 /* PushSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingViewController.swift; sourceTree = "<group>"; };
+		36D514362C73FF8E003E1B65 /* AgreeTermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeTermsViewController.swift; sourceTree = "<group>"; };
 		36D514382C7407E6003E1B65 /* OnboardingTermButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTermButton.swift; sourceTree = "<group>"; };
 		36D5143C2C740EB4003E1B65 /* TermModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermModel.swift; sourceTree = "<group>"; };
 		36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
@@ -649,6 +651,7 @@
 				36607DAA2C4F85D7003803F4 /* LoginViewController.swift */,
 				36607DAC2C4F85F2003803F4 /* CertificationViewController.swift */,
 				36607DA82C4F85CC003803F4 /* LoginCompletedViewController.swift */,
+				36D514362C73FF8E003E1B65 /* AgreeTermsViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
