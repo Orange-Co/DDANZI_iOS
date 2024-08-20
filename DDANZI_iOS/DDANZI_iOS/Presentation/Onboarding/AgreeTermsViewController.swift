@@ -17,14 +17,19 @@ protocol AgreeTermsViewControllerDelegate: AnyObject {
 
 final class AgreeTermsViewController: UIViewController {
   
+  private typealias Link = StringLiterals.Link.Terms
+  
   weak var delegate: AgreeTermsViewControllerDelegate?
+  
   private var disposeBag = DisposeBag()
+  private var isAllSelected = false
+  private var termButtons: [OnboardingTermButton] = []
   
   // MARK: Properties
   
   private let termList: [TermModel] = [
-    .init(title: "개인정보 처라방침 (필수)", isRequired: true, moreLink: ""),
-    .init(title: "서비스 이용 약관 (필수)", isRequired: true, moreLink: ""),
+    .init(title: "개인정보 처라방침 (필수)", isRequired: true, moreLink: Link.privacy),
+    .init(title: "서비스 이용 약관 (필수)", isRequired: true, moreLink: Link.serviceTerm),
     .init(title: "마케팅 수신 동의 (선택)", isRequired: false)
   ]
   
@@ -38,6 +43,7 @@ final class AgreeTermsViewController: UIViewController {
   
   private let checkButton = UIButton().then {
     $0.setImage(.circleCheckButton, for: .normal)
+    $0.setImage(.circleCheckButton.withTintColor(.black), for: .selected)
   }
   
   private let stackView = UIStackView().then {
@@ -55,18 +61,11 @@ final class AgreeTermsViewController: UIViewController {
     super.viewDidLoad()
     setupButtons()
     setUI()
+    bind()
   }
   
   
   // MARK: LayoutHelper
-  
-  private func setupButtons() {
-    termList.forEach { term in
-      let termButton = OnboardingTermButton()
-      termButton.configureButton(title: term.title, moreLink: term.moreLink ?? "")
-      stackView.addArrangedSubview(termButton)
-    }
-  }
   
   private func setUI() {
     self.view.backgroundColor = .white
@@ -106,9 +105,54 @@ final class AgreeTermsViewController: UIViewController {
     }
   }
   
+  
+  private func setupButtons() {
+    termList.forEach { term in
+      let termButton = OnboardingTermButton()
+      termButton.configureButton(terms: term)
+      termButton.rx.tap
+        .bind { [weak self] in
+          guard let self = self else { return }
+          termButton.selectedButton(isSelect: !termButton.checkButton.isSelected)
+          self.updateAllSelectState()
+        }
+        .disposed(by: disposeBag)
+      stackView.addArrangedSubview(termButton)
+      termButtons.append(termButton)
+    }
+  }
+  
+  private func updateAllSelectState() {
+    let allSelected = termButtons.allSatisfy { $0.checkButton.isSelected }
+    isAllSelected = allSelected
+    checkButton.isSelected = allSelected
+    updateNextButtonState()
+  }
+  
+  private func updateNextButtonState() {
+    let requiredTermsSelected = termButtons.enumerated().allSatisfy { index, button in
+      let term = termList[index]
+      return !term.isRequired || button.checkButton.isSelected
+    }
+    if requiredTermsSelected { nextButton.setEnable() }
+  }
+  
   private func bind() {
+    checkButton.rx.tap
+      .bind { [weak self] in
+        guard let self = self else { return }
+        self.isAllSelected.toggle()
+        self.checkButton.isSelected = self.isAllSelected
+        self.termButtons.forEach {
+          $0.selectedButton(isSelect: self.isAllSelected)
+        }
+        self.updateAllSelectState()
+      }
+      .disposed(by: disposeBag)
+    
     nextButton.rx.tap
-      .bind {
+      .bind { [weak self] in
+        guard let self = self else { return }
         self.dismiss(animated: true) {
           self.delegate?.termsViewControllerDidFinish(self)
         }
