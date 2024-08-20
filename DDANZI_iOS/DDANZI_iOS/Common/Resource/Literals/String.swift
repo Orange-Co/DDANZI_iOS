@@ -29,4 +29,11 @@ enum StringLiterals {
             static let optionCaptionText = "* 각인 옵션은 사용할 수 없습니다."
         }
     }
+  
+  enum Link {
+    enum Terms {
+      static let privacy = ""
+      static let serviceTerm = ""
+    }
+  }
 }

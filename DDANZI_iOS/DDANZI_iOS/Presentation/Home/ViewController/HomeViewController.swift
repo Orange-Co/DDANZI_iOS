@@ -16,7 +16,9 @@ import Then
 final class HomeViewController: UIViewController, UIScrollViewDelegate {
   // MARK: Properties
   var disposeBag = DisposeBag()
+  
   var homeProductItems = BehaviorRelay<[ProductList]>(value: [])
+  var bannerImageURLs = BehaviorRelay<[String]>(value: [])
   
   
   // MARK: Components
@@ -78,6 +80,8 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
       guard let self = self else { return }
       guard let data = result.data else { return }
       
+      self.bannerImageURLs.accept([data.homeImgURL])
+      
       let items = data.productList.map { productDTO in
         return ProductList(
           productID: productDTO.productID,
@@ -105,13 +109,13 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   }
   
   private func bindCollectionView() {
-    let colorDummy: [UIColor] = [.gray1, .gray2, .gray3]
+    
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
       configureCell: { dataSource, collectionView, indexPath, item in
         if indexPath.section == 0 {
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HeaderCollectionViewCell", for: indexPath) as! HeaderCollectionViewCell
-          if let banner = item as? UIColor {
-            cell.bindData(bannerImage: banner)
+          if let banner = item as? String {
+            cell.bindData(bannerImagaURL: banner)
           }
           return cell
         } else {
@@ -134,11 +138,10 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
       }
     )
     
-    
-    homeProductItems
-      .map { items -> [SectionModel<String, Any>] in
+    Observable.combineLatest(bannerImageURLs, homeProductItems)
+      .map { banners, items -> [SectionModel<String, Any>] in
         return [
-          SectionModel(model: "Section 0", items: colorDummy),
+          SectionModel(model: "Section 0", items: banners),
           SectionModel(model: "Section 1", items: items)
         ]
       }

@@ -167,6 +167,9 @@
 		36BE65C22C458FA600CD4511 /* TermsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BE65C12C458FA600CD4511 /* TermsTableViewCell.swift */; };
 		36BE65C62C4591F500CD4511 /* PurchaseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BE65C52C4591F500CD4511 /* PurchaseHeaderView.swift */; };
 		36BE65C82C46618400CD4511 /* PushSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BE65C72C46618400CD4511 /* PushSettingViewController.swift */; };
+		36D514372C73FF8E003E1B65 /* AgreeTermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D514362C73FF8E003E1B65 /* AgreeTermsViewController.swift */; };
+		36D514392C7407E6003E1B65 /* OnboardingTermButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D514382C7407E6003E1B65 /* OnboardingTermButton.swift */; };
+		36D5143D2C740EB4003E1B65 /* TermModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D5143C2C740EB4003E1B65 /* TermModel.swift */; };
 		36EB5F982C1D35B900FAF995 /* CustomNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */; };
 		36EB5FA12C1EC9E900FAF995 /* HomeViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA02C1EC9E900FAF995 /* HomeViewReactor.swift */; };
 		36EB5FA32C1ECB1900FAF995 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */; };
@@ -339,6 +342,9 @@
 		36BE65C12C458FA600CD4511 /* TermsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsTableViewCell.swift; sourceTree = "<group>"; };
 		36BE65C52C4591F500CD4511 /* PurchaseHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseHeaderView.swift; sourceTree = "<group>"; };
 		36BE65C72C46618400CD4511 /* PushSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingViewController.swift; sourceTree = "<group>"; };
+		36D514362C73FF8E003E1B65 /* AgreeTermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreeTermsViewController.swift; sourceTree = "<group>"; };
+		36D514382C7407E6003E1B65 /* OnboardingTermButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTermButton.swift; sourceTree = "<group>"; };
+		36D5143C2C740EB4003E1B65 /* TermModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermModel.swift; sourceTree = "<group>"; };
 		36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
 		36EB5FA02C1EC9E900FAF995 /* HomeViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewReactor.swift; sourceTree = "<group>"; };
 		36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -640,9 +646,12 @@
 		36607DA72C4F85BC003803F4 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				36D5143B2C740EA9003E1B65 /* Model */,
+				36D5143A2C740DAB003E1B65 /* components */,
 				36607DAA2C4F85D7003803F4 /* LoginViewController.swift */,
 				36607DAC2C4F85F2003803F4 /* CertificationViewController.swift */,
 				36607DA82C4F85CC003803F4 /* LoginCompletedViewController.swift */,
+				36D514362C73FF8E003E1B65 /* AgreeTermsViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1088,6 +1097,22 @@
 			path = HelperView;
 			sourceTree = "<group>";
 		};
+		36D5143A2C740DAB003E1B65 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				36D514382C7407E6003E1B65 /* OnboardingTermButton.swift */,
+			);
+			path = components;
+			sourceTree = "<group>";
+		};
+		36D5143B2C740EA9003E1B65 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				36D5143C2C740EB4003E1B65 /* TermModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		36EB5F992C1D35BD00FAF995 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -1355,6 +1380,7 @@
 				36607DAD2C4F85F2003803F4 /* CertificationViewController.swift in Sources */,
 				363152812C35EAF400DF689E /* DdanziButton.swift in Sources */,
 				363152942C3DB49200DF689E /* UIStackView+.swift in Sources */,
+				36D5143D2C740EB4003E1B65 /* TermModel.swift in Sources */,
 				364895522C62826200AAA8E2 /* SearchItemsResponseDTO.swift in Sources */,
 				368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */,
 				3631528E2C3DAF5800DF689E /* PurchaseListViewModel.swift in Sources */,
@@ -1364,12 +1390,14 @@
 				36542E752C2E890600D5BFEB /* FavoriteViewController.swift in Sources */,
 				36542E652C2D4E9000D5BFEB /* LoginHeaderView.swift in Sources */,
 				36305E5E2C21F97100701BDA /* OptionSelectViewController.swift in Sources */,
+				36D514392C7407E6003E1B65 /* OnboardingTermButton.swift in Sources */,
 				36BE65C82C46618400CD4511 /* PushSettingViewController.swift in Sources */,
 				3648956D2C62896700AAA8E2 /* SearchQueryDTO.swift in Sources */,
 				3648955E2C6284D000AAA8E2 /* UserSaleResponseDTO.swift in Sources */,
 				36607D9E2C4F8085003803F4 /* MoyaLoggingPlugin.swift in Sources */,
 				368E367D2C49349C003FA911 /* BaseResponse.swift in Sources */,
 				36BE65B42C456A8400CD4511 /* PurchaseViewController.swift in Sources */,
+				36D514372C73FF8E003E1B65 /* AgreeTermsViewController.swift in Sources */,
 				363C24272C651F600097FCB7 /* AddressFormTableViewCell.swift in Sources */,
 				36BE65B12C4510FE00CD4511 /* AccountViewController.swift in Sources */,
 				3664CFD42C6E1B98007FB5DF /* SplashViewController.swift in Sources */,

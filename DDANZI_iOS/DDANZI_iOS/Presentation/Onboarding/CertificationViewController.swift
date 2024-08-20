@@ -19,12 +19,12 @@ final class CertificationViewController: UIViewController {
   private var portoneToken: String = ""
   
   private let titleLabel = UILabel().then {
-    $0.text = "잠깐!"
+    $0.text = "본인 인증을 진행해주세요"
     $0.font = .title3Sb28
     $0.textColor = .black
   }
   private let guideLabel = UILabel().then {
-    $0.text = "안전한 딴지 사용을 위해\n본인 인증을 완료해주세요"
+    $0.text = "안전한 거래를 위해\n본인 인증이 필요해요"
     $0.textColor = .black
     $0.font = .body1B20
     $0.numberOfLines = 2
@@ -78,9 +78,18 @@ final class CertificationViewController: UIViewController {
       .bind { [weak self] in
         guard let self else { return }
         self.fetchToken()
-        self.requestCertification()
+        self.presentTermViewController()
       }
       .disposed(by: disposeBag)
+  }
+  
+  private func presentTermViewController() {
+    let termViewController = AgreeTermsViewController()
+    if let sheet = termViewController.sheetPresentationController {
+      sheet.detents = [.medium()]
+    }
+    termViewController.delegate = self
+    self.present(termViewController, animated: true)
   }
   
   private func requestCertification() {
@@ -135,8 +144,16 @@ final class CertificationViewController: UIViewController {
   private func postVerification(user: VerificationRequestDTO) {
     Providers.AuthProvider.request(target: .certification(user),
                                    instance: BaseResponse<VerificationResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      UserDefaults.standard.set(data.nickname, forKey: .nickName)
       UserDefaults.standard.set(true, forKey: .isLogin)
-      self.navigationController?.pushViewController(LoginViewController(), animated: true)
+      self.navigationController?.pushViewController(LoginCompletedViewController(), animated: true)
     }
+  }
+}
+
+extension CertificationViewController: AgreeTermsViewControllerDelegate {
+  func termsViewControllerDidFinish(_ viewController: AgreeTermsViewController) {
+    requestCertification()
   }
 }
