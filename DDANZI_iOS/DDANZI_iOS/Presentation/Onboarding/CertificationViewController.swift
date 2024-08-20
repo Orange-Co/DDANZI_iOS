@@ -147,7 +147,7 @@ final class CertificationViewController: UIViewController {
       guard let data = result.data else { return }
       UserDefaults.standard.set(data.nickname, forKey: .nickName)
       UserDefaults.standard.set(true, forKey: .isLogin)
-      self.navigationController?.pushViewController(LoginViewController(), animated: true)
+      self.navigationController?.pushViewController(LoginCompletedViewController(), animated: true)
     }
   }
 }
