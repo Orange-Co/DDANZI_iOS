@@ -19,12 +19,12 @@ final class CertificationViewController: UIViewController {
   private var portoneToken: String = ""
   
   private let titleLabel = UILabel().then {
-    $0.text = "잠깐!"
+    $0.text = "본인 인증을 진행해주세요"
     $0.font = .title3Sb28
     $0.textColor = .black
   }
   private let guideLabel = UILabel().then {
-    $0.text = "안전한 딴지 사용을 위해\n본인 인증을 완료해주세요"
+    $0.text = "안전한 거래를 위해\n본인 인증이 필요해요"
     $0.textColor = .black
     $0.font = .body1B20
     $0.numberOfLines = 2
