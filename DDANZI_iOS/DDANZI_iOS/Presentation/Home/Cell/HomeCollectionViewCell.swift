@@ -16,7 +16,7 @@ class HomeCollectionViewCell: UICollectionViewCell {
   
   // MARK: Compenets
   private let productImageView = UIImageView().then {
-    $0.backgroundColor = .gray
+    $0.backgroundColor = .gray1
     $0.makeCornerRound(radius: 5)
   }
   
