@@ -108,9 +108,9 @@ final class CompleteCollectionViewCell: UICollectionViewCell {
     }
   }
   
-  func bindData(title: String, price: String, image: UIImage? = nil) {
+  func bindData(title: String, price: String, imageURL: String) {
     productTitleLabel.text = title
     priceLabel.text = price
-    productImageview.image = image
+    productImageview.setImage(with: imageURL)
   }
 }

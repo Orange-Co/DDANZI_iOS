@@ -16,6 +16,19 @@ import RxDataSources
 final class PurchaseCompleteViewController: UIViewController {
   private let disposeBag = DisposeBag()
   
+  let product: [Product] = []
+  let address: [Address] = []
+  let transactionInfo: [Info] = [Info(title: "결제 수단", info: "네이버페이"),
+                                 Info(title: "결제 일자", info: "2024.05.25")]
+  let purchaseInfo: [Info] = [Info(title: "상품 금액", info: "24,000원"),
+                              Info(title: "할인가", info: "-3,000원"),
+                              Info(title: "수수료", info: "+350원")]
+  let saleInfo: [PriceModel] = [PriceModel(title: "상품 금액", price: "24,000원", type: .normal),
+                                PriceModel(title: "할인가", price: "-3,000원", type: .discount),
+                                PriceModel(title: "수수료", price: "+350원", type: .charge),
+                                PriceModel(title: "결제 금액", price: "21,350원", type: .normal),]
+  let totalPrice: Int = 0
+  
   private let navigationBarView = CustomNavigationBarView(navigationBarType: .home, title: "주문 완료")
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
     $0.backgroundColor = .white
@@ -130,17 +143,6 @@ final class PurchaseCompleteViewController: UIViewController {
   }
   
   private func configureCollectionView() {
-    let product: [Product] = [Product(image: UIImage(resource: .image2),
-                           productName: "상품이름이름이름",
-                           price: "24,000원")]
-    let address: [Address] = [Address(name: "이단지",
-                                      address: "(02578) 서울특별시 동대문구 무학로45길 34 (용두동), 204호",
-                                      phone: "010-4614-3858")]
-    let transactionInfo: [Info] = [Info(title: "결제 수단", info: "네이버페이"),
-                                   Info(title: "결제 일자", info: "2024.05.25")]
-    let purchaseInfo: [Info] = [Info(title: "상품 금액", info: "24,000원"),
-                                Info(title: "할인가", info: "-3,000원"),
-                                Info(title: "수수료", info: "+350원")]
     
     let sections: [SectionModel<String, Any>] = [
       SectionModel(model: "상품 정보", items: product),
@@ -157,7 +159,7 @@ final class PurchaseCompleteViewController: UIViewController {
           if let product = item as? Product {
             cell.bindData(title: product.productName,
                           price: product.price,
-                          image: product.image)
+                          imageURL: product.imageURL)
           }
           return cell
         case 1:
@@ -169,11 +171,11 @@ final class PurchaseCompleteViewController: UIViewController {
           }
           return cell
         case 2:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCollectionViewCell.className, for: indexPath) as! InfoCollectionViewCell
-            if let transaction = item as? Info {
-              cell.bindData(title: transaction.title, info: transaction.info)
-            }
-            return cell
+          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCollectionViewCell.className, for: indexPath) as! InfoCollectionViewCell
+          if let transaction = item as? Info {
+            cell.bindData(title: transaction.title, info: transaction.info)
+          }
+          return cell
         case 3:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InfoCollectionViewCell.className, for: indexPath) as! InfoCollectionViewCell
           if let price = item as? Info {
@@ -196,13 +198,13 @@ final class PurchaseCompleteViewController: UIViewController {
           return header
         }
         if kind == UICollectionView.elementKindSectionFooter {
-                  guard indexPath.section == 3, // 마지막 섹션만 체크
-                        let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TotalPriceFooterView.className, for: indexPath) as? TotalPriceFooterView else {
-                    return UICollectionReusableView()
-                  }
-                  footer.configureFooter(totalPrice: "21,350원")
-                  return footer
-                }
+          guard indexPath.section == 3, // 마지막 섹션만 체크
+                let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TotalPriceFooterView.className, for: indexPath) as? TotalPriceFooterView else {
+            return UICollectionReusableView()
+          }
+          footer.configureFooter(totalPrice: self.totalPrice.toKoreanWon())
+          return footer
+        }
         return UICollectionReusableView()
       }
     )
@@ -226,8 +228,8 @@ extension PurchaseCompleteViewController {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                             heightDimension: .estimated(410)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                       heightDimension: .estimated(410)),
-                                                     subitems: [item])
+                                                                         heightDimension: .estimated(410)),
+                                                       subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 0, leading: 20, bottom: 15, trailing: 20)
         return section
