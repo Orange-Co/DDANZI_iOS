@@ -39,7 +39,7 @@ struct Status {
 }
 
 struct Product {
-  var image: UIImage
+  var imageURL: String
   var productName: String
   var price: String
 }
