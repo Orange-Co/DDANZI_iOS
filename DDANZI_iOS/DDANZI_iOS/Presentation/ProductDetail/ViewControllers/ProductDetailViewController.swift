@@ -265,8 +265,9 @@ final class ProductDetailViewController: UIViewController {
     
     bottomButtonView.button.rx.tap
       .bind(with: self, onNext: { owner, void in
-        if self.optionList.isEmpty {
+        if owner.optionList.isEmpty {
           let purchaseVC = PurchaseViewController()
+          purchaseVC.orderModel = .init(productId: owner.productId, optionList: owner.optionList.map({ $0.optionID }))
           self.navigationController?.pushViewController(purchaseVC, animated: true)
         } else {
           let optionViewController = OptionSelectViewController()
