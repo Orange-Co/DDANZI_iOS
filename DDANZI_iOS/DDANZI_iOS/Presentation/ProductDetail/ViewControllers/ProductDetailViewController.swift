@@ -13,6 +13,7 @@ import RxDataSources
 import RxSwift
 import SnapKit
 import Then
+import iamport_ios
 
 // MARK: - OptionDelegate
 protocol OptionViewControllerDelegate: AnyObject {
@@ -27,6 +28,7 @@ final class ProductDetailViewController: UIViewController {
   private var optionList: [OptionList] = []
   private var isInterest: Bool = false
   private var interestCount = 0
+  private var moreLink = ""
   
   // MARK: Compenets
   private let customNavigationBar = CustomNavigationBarView(navigationBarType: .home)
@@ -222,6 +224,7 @@ final class ProductDetailViewController: UIViewController {
         isInterest: data.isInterested ?? false
       )
       )
+      self.moreLink = data.infoURL
       self.isInterest = data.isInterested ?? false
       self.interestCount = data.interestCount
       self.optionList = data.optionList
@@ -262,6 +265,15 @@ final class ProductDetailViewController: UIViewController {
       }
       .disposed(by: disposeBag)
     
+    moreLinkButton.rx.tap
+      .bind(with: self) { owner, _ in
+        if let url = URL(string: owner.moreLink) {
+          if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+          }
+        }
+      }
+      .disposed(by: disposeBag)
     
     bottomButtonView.button.rx.tap
       .bind(with: self, onNext: { owner, void in
