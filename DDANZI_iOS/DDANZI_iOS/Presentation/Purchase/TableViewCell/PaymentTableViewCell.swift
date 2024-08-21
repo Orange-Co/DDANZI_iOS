@@ -66,17 +66,20 @@ final class PaymentTableViewCell: UITableViewCell {
   
   func bindTitle(title: String, price: String, type: PriceType) {
     titleLabel.text = title
-    priceLabel.text = price
     switch type {
     case .normal:
+      priceLabel.text = price
+      titleLabel.text = title
       priceLabel.font = .body1B20
       priceLabel.textColor = .black
       lineView.isHidden = true
     case .discount:
+      priceLabel.text = "-" + price
       priceLabel.font = .body1B20
       priceLabel.textColor = .dRed
       lineView.isHidden = true
     case .charge:
+      priceLabel.text = "+" + price
       priceLabel.font = .body4R16
       priceLabel.textColor = .black
       lineView.isHidden = false

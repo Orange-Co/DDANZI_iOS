@@ -97,7 +97,7 @@ final class PurchaseDetailViewController: UIViewController {
   
   private func configureCollectionView() {
     let status: [Status] = [Status(code: "RDAFSD391480", status: .orderComplete)]
-    let product: [Product] = [Product(image: UIImage(resource: .image2),
+    let product: [Product] = [Product(imageURL: "",
                            productName: "상품이름이름이름",
                            price: "24,000원")]
     let nickName: [String] = ["등둔"]

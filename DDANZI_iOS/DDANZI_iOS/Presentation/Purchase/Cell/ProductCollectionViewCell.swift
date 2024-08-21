@@ -61,10 +61,10 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     }
   }
   
-  func bindData(title: String, price: String, image: UIImage? = nil) {
+  func bindData(title: String, price: String, imageURL: String) {
     productLabel.text = title
     priceLabel.text = price
-    imageView.image = image
+    imageView.setImage(with: imageURL)
   }
 }
 

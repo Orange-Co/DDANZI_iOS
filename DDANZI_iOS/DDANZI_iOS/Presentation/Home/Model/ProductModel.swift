@@ -17,7 +17,7 @@ struct ProductInfoModel {
 }
 
 struct PurchaseProductModel {
-  let productID: Int
+  let productID: String
   let name, imgURL: String
   let beforePrice: String
   let price: String

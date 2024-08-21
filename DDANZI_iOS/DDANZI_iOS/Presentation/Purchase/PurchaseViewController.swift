@@ -13,8 +13,27 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-class PurchaseViewController: UIViewController {
+struct OrderModel {
+  let productId: String
+  let optionList: [Int]
+  
+}
+
+final class PurchaseViewController: UIViewController {
+  
   private let disposeBag = DisposeBag()
+  
+  var orderModel: OrderModel = .init(productId: "", optionList: [])
+  
+  // PublishSubject 선언
+  private let productSubject = PublishSubject<[Product]>()
+  private let addressSubject = PublishSubject<[Address]>()
+  private let transactionInfoSubject = PublishSubject<[Info]>()
+  private let purchaseInfoSubject = PublishSubject<[PurchaseModel]>()
+  private let termsSubject = PublishSubject<[String]>()
+  
+  var isEmptyAddress: Bool = false
+  
   let navigationBar = CustomNavigationBarView(navigationBarType: .cancel, title: "구매하기")
   let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
     $0.register(PurchaseHeaderView.self,
@@ -39,6 +58,7 @@ class PurchaseViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    fetchOrderInfo()
     setUI()
     configureCollectionView()
     bind()
@@ -94,27 +114,8 @@ class PurchaseViewController: UIViewController {
       }
       .disposed(by: disposeBag)
   }
-  
   private func configureCollectionView() {
     collectionView.collectionViewLayout = createLayout()
-    
-    let product: [Product] = [Product(image: UIImage(resource: .image2),
-                           productName: "상품이름이름이름",
-                           price: "24,000원")]
-    let address: [Address] = [Address(name: "이단지",
-                                      address: "(02578) 서울특별시 동대문구 무학로45길 34 (용두동), 204호",
-                                      phone: "010-4614-3858")]
-    let transactionInfo: [Info] = [Info(title: "결제 수단", info: "네이버페이")]
-    let purchaseInfo: [Info] = [Info(title: "상품 금액", info: "24,000원")]
-    let terms: [String] = ["동의 약관"]
-    
-    let sections: [SectionModel<String, Any>] = [
-      SectionModel(model: "상품 정보", items: product),
-      SectionModel(model: "배송지 정보", items: address),
-      SectionModel(model: "결제 수단", items: transactionInfo),
-      SectionModel(model: "결제 금액", items: purchaseInfo),
-      SectionModel(model: "약관", items: terms),
-    ]
     
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
       configureCell: { dataSource, collectionView, indexPath, item in
@@ -124,7 +125,7 @@ class PurchaseViewController: UIViewController {
           if let product = item as? Product {
             cell.bindData(title: product.productName,
                           price: product.price,
-                          image: product.image)
+                          imageURL: product.imageURL)
           }
           return cell
         case 1:
@@ -135,12 +136,12 @@ class PurchaseViewController: UIViewController {
           return cell
         case 2:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PayCollectionViewCell.className, for: indexPath) as! PayCollectionViewCell
-          if let payment = item as? Info {
-            // 추후 결제 방식 추가
-          }
           return cell
         case 3:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PayAmountCollectionViewCell.className, for: indexPath) as! PayAmountCollectionViewCell
+          if let payAmount = item as? PurchaseModel {
+            cell.configurePayAmount(payAmount)
+          }
           return cell
         case 4:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TermsCollectionViewCell.className, for: indexPath) as! TermsCollectionViewCell
@@ -148,26 +149,76 @@ class PurchaseViewController: UIViewController {
         default:
           return UICollectionViewCell()
         }
-      }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+      },
+      configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
         if kind == UICollectionView.elementKindSectionHeader {
           guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PurchaseHeaderView.className, for: indexPath) as? PurchaseHeaderView else {
             return UICollectionReusableView()
           }
           header.configureHeader(title: dataSource.sectionModels[indexPath.section].model,
-                                 isEditable: indexPath.item == 1)
+                                 isEditable: indexPath.section == 1,
+                                 isEmptyAddress: self.isEmptyAddress)
+          // 주소 유무를 반영
+          if self.isEmptyAddress {
+            header.buttonTapRelay
+              .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                let addressListVC = AddressSettingViewController()
+                self.navigationController?.pushViewController(addressListVC, animated: true)
+              })
+              .disposed(by: header.disposeBag)
+          }
+          
           return header
         }
         return UICollectionReusableView()
       }
     )
     
-    let items = Observable.just(sections)
-    
-    items.bind(to: collectionView.rx.items(dataSource: dataSource))
-      .disposed(by: disposeBag)
+    Observable.combineLatest(
+      productSubject.map { SectionModel(model: "상품 정보", items: $0 as [Any]) },
+      addressSubject.map { SectionModel(model: "배송지 정보", items: $0 as [Any]) },
+      transactionInfoSubject.map { SectionModel(model: "결제 수단", items: $0 as [Any]) },
+      purchaseInfoSubject.map { SectionModel(model: "결제 금액", items: $0 as [Any]) },
+      termsSubject.map { SectionModel(model: "약관", items: $0 as [Any]) }
+    )
+    .map { [$0, $1, $2, $3, $4] }
+    .bind(to: collectionView.rx.items(dataSource: dataSource))
+    .disposed(by: disposeBag)
     
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
+  }
+  
+  private func fetchOrderInfo() {
+    Providers.OrderProvider.request(target: .fetchOrderInfo(orderModel.productId),
+                                    instance: BaseResponse<FetchOrderResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      
+      let products = [Product(imageURL: data.imgURL, productName: data.productName, price: data.totalPrice.toKoreanWon())]
+      // 주소 정보 중에 하나라도 null 이면 주소 등록 쪽으로 이동
+      var addresses: [Address] = []
+      if let recipient = data.addressInfo.recipient,
+         let address = data.addressInfo.address,
+         let zipCode = data.addressInfo.zipCode,
+         let recipientPhone = data.addressInfo.recipientPhone {
+        addresses = [Address(name: recipient, address: "\(address) (\(zipCode))", phone: recipientPhone)]
+      } else {
+        self.isEmptyAddress = true
+      }
+      let transactionInfos = [Info(title: "결제 수단", info: "")]
+      let purchaseInfos = [
+        PurchaseModel(originPrice: data.originPrice, discountPrice: data.discountPrice, chargePrice: data.charge, totalPrice: data.totalPrice)
+      ]
+      let terms = ["동의 약관"]
+      
+      // Subject에 이벤트 방출
+      self.productSubject.onNext(products)
+      self.addressSubject.onNext(addresses)
+      self.transactionInfoSubject.onNext(transactionInfos)
+      self.purchaseInfoSubject.onNext(purchaseInfos)
+      self.termsSubject.onNext(terms)
+    }
   }
   
 }
@@ -180,8 +231,8 @@ extension PurchaseViewController {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                             heightDimension: .fractionalHeight(1)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                       heightDimension: .estimated(125)),
-                                                     subitems: [item])
+                                                                         heightDimension: .estimated(125)),
+                                                       subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [
           NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
@@ -210,7 +261,7 @@ extension PurchaseViewController {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                             heightDimension: .fractionalHeight(1)))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                       heightDimension: .estimated(180)),
+                                                                       heightDimension: .estimated(94)),
                                                      subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 5, leading: 20, bottom: 10, trailing: 20)

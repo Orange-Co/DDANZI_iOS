@@ -62,7 +62,7 @@ final class ProductInfoCollectionViewCell: UICollectionViewCell {
   }
   
   func bindData(product: Product) {
-    productImageView.image = product.image
+    productImageView.setImage(with: product.imageURL)
     priceLabel.text = product.price
     productTitleLabel.text = product.productName
   }

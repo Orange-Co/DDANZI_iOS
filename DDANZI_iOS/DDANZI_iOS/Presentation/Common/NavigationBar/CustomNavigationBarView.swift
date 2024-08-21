@@ -85,7 +85,9 @@ final class CustomNavigationBarView: UIView {
         $0.imageView?.contentMode = .scaleAspectFit
     }
     
-    let searchTextField = UISearchTextField()
+  let searchTextField = UISearchTextField().then {
+        $0.placeholder = "상품을 검색해보세요"
+  }
     
     // MARK: - init
     init(navigationBarType: NavigationBarType, title: String = "") {
@@ -161,9 +163,10 @@ final class CustomNavigationBarView: UIView {
             }
             self.addSubviews(searchTextField)
             searchTextField.snp.makeConstraints {
-                $0.top.equalTo(leftView.snp.top)
+                $0.centerY.equalToSuperview()
                 $0.leading.equalTo(leftView.snp.trailing).offset(10.adjusted)
                 $0.trailing.equalToSuperview().inset(20.adjusted)
+                $0.height.equalTo(30)
             }
         case .logo:
             leftView.addSubview(logoButton)
