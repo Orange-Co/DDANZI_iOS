@@ -15,6 +15,9 @@ struct Providers {
   static let InterestProvider = NetworkProvider<InterestEndpoint>(withAuth: true)
   static let MypageProvider = NetworkProvider<MypageEndpoint>(withAuth: true)
   static let PortOneProvider = NetworkProvider<IamportEndpoint>(withAuth: false)
+  
+  static let OrderProvider = NetworkProvider<OrderEndpoint>(withAuth: true)
+  static let PaymentProvider = NetworkProvider<PaymentEndpoint>(withAuth: true)
 }
 
 extension MoyaProvider {
