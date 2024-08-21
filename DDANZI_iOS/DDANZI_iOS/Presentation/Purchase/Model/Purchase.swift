@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+struct PriceModel {
+  var title: String
+  var price: String
+  var type: PriceType
+}
+
+struct PurchaseModel {
+  let originPrice: Int
+  let discountPrice: Int
+  let chargePrice: Int
+  let totalPrice: Int
+}
