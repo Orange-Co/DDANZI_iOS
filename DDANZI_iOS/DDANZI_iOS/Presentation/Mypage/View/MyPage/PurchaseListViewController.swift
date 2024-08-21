@@ -164,11 +164,11 @@ final class PurchaseListViewController: UIViewController {
       
       let products: [PurchaseProductModel] = data.orderProductList.map { product in
           .init(productID: product.productID,
-                name: product.name,
+                name: product.productName,
                 imgURL: product.imgURL,
                 beforePrice: product.originPrice.toKoreanWon(),
                 price: product.salePrice.toKoreanWon(),
-                completedAt: product.completedAt)
+                completedAt: product.paidAt)
       }
       
       headerView.setCount(count: data.totalCount)
