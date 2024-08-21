@@ -9,8 +9,17 @@ import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 class PurchaseHeaderView: UICollectionReusableView {
+  
+  var isEmptyAddress: Bool = false
+  let buttonTapRelay = PublishRelay<Void>()
+  
+  let disposeBag = DisposeBag()
+  
+  
   private let titleLabel = UILabel().then {
     $0.font = .title4Sb24
     $0.textColor = .black
@@ -25,8 +34,8 @@ class PurchaseHeaderView: UICollectionReusableView {
   }
   
   override init(frame: CGRect) {
-      super.init(frame: .zero)
-      setUI()
+    super.init(frame: .zero)
+    setUI()
   }
   
   required init?(coder: NSCoder) {
@@ -55,8 +64,26 @@ class PurchaseHeaderView: UICollectionReusableView {
     }
   }
   
-  func configureHeader(title: String, isEditable: Bool) {
+  func configureHeader(title: String, isEditable: Bool, isEmptyAddress: Bool) {
     titleLabel.text = title
     editButton.isHidden = !isEditable
+    self.isEmptyAddress = isEmptyAddress
+    if isEmptyAddress && isEditable {
+      // Assuming you have a button in your header
+      let button = UIButton()
+      button.setTitle("주소 추가하기", for: .normal)
+      addSubview(button)
+      
+      // Layout your button within the header view
+      button.snp.makeConstraints {
+        // Adjust constraints as needed
+        $0.edges.equalToSuperview()  // Example constraint
+      }
+      
+      // Bind button tap to the relay
+      button.rx.tap
+        .bind(to: buttonTapRelay)
+        .disposed(by: disposeBag)
+    }
   }
 }
