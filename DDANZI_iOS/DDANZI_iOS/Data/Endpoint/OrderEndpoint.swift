@@ -10,9 +10,9 @@ import Foundation
 import Moya
 
 enum OrderEndpoint {
-  case fetchOrderInfo(Int)
+  case fetchOrderInfo(String)
   case executeOrder
-  case fetchOrderDetail(Int)
+  case fetchOrderDetail(String)
 }
 
 extension OrderEndpoint: BaseTargetType {
@@ -54,12 +54,20 @@ extension OrderEndpoint: BaseTargetType {
     case .fetchOrderInfo(let int):
       return .requestPlain
     case .executeOrder:
-      <#code#>
+      return .requestPlain
     case .fetchOrderDetail(let int):
       return .requestPlain
     }
   }
   
   var validationType: ValidationType {
+    switch self {
+    case .fetchOrderInfo(let int):
+      return .successCodes
+    case .executeOrder:
+      return .successCodes
+    case .fetchOrderDetail(let int):
+      return .successCodes
+    }
   }
 }

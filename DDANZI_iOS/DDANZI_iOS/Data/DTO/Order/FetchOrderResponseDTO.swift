@@ -25,5 +25,5 @@ struct FetchOrderResponseDTO: Codable {
 
 // MARK: - AddressInfo
 struct AddressInfo: Codable {
-    let recipient, zipCode, address, recipientPhone: String
+    let recipient, zipCode, address, recipientPhone: String?
 }

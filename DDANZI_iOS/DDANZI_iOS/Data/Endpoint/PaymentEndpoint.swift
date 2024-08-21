@@ -36,13 +36,19 @@ extension PaymentEndpoint: BaseTargetType {
   var task: Moya.Task {
     switch self {
     case .startPayment:
-      return .
+      return .requestPlain
     case .completedPayment:
-      <#code#>
+      return .requestPlain
     }
   }
   
-  var headers: [String : String]?
-  
+  var headers: [String : String]? {
+    switch self {
+    case .startPayment:
+      return APIConstants.hasAccessTokenHeader
+    case .completedPayment:
+      return APIConstants.hasAccessTokenHeader
+    }
+  }
   
 }
