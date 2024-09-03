@@ -9,14 +9,14 @@ import Foundation
 
 // MARK: - FetchOrderResponseDTO
 struct FetchOrderResponseDTO: Codable {
-    let itemID, productName: String
+    let productId, productName, modifiedProductName: String
     let imgURL: String
     let originPrice: Int
     let addressInfo: AddressInfo
     let discountPrice, charge, totalPrice: Int
 
     enum CodingKeys: String, CodingKey {
-        case itemID = "itemId"
+        case productId, modifiedProductName
         case productName
         case imgURL = "imgUrl"
         case originPrice, addressInfo, discountPrice, charge, totalPrice
