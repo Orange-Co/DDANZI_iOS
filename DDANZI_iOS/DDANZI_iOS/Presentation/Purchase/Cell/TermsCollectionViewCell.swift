@@ -9,25 +9,38 @@ import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 final class TermsCollectionViewCell: UICollectionViewCell {
-  private let imageView = UIImageView().then {
-    $0.image = .icBlackCheck
+  
+  private let terms: [String] = ["서비스 이용 약관", "딴지 구매 가이드"]
+  var selectedTerms = BehaviorRelay<[Bool]>(value: [false, false])
+  let disposeBag = DisposeBag()
+  
+  //MARK: - UI
+  
+  private let fullAgreementButton = UIButton().then {
+    $0.setImage(.icBlackCheck.withTintColor(.gray2), for: .normal)
+    $0.setImage(.icBlackCheck, for: .selected)
+    
+    $0.setTitle("아래 약관에 전체동의해요", for: .normal)
+    $0.setTitleColor(.gray2, for: .normal)
+    $0.setTitleColor(.black, for: .selected)
+    
+    $0.titleLabel?.font = .body1B20
   }
-  private let titleLabel = UILabel().then {
-    $0.text = "아래 약관에 전체동의해요"
-    $0.font = .body1B20
-    $0.textColor = .black
-  }
+  
   private let termsTableView = UITableView(frame: .zero, style: .plain).then {
     $0.separatorStyle = .none
     $0.register(TermsTableViewCell.self, forCellReuseIdentifier: TermsTableViewCell.className)
   }
-    
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setUI()
     configureTableView()
+    bindTableView()
   }
   
   required init?(coder: NSCoder) {
@@ -40,36 +53,53 @@ final class TermsCollectionViewCell: UICollectionViewCell {
   }
   
   private func setHierarchy() {
-    self.addSubviews(imageView,
-                     titleLabel,
+    self.addSubviews(fullAgreementButton,
                      termsTableView)
   }
   
   private func setConstraints() {
-    imageView.snp.makeConstraints {
+    fullAgreementButton.snp.makeConstraints {
       $0.top.equalToSuperview()
       $0.leading.equalToSuperview()
     }
     
-    titleLabel.snp.makeConstraints {
-      $0.centerY.equalTo(imageView.snp.centerY)
-      $0.leading.equalTo(imageView.snp.trailing).offset(5)
-    }
-    
     termsTableView.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(14)
+      $0.top.equalTo(fullAgreementButton.snp.bottom).offset(14)
       $0.leading.trailing.bottom.equalToSuperview()
     }
   }
   
   private func configureTableView() {
     termsTableView.dataSource = self
+    termsTableView.delegate = self
+  }
+  
+  private func bindTableView() {
+    fullAgreementButton.rx.tap
+      .withLatestFrom(selectedTerms)
+      .subscribe(onNext: { [weak self] termsSelected in
+        let allSelected = termsSelected.allSatisfy { $0 }
+        self?.toggleSelectAllTerms(!allSelected)
+      })
+      .disposed(by: disposeBag)
+    
+    selectedTerms
+      .subscribe(onNext: { [weak self] _ in
+        self?.termsTableView.reloadData()
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  private func toggleSelectAllTerms(_ select: Bool) {
+    let newSelections = Array(repeating: select, count: terms.count)
+    fullAgreementButton.isSelected.toggle()
+    selectedTerms.accept(newSelections)
   }
 }
 
 extension TermsCollectionViewCell: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return terms.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -78,7 +108,19 @@ extension TermsCollectionViewCell: UITableViewDataSource {
       return UITableViewCell()
     }
     cell.selectionStyle = .none
-    cell.bindTitle(title: "동의한 약관")
+    cell.bindTitle(
+      title: terms[indexPath.row],
+      isSelected: selectedTerms.value[indexPath.row]
+    )
     return cell
+  }
+}
+
+extension TermsCollectionViewCell: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    var updatedSelections = selectedTerms.value
+    print("여기 눌렀어 \(updatedSelections)")
+    updatedSelections[indexPath.row].toggle()
+    selectedTerms.accept(updatedSelections)
   }
 }
