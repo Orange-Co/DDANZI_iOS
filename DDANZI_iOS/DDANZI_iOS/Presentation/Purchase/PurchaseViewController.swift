@@ -32,7 +32,14 @@ final class PurchaseViewController: UIViewController {
   private let purchaseInfoSubject = PublishSubject<[PurchaseModel]>()
   private let termsSubject = PublishSubject<[String]>()
   
+  private let addressSelectedSubject = BehaviorRelay<Bool>(value: false)
+  private let paymentMethodSelectedSubject = BehaviorRelay<Bool>(value: false)
+  private let selectedPaymentMethod = BehaviorRelay<String?>(value: nil)
+  private let termsAgreeSubject = BehaviorRelay<[Bool]>(value: [false, false])
+  
   var isEmptyAddress: Bool = false
+  var selectedPayment: String = ""
+  var totalPrice: Int = 0
   
   let navigationBar = CustomNavigationBarView(navigationBarType: .cancel, title: "구매하기")
   let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
@@ -50,7 +57,7 @@ final class PurchaseViewController: UIViewController {
     $0.backgroundColor = .white
     $0.addShadow(offset: .init(width: 0, height: 2), opacity: 0.4)
   }
-  private let button = DdanziButton(title: "구매하기")
+  private let button = DdanziButton(title: "구매하기", enable: false)
   
   override func viewWillAppear(_ animated: Bool) {
     self.tabBarController?.tabBar.isHidden = true
@@ -110,10 +117,35 @@ final class PurchaseViewController: UIViewController {
     
     button.rx.tap
       .bind {
-        self.navigationController?.pushViewController(PushSettingViewController(), animated: false)
+        self.navigationController?.pushViewController(PurchaseCompleteViewController(), animated: false)
       }
       .disposed(by: disposeBag)
+    
+    
+    Observable.combineLatest(termsAgreeSubject, paymentMethodSelectedSubject, addressSelectedSubject)
+      .map { termsAgreed, paymentSelected, addressSelected in
+        termsAgreed.allSatisfy { $0 } && paymentSelected && addressSelected
+      }
+      .bind(with: self, onNext: { owner, _ in
+        owner.button.setEnable()
+      })
+      .disposed(by: disposeBag)
+    
+    selectedPaymentMethod
+      .subscribe(onNext: { payment in
+        if let payment = payment {
+          
+        }
+      })
+      .disposed(by: disposeBag)
+    
   }
+  
+}
+
+// MARK: CollectionView
+
+extension PurchaseViewController {
   private func configureCollectionView() {
     collectionView.collectionViewLayout = createLayout()
     
@@ -136,6 +168,12 @@ final class PurchaseViewController: UIViewController {
           return cell
         case 2:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PayCollectionViewCell.className, for: indexPath) as! PayCollectionViewCell
+          cell.isPaymentSelected
+            .bind(to: self.paymentMethodSelectedSubject)
+            .disposed(by: cell.disposeBag)
+          cell.selectedPayment
+            .bind(to: self.selectedPaymentMethod)
+            .disposed(by: cell.disposeBag)
           return cell
         case 3:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PayAmountCollectionViewCell.className, for: indexPath) as! PayAmountCollectionViewCell
@@ -145,6 +183,9 @@ final class PurchaseViewController: UIViewController {
           return cell
         case 4:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TermsCollectionViewCell.className, for: indexPath) as! TermsCollectionViewCell
+          cell.selectedTerms
+            .bind(to: self.termsAgreeSubject)
+            .disposed(by: self.disposeBag)
           return cell
         default:
           return UICollectionViewCell()
@@ -196,14 +237,15 @@ final class PurchaseViewController: UIViewController {
       guard let data = result.data else { return }
       
       let products = [Product(imageURL: data.imgURL, productName: data.productName, price: data.totalPrice.toKoreanWon())]
-      // 주소 정보 중에 하나라도 null 이면 주소 등록 쪽으로 이동
       var addresses: [Address] = []
       if let recipient = data.addressInfo.recipient,
          let address = data.addressInfo.address,
          let zipCode = data.addressInfo.zipCode,
          let recipientPhone = data.addressInfo.recipientPhone {
         addresses = [Address(name: recipient, address: "\(address) (\(zipCode))", phone: recipientPhone)]
+        self.addressSelectedSubject.accept(true)
       } else {
+        self.addressSelectedSubject.accept(false)
         self.isEmptyAddress = true
       }
       let transactionInfos = [Info(title: "결제 수단", info: "")]
@@ -221,9 +263,6 @@ final class PurchaseViewController: UIViewController {
     }
   }
   
-}
-
-extension PurchaseViewController {
   func createLayout() -> UICollectionViewCompositionalLayout {
     return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
       switch sectionNumber {
@@ -261,7 +300,7 @@ extension PurchaseViewController {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                             heightDimension: .fractionalHeight(1)))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                       heightDimension: .estimated(94)),
+                                                                       heightDimension: .estimated(60)),
                                                      subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 5, leading: 20, bottom: 10, trailing: 20)
