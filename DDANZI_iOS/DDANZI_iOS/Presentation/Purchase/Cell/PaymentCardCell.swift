@@ -4,17 +4,11 @@
 //
 //  Created by 이지희 on 8/20/24.
 //
-
 import UIKit
 
-import Then
-import SnapKit
-
 final class PaymentCardCell: UICollectionViewCell {
-  
   private let titleLabel = UILabel().then {
-    $0.font = .body5R14
-    $0.textColor = .gray2
+    $0.textAlignment = .center
   }
   
   override init(frame: CGRect) {
@@ -27,28 +21,34 @@ final class PaymentCardCell: UICollectionViewCell {
   }
   
   private func setUI() {
-    setHierarchy()
-    setConstraints()
-  }
-  
-  private func setHierarchy() {
-    contentView.makeCornerRound(radius: 10)
-    contentView.makeBorder(width: 1, color: .gray2)
-    contentView.addSubviews(titleLabel)
-  }
-  
-  private func setConstraints() {
+    contentView.addSubview(titleLabel)
     titleLabel.snp.makeConstraints {
-      $0.center.equalToSuperview()
+      $0.edges.equalToSuperview()
     }
+    configureAppearance(isSelected: false)
   }
   
-  func configure(title: String){
-    self.titleLabel.text = title
+  func configure(title: String, isSelected: Bool) {
+    titleLabel.text = title
+    configureAppearance(isSelected: isSelected)
   }
   
+  private func configureAppearance(isSelected: Bool) {
+    layer.cornerRadius = 10
+    if isSelected {
+      layer.borderColor = UIColor.gray4.cgColor
+      layer.borderWidth = 1
+      titleLabel.textColor = .gray4
+    } else {
+      layer.borderColor = UIColor.gray2.cgColor
+      layer.borderWidth = 1
+      titleLabel.textColor = .gray2
+    }
+    clipsToBounds = true
+  }
+  
+  // Method to explicitly configure as selected
   func configureSelect() {
-    titleLabel.textColor = .gray4
-    contentView.makeBorder(width: 1, color: .gray4)
+    configureAppearance(isSelected: true)
   }
 }
