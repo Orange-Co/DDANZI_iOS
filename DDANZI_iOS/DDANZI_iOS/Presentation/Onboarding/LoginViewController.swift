@@ -110,13 +110,13 @@ final class LoginViewController: UIViewController {
     let authDTO = SocialLoginRequestDTO(token: token, type: .kakao)
     Providers.AuthProvider.request(target: .socialLogin(authDTO), instance: BaseResponse<SocialLoginResponseDTO>.self) { result in
       guard let data = result.data else { return }
-      UserDefaults.standard.set(data.nickname, forKey: .nickName)
       UserDefaults.standard.set(data.accesstoken, forKey: .accesstoken)
       UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
       if data.status == "ACTIVATE" {
         UserDefaults.standard.set(true, forKey: .isLogin)
         self.navigationController?.popToRootViewController(animated: true)
       } else {
+        UserDefaults.standard.set(false, forKey: .isLogin)
         self.navigationController?.pushViewController(CertificationViewController(), animated: true)
       }
     }

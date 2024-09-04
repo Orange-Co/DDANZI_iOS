@@ -8,7 +8,7 @@
 import Foundation
 
 struct PaymentCompletedDTO: Codable {
-  let paymentId: String
+  let orderId: String
   let payStatus: String
   let endedAt: String
 }

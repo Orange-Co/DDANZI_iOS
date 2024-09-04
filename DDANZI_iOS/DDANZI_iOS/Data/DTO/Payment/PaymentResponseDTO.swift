@@ -8,6 +8,7 @@
 import Foundation
 
 struct PaymentResponseDTO: Codable {
+  let orderId: String
   let paymentId: String
   let payStatus: String
   let startedAt: String

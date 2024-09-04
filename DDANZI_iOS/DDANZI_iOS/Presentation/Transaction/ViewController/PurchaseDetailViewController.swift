@@ -16,6 +16,14 @@ import RxDataSources
 final class PurchaseDetailViewController: UIViewController {
   private let disposeBag = DisposeBag()
   var PurchaseState: StatusType = .orderComplete
+  var orderId: String
+  
+  var status: [Status] = []
+  var product: [Product] = []
+  var nickName: [String] = []
+  var address: [Address] = []
+  var transactionInfo: [Info] = []
+  var purchaseInfo: [Info] = []
   
   private let navigaitonBar = CustomNavigationBarView(navigationBarType: .cancel, title: "구매 상세")
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
@@ -37,7 +45,16 @@ final class PurchaseDetailViewController: UIViewController {
     $0.addShadow(offset: .init(width: 0, height: 2), opacity: 0.4)
   }
   
-  private let button = DdanziButton(title: "판매 확정하기")
+  private let button = DdanziButton(title: "판매 확정하기", enable: false)
+  
+  init(orderId: String) {
+    self.orderId = orderId
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   override func viewWillAppear(_ animated: Bool) {
     self.tabBarController?.tabBar.isHidden = true
@@ -45,8 +62,8 @@ final class PurchaseDetailViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    fetchOrderDetail(orderID: orderId)
     setUI()
-    configureCollectionView()
     bind()
   }
   
@@ -87,6 +104,24 @@ final class PurchaseDetailViewController: UIViewController {
     }
   }
   
+  private func fetchOrderDetail(orderID: String) {
+    Providers.OrderProvider.request(target: .fetchOrderDetail(orderID), instance: BaseResponse<FetchOrderDetailResponseDTO>.self) { response in
+      guard let data = response.data else { return }
+      self.status = [.init(code: data.orderID, status: StatusType(rawValue: data.orderStatus) ?? .complete)]
+      self.product = [.init(imageURL: data.imgURL, productName: data.productName, price: data.totalPrice.toKoreanWon())]
+      self.nickName = [data.sellerNickname]
+      self.address = [.init(name: data.addressInfo.recipient ?? "", address: data.addressInfo.address ?? "", phone: data.addressInfo.recipientPhone ?? "")]
+      self.transactionInfo = [Info(title: "결제 수단", info: data.paymentMethod),
+                              Info(title: "결제 일자", info: data.paidAt?.toKoreanDateTimeFormat() ?? "")]
+      self.purchaseInfo = [Info(title: "상품 금액", info: data.originPrice.toKoreanWon()),
+                           Info(title: "할인가", info: "-\(data.discountPrice.toKoreanWon())"),
+                           Info(title: "수수료", info: data.charge.toKoreanWon())]
+      
+      self.configureCollectionView()
+      self.collectionView.reloadData()
+    }
+  }
+  
   private func bind() {
     navigaitonBar.cancelButtonTap
       .subscribe(onNext: { [weak self] in
@@ -96,20 +131,6 @@ final class PurchaseDetailViewController: UIViewController {
   }
   
   private func configureCollectionView() {
-    let status: [Status] = [Status(code: "RDAFSD391480", status: .orderComplete)]
-    let product: [Product] = [Product(imageURL: "",
-                           productName: "상품이름이름이름",
-                           price: "24,000원")]
-    let nickName: [String] = ["등둔"]
-    let address: [Address] = [Address(name: "이단지",
-                                      address: "(02578) 서울특별시 동대문구 무학로45길 34 (용두동), 204호",
-                                      phone: "010-4614-3858")]
-    let transactionInfo: [Info] = [Info(title: "결제 수단", info: "네이버페이"),
-                                   Info(title: "결제 일자", info: "2024.05.25")]
-    let purchaseInfo: [Info] = [Info(title: "상품 금액", info: "24,000원"),
-                                Info(title: "할인가", info: "-3,000원"),
-                                Info(title: "수수료", info: "+350원")]
-    
     let sections: [SectionModel<String, Any>] = [
       SectionModel(model: "거래상태", items: status),
       SectionModel(model: "상품 정보", items: product),
@@ -125,7 +146,7 @@ final class PurchaseDetailViewController: UIViewController {
         case 0:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StatusCollectionViewCell.className, for: indexPath) as! StatusCollectionViewCell
           if let status = item as? Status {
-            cell.configureView(title: status.status.ststusString, code: status.code)
+            cell.configureView(title: status.status.statusString, code: status.code)
           }
           return cell
         case 1:

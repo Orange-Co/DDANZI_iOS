@@ -8,7 +8,6 @@
 import Foundation
 
 struct ExecuteRequestBody: Codable {
-  let itemId: String
-  let paymentId: String
+  let orderId: String
   let selectedOptionDetailIdList: [Int]
 }

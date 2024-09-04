@@ -30,7 +30,6 @@ final class MyPageViewController: UIViewController {
     $0.register(MyPageTableViewCell.self,
                 forCellReuseIdentifier: MyPageTableViewCell.identifier)
     $0.backgroundColor = .white
-    $0.isScrollEnabled = false
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -143,7 +142,7 @@ final class MyPageViewController: UIViewController {
 
 extension MyPageViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return isLogin ? 2 : 1
+    return isLogin ? 3 : 2
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -152,6 +151,8 @@ extension MyPageViewController: UITableViewDataSource {
       return isLogin ? 3 : 2
     case 1:
       return 2
+    case 2:
+      return 2
     default:
       return 0
     }
@@ -159,7 +160,17 @@ extension MyPageViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = MyPageSectionHeaderView()
-    let title = (section == 0) ? (isLogin ? "히스토리" : "고객센터") : "고객 센터"
+    var title = ""
+    switch section {
+    case 0:
+      title = (isLogin ? "히스토리" : "고객센터")
+    case 1:
+      title = (isLogin ? "고객센터" : "약관")
+    case 2:
+      title = "약관"
+    default:
+      title = ""
+    }
     header.setTitleLabel(title: title)
     return header
   }
@@ -187,6 +198,20 @@ extension MyPageViewController: UITableViewDataSource {
       case 1: navigationController?.pushViewController(CsCenterViewController(), animated: true)
       default: break
       }
+    } else if section == 2 {
+      var urlString: String?
+      switch indexPath.row {
+      case 0:
+        urlString = "https://brawny-guan-098.notion.site/5a8b57e78f594988aaab08b8160c3072?pvs=4" // 개인정보처리방침 URL
+      case 1:
+        urlString = "https://brawny-guan-098.notion.site/faa1517ffed44f6a88021a41407ed736?pvs=4" // 이용약관 URL
+      default:
+        break
+      }
+      
+      if let urlString = urlString, let url = URL(string: urlString) {
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+      }
     }
   }
   
@@ -198,7 +223,18 @@ extension MyPageViewController: UITableViewDataSource {
     
     let historyTitles = ["구매 내역", "판매 내역", "내 관심"]
     let customerTitles = ["자주 묻는 질문", "1:1 상담 센터"]
-    let titles = (indexPath.section == 0) ? (isLogin ? historyTitles : customerTitles) : customerTitles
+    let terms = ["개인정보처리방침","이용약관"]
+    var titles: [String] = []
+    switch indexPath.section {
+    case 0:
+      titles = isLogin ? historyTitles : customerTitles
+    case 1:
+      titles = isLogin ? customerTitles : terms
+    case 2:
+      titles = terms
+    default:
+      break
+    }
     cell.setTitleLabel(title: titles[indexPath.row])
     
     return cell

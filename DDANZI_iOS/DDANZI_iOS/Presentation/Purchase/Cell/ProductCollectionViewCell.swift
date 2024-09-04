@@ -58,6 +58,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     stackView.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.leading.equalTo(imageView.snp.trailing).offset(14)
+      $0.trailing.equalToSuperview().inset(14)
     }
   }
   

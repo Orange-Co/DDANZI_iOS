@@ -7,7 +7,8 @@
 
 import Foundation
 
+/// payStatus : PAID / FAILED
 struct PaymentCompletedBody: Codable {
-  let paymentId: String
+  let orderId: String
   let payStatus: String
 }

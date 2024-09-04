@@ -19,3 +19,14 @@ struct PurchaseModel {
   let chargePrice: Int
   let totalPrice: Int
 }
+
+struct OrderModel {
+  let productId: String
+  let optionList: [Int]
+}
+
+struct PaymentModel {
+  let productId: String
+  let totalPrice: Int
+  let charge: Int
+}

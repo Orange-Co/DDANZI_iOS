@@ -11,7 +11,7 @@ import Moya
 
 enum OrderEndpoint {
   case fetchOrderInfo(String)
-  case executeOrder
+  case executeOrder(body: ExecuteRequestBody)
   case fetchOrderDetail(String)
 }
 
@@ -51,22 +51,22 @@ extension OrderEndpoint: BaseTargetType {
   
   var task: Moya.Task {
     switch self {
-    case .fetchOrderInfo(let int):
+    case .fetchOrderInfo:
       return .requestPlain
-    case .executeOrder:
-      return .requestPlain
-    case .fetchOrderDetail(let int):
+    case .executeOrder(let body):
+      return .requestJSONEncodable(body)
+    case .fetchOrderDetail:
       return .requestPlain
     }
   }
   
   var validationType: ValidationType {
     switch self {
-    case .fetchOrderInfo(let int):
+    case .fetchOrderInfo:
       return .successCodes
     case .executeOrder:
       return .successCodes
-    case .fetchOrderDetail(let int):
+    case .fetchOrderDetail:
       return .successCodes
     }
   }

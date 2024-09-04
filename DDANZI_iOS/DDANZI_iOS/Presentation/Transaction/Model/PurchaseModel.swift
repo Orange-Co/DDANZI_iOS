@@ -6,7 +6,6 @@
 //
 
 import UIKit
-
 enum StatusType {
   case inProgress
   case orderComplete
@@ -14,21 +13,44 @@ enum StatusType {
   case delivery
   case complete
   case cancel
+  case notDeposit
   
-  var ststusString: String {
+  var statusString: String {
     switch self {
     case .inProgress:
-      "판매 중"
+      return "판매 중"
     case .orderComplete:
-      "주문 완료"
+      return "주문 완료"
     case .deposit:
-      "입금 완료"
+      return "입금 완료"
     case .delivery:
-      "배송 중"
+      return "배송 중"
     case .complete:
-      "거래 완료"
+      return "거래 완료"
     case .cancel:
-      "거래 취소"
+      return "거래 취소"
+    case .notDeposit:
+      return "거래 진행 중"
+    }
+  }
+  
+  // 문자열 값으로부터 StatusType을 초기화하는 메서드
+  init?(rawValue: String) {
+    switch rawValue.uppercased() {
+    case "ORDER_PENDING":
+      self = .notDeposit
+    case "ORDER_PLACE":
+      self = .deposit
+    case "ORDERED":
+      self = .orderComplete
+    case "SHIPPING":
+      self = .delivery
+    case "COMPLETED":
+      self = .complete
+    case "CANCELLED":
+      self = .cancel
+    default:
+      return nil
     }
   }
 }

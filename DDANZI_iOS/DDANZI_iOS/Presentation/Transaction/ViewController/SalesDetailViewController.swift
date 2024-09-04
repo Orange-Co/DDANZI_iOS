@@ -124,7 +124,7 @@ class SalesDetailViewController: UIViewController {
         case 0:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StatusCollectionViewCell.className, for: indexPath) as! StatusCollectionViewCell
           if let status = item as? Status {
-            cell.configureView(title: status.status.ststusString, code: status.code)
+            cell.configureView(title: status.status.statusString, code: status.code)
           }
           return cell
         case 1:
