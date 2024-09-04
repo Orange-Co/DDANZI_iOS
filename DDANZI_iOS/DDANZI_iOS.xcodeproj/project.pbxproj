@@ -134,6 +134,8 @@
 		369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E02C1A8D760021E2E0 /* UIView+.swift */; };
 		369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E22C1A95060021E2E0 /* UIColor+.swift */; };
 		369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E42C1A95280021E2E0 /* UIButton+.swift */; };
+		36A5947C2C87F8030097DE70 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 36A5947B2C87F8030097DE70 /* loading.json */; };
+		36A5947E2C87F90C0097DE70 /* DdanziLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A5947D2C87F90C0097DE70 /* DdanziLoadingView.swift */; };
 		36A594802C8800C40097DE70 /* UIWindow+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A5947F2C8800C40097DE70 /* UIWindow+.swift */; };
 		36B744E72C6BE9EF002892C4 /* OptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B744E62C6BE9EF002892C4 /* OptionDataSource.swift */; };
 		36B744E92C6BEEE4002892C4 /* OptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B744E82C6BEEE4002892C4 /* OptionModel.swift */; };
@@ -326,6 +328,8 @@
 		369C63E02C1A8D760021E2E0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		369C63E22C1A95060021E2E0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		369C63E42C1A95280021E2E0 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
+		36A5947B2C87F8030097DE70 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
+		36A5947D2C87F90C0097DE70 /* DdanziLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziLoadingView.swift; sourceTree = "<group>"; };
 		36A5947F2C8800C40097DE70 /* UIWindow+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+.swift"; sourceTree = "<group>"; };
 		36B744E62C6BE9EF002892C4 /* OptionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionDataSource.swift; sourceTree = "<group>"; };
 		36B744E82C6BEEE4002892C4 /* OptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionModel.swift; sourceTree = "<group>"; };
@@ -427,6 +431,7 @@
 				3631527C2C35EADA00DF689E /* ProductChipView.swift */,
 				363152802C35EAF400DF689E /* DdanziButton.swift */,
 				363C24282C6520DD0097FCB7 /* DdanziChipButton.swift */,
+				36A5947D2C87F90C0097DE70 /* DdanziLoadingView.swift */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -693,6 +698,7 @@
 		3664CFD62C6E1BC6007FB5DF /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				36A5947B2C87F8030097DE70 /* loading.json */,
 				3664CFD52C6E1BC6007FB5DF /* splash.json */,
 			);
 			path = Lottie;
@@ -1335,6 +1341,7 @@
 				369C63D72C1A7E320021E2E0 /* Pretendard-Bold.otf in Resources */,
 				3664CFD72C6E1BC6007FB5DF /* splash.json in Resources */,
 				369C63DA2C1A7E320021E2E0 /* Pretendard-Medium.otf in Resources */,
+				36A5947C2C87F8030097DE70 /* loading.json in Resources */,
 				369C63D62C1A7E320021E2E0 /* Pretendard-Light.otf in Resources */,
 				369C63D52C1A7E320021E2E0 /* Pretendard-Regular.otf in Resources */,
 				369C63DC2C1A7E320021E2E0 /* Pretendard-SemiBold.otf in Resources */,
@@ -1446,6 +1453,7 @@
 				363152942C3DB49200DF689E /* UIStackView+.swift in Sources */,
 				36D5143D2C740EB4003E1B65 /* TermModel.swift in Sources */,
 				36D5144E2C74827D003E1B65 /* PaymentResponseDTO.swift in Sources */,
+				36A5947E2C87F90C0097DE70 /* DdanziLoadingView.swift in Sources */,
 				364895522C62826200AAA8E2 /* SearchItemsResponseDTO.swift in Sources */,
 				368833AC2C20AD91000F3A45 /* ProductDetailModel.swift in Sources */,
 				3631528E2C3DAF5800DF689E /* PurchaseListViewModel.swift in Sources */,
