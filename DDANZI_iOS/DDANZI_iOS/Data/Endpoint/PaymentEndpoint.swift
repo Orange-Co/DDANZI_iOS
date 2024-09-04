@@ -10,8 +10,8 @@ import Foundation
 import Moya
 
 enum PaymentEndpoint {
-  case startPayment
-  case completedPayment
+  case startPayment(body: PaymentRequestBody)
+  case completedPayment(body: PaymentCompletedBody)
 }
 
 extension PaymentEndpoint: BaseTargetType {
@@ -35,10 +35,10 @@ extension PaymentEndpoint: BaseTargetType {
   
   var task: Moya.Task {
     switch self {
-    case .startPayment:
-      return .requestPlain
-    case .completedPayment:
-      return .requestPlain
+    case .startPayment(let body):
+      return .requestJSONEncodable(body)
+    case .completedPayment(let body):
+      return .requestJSONEncodable(body)
     }
   }
   
