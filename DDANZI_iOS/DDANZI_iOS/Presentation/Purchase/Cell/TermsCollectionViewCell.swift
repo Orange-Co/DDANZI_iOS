@@ -75,6 +75,7 @@ final class TermsCollectionViewCell: UICollectionViewCell {
   }
   
   private func bindTableView() {
+    // 전체 동의 버튼 클릭 시
     fullAgreementButton.rx.tap
       .withLatestFrom(selectedTerms)
       .subscribe(onNext: { [weak self] termsSelected in
@@ -83,17 +84,25 @@ final class TermsCollectionViewCell: UICollectionViewCell {
       })
       .disposed(by: disposeBag)
     
+    // 선택된 약관 배열이 변경될 때마다 테이블뷰 및 전체 동의 버튼 상태 업데이트
     selectedTerms
-      .subscribe(onNext: { [weak self] _ in
+      .subscribe(onNext: { [weak self] termsSelected in
         self?.termsTableView.reloadData()
+        self?.updateFullAgreementButtonState(termsSelected)
       })
       .disposed(by: disposeBag)
   }
   
+  // 전체 약관 선택 및 해제 로직
   private func toggleSelectAllTerms(_ select: Bool) {
     let newSelections = Array(repeating: select, count: terms.count)
-    fullAgreementButton.isSelected.toggle()
     selectedTerms.accept(newSelections)
+  }
+  
+  // 전체 동의 버튼 상태 업데이트
+  private func updateFullAgreementButtonState(_ termsSelected: [Bool]) {
+    let allSelected = termsSelected.allSatisfy { $0 }
+    fullAgreementButton.isSelected = allSelected
   }
 }
 
@@ -119,7 +128,6 @@ extension TermsCollectionViewCell: UITableViewDataSource {
 extension TermsCollectionViewCell: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     var updatedSelections = selectedTerms.value
-    print("여기 눌렀어 \(updatedSelections)")
     updatedSelections[indexPath.row].toggle()
     selectedTerms.accept(updatedSelections)
   }
