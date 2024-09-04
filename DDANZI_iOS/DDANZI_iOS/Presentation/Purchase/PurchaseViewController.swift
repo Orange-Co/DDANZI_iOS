@@ -9,15 +9,12 @@ import UIKit
 
 import Then
 import SnapKit
+import Lottie
 import RxSwift
 import RxCocoa
 import RxDataSources
 
-struct OrderModel {
-  let productId: String
-  let optionList: [Int]
-  
-}
+import iamport_ios
 
 final class PurchaseViewController: UIViewController {
   
@@ -25,7 +22,7 @@ final class PurchaseViewController: UIViewController {
   
   var orderModel: OrderModel = .init(productId: "", optionList: [])
   
-  // PublishSubject 선언
+  // PublishSubject
   private let productSubject = PublishSubject<[Product]>()
   private let addressSubject = PublishSubject<[Address]>()
   private let transactionInfoSubject = PublishSubject<[Info]>()
@@ -34,12 +31,16 @@ final class PurchaseViewController: UIViewController {
   
   private let addressSelectedSubject = BehaviorRelay<Bool>(value: false)
   private let paymentMethodSelectedSubject = BehaviorRelay<Bool>(value: false)
-  private let selectedPaymentMethod = BehaviorRelay<String?>(value: nil)
+  private let selectedPaymentMethod = BehaviorRelay<Payment?>(value: nil)
   private let termsAgreeSubject = BehaviorRelay<[Bool]>(value: [false, false])
   
+  private var merchanUID: String = ""
+  
   var isEmptyAddress: Bool = false
-  var selectedPayment: String = ""
-  var totalPrice: Int = 0
+  
+  var payment: PaymentModel = .init(productId: "", totalPrice: 0, charge: 0)
+  var paymentMethod: Payment = .card
+  var productName: String = ""
   
   let navigationBar = CustomNavigationBarView(navigationBarType: .cancel, title: "구매하기")
   let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
@@ -60,6 +61,7 @@ final class PurchaseViewController: UIViewController {
   private let button = DdanziButton(title: "구매하기", enable: false)
   
   override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.tabBarController?.tabBar.isHidden = true
   }
   
@@ -117,7 +119,7 @@ final class PurchaseViewController: UIViewController {
     
     button.rx.tap
       .bind {
-        self.navigationController?.pushViewController(PurchaseCompleteViewController(), animated: false)
+        self.requestPayment(payment: self.payment)
       }
       .disposed(by: disposeBag)
     
@@ -126,21 +128,199 @@ final class PurchaseViewController: UIViewController {
       .map { termsAgreed, paymentSelected, addressSelected in
         termsAgreed.allSatisfy { $0 } && paymentSelected && addressSelected
       }
-      .bind(with: self, onNext: { owner, _ in
-        owner.button.setEnable()
+      .bind(with: self, onNext: { owner, isSelected in
+        if isSelected {
+          owner.button.setEnable()
+        }
       })
       .disposed(by: disposeBag)
     
     selectedPaymentMethod
-      .subscribe(onNext: { payment in
+      .withUnretained(self)
+      .subscribe(onNext: { owner, payment in
         if let payment = payment {
-          
+          owner.paymentMethod = payment
         }
       })
       .disposed(by: disposeBag)
     
   }
   
+  private func requestPayment(payment: PaymentModel){
+    paymentStart(productID: payment.productId, charge: payment.charge, totalPrice: payment.totalPrice, method: paymentMethod)
+      .observe(on: MainScheduler.instance)  // 메인 스레드에서 후속 작업을 수행
+      .flatMap { [weak self] merchantUID -> Single<IamportResponse?> in
+        guard let self = self else { return Single.just(nil) }
+        self.merchanUID = merchantUID
+        
+        let paymentData = self.createPaymentData(merchantUID: merchantUID)
+        
+        return Single<IamportResponse?>.create { single in
+          Iamport.shared.payment(navController: self.navigationController ?? UINavigationController(),
+                                 userCode: Config.impCode,
+                                 payment: paymentData) { response in
+            single(.success(response))
+          }
+          
+          return Disposables.create()
+        }
+      }
+      .subscribe(onSuccess: { [weak self] response in
+        self?.paymentCallback(response)
+      }, onFailure: { [weak self] error in
+        self?.showAlert(title: "결제 오류 발생", message: "알 수 없는 원인으로 결제에 실패했습니다.")
+      })
+      .disposed(by: disposeBag)
+  }
+
+  
+  private func createPaymentData(merchantUID: String) -> IamportPayment {
+    return  IamportPayment(
+      pg: Config.pgPayment,
+      merchant_uid: merchantUID,
+      amount: "\(payment.totalPrice)").then {
+        $0.pay_method = paymentMethod.rawValue
+        $0.name = productName
+        $0.buyer_name = UserDefaults.standard.string(forKey: .name)
+        $0.app_scheme = "ddanzi" // 앱복귀를 위한 앱스킴
+      }
+  }
+  
+  private func paymentCallback(_ response: IamportResponse?) {
+    DdanziLoadingView.shared.startAnimating()
+    
+    // Response가 없거나 실패한 경우 에러 처리
+    guard let response = response else {
+      DdanziLoadingView.shared.stopAnimating()
+      showAlert(title: "결제 오류 발생", message: "알 수 없는 원인으로 결제에 실패했습니다.")
+      return
+    }
+    
+    // 결제 성공 여부와 상태 결정
+    let paymentSuccess = response.success ?? false
+    let payStatus = paymentSuccess ? "PAID" : "FAILED"
+    
+    // `paymentCompleted`와 `executePayment`를 순차적으로 호출
+    paymentCompleted(orderId: merchanUID, payStatus: payStatus)
+      .flatMap { [weak self] _ -> Single<(Bool, String?)> in
+        guard let self = self else { return Single.just((false, nil)) }
+        
+        // `executePayment` 호출
+        return self.executePayment(orderId: self.merchanUID, selecteOption: [])
+      }
+      .observe(on: MainScheduler.instance) // 메인 스레드에서 UI 업데이트
+      .subscribe(onSuccess: { [weak self] isSuccess, orderId in
+        DdanziLoadingView.shared.stopAnimating()
+        if isSuccess, let orderId = orderId {
+          self?.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: orderId), animated: true)
+        } else {
+          self?.showAlert(title: "결제 실패", message: "알 수 없는 원인으로 결제 실패입니다.")
+        }
+      }, onFailure: { [weak self] error in
+        DdanziLoadingView.shared.stopAnimating()
+        self?.showAlert(title: "결제 오류 발생", message: "알 수 없는 원인으로 결제에 실패했습니다.")
+      })
+      .disposed(by: disposeBag)
+  }
+
+  
+  private func fetchOrderInfo() {
+    Providers.OrderProvider.request(target: .fetchOrderInfo(orderModel.productId),
+                                    instance: BaseResponse<FetchOrderResponseDTO>.self) { result in
+      guard let data = result.data else { return }
+      
+      let products = [Product(imageURL: data.imgURL, productName: data.productName, price: data.totalPrice.toKoreanWon())]
+      var addresses: [Address] = []
+      if let recipient = data.addressInfo.recipient,
+         let address = data.addressInfo.address,
+         let zipCode = data.addressInfo.zipCode,
+         let recipientPhone = data.addressInfo.recipientPhone {
+        addresses = [Address(name: recipient, address: "\(address) (\(zipCode))", phone: recipientPhone)]
+        self.addressSelectedSubject.accept(true)
+      } else {
+        self.addressSelectedSubject.accept(false)
+        self.isEmptyAddress = true
+      }
+      let transactionInfos = [Info(title: "결제 수단", info: "")]
+      let purchaseInfos = [
+        PurchaseModel(originPrice: data.originPrice, discountPrice: data.discountPrice, chargePrice: data.charge, totalPrice: data.totalPrice)
+      ]
+      let terms = ["동의 약관"]
+      
+      // 결제 정보 생성
+      self.productName = data.productName
+      self.payment = .init(
+        productId: data.productId,
+        totalPrice: data.totalPrice,
+        charge: data.charge
+      )
+      
+      // Subject에 이벤트 방출
+      self.productSubject.onNext(products)
+      self.addressSubject.onNext(addresses)
+      self.transactionInfoSubject.onNext(transactionInfos)
+      self.purchaseInfoSubject.onNext(purchaseInfos)
+      self.termsSubject.onNext(terms)
+    }
+  }
+
+  /// 결제 시작 API 통신
+  private func paymentStart(productID: String, charge: Int, totalPrice: Int, method: Payment) -> Single<String> {
+    return Single<String>.create { single in
+      let body = PaymentRequestBody(productId: productID, charge: charge, totalPrice: totalPrice, method: method)
+      
+      Providers.PaymentProvider.request(target: .startPayment(body: body), instance: BaseResponse<PaymentStartResponseDTO>.self) { response in
+        guard let data = response.data else {
+          single(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Payment Start Failed"])))
+          self.showAlert(title: "결제 요청 실패", message: "결제 정보를 찾을 수 없습니다. (\(response.status): \(response.message))")
+          return
+        }
+        single(.success(data.orderID))
+      }
+      
+      return Disposables.create()
+    }
+  }
+
+  /// 결제 완료 API 통신
+  private func paymentCompleted(orderId: String, payStatus: String) -> Single<Void> {
+    return Single<Void>.create { single in
+      let body = PaymentCompletedBody(orderId: orderId, payStatus: payStatus)
+      
+      Providers.PaymentProvider.request(target: .completedPayment(body: body), instance: BaseResponse<PaymentCompletedDTO>.self) { response in
+        guard response.data != nil else {
+          single(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Payment Completed Failed"])))
+          return
+        }
+        single(.success(()))
+      }
+      
+      return Disposables.create()
+    }
+  }
+
+  private func executePayment(orderId: String, selecteOption: [Int]) -> Single<(Bool, String?)> {
+      return Single.create { single in
+          let body = ExecuteRequestBody(orderId: orderId, selectedOptionDetailIdList: selecteOption)
+          Providers.OrderProvider.request(target: .executeOrder(body: body), instance: BaseResponse<ExecuteOrderResponseDTO>.self) { response in
+              guard let data = response.data else {
+                  single(.success((false, nil)))
+                  return
+              }
+              single(.success((true, data.orderId)))
+          }
+          
+          return Disposables.create()
+      }
+  }
+
+  private func showAlert(title: String, message: String) {
+      let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+      let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+      alertController.addAction(okAction)
+      present(alertController, animated: true, completion: nil)
+  }
+
 }
 
 // MARK: CollectionView
@@ -231,38 +411,6 @@ extension PurchaseViewController {
       .disposed(by: disposeBag)
   }
   
-  private func fetchOrderInfo() {
-    Providers.OrderProvider.request(target: .fetchOrderInfo(orderModel.productId),
-                                    instance: BaseResponse<FetchOrderResponseDTO>.self) { result in
-      guard let data = result.data else { return }
-      
-      let products = [Product(imageURL: data.imgURL, productName: data.productName, price: data.totalPrice.toKoreanWon())]
-      var addresses: [Address] = []
-      if let recipient = data.addressInfo.recipient,
-         let address = data.addressInfo.address,
-         let zipCode = data.addressInfo.zipCode,
-         let recipientPhone = data.addressInfo.recipientPhone {
-        addresses = [Address(name: recipient, address: "\(address) (\(zipCode))", phone: recipientPhone)]
-        self.addressSelectedSubject.accept(true)
-      } else {
-        self.addressSelectedSubject.accept(false)
-        self.isEmptyAddress = true
-      }
-      let transactionInfos = [Info(title: "결제 수단", info: "")]
-      let purchaseInfos = [
-        PurchaseModel(originPrice: data.originPrice, discountPrice: data.discountPrice, chargePrice: data.charge, totalPrice: data.totalPrice)
-      ]
-      let terms = ["동의 약관"]
-      
-      // Subject에 이벤트 방출
-      self.productSubject.onNext(products)
-      self.addressSubject.onNext(addresses)
-      self.transactionInfoSubject.onNext(transactionInfos)
-      self.purchaseInfoSubject.onNext(purchaseInfos)
-      self.termsSubject.onNext(terms)
-    }
-  }
-  
   func createLayout() -> UICollectionViewCompositionalLayout {
     return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
       switch sectionNumber {
@@ -315,10 +463,10 @@ extension PurchaseViewController {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                             heightDimension: .fractionalHeight(1)))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                       heightDimension: .estimated(233)),
+                                                                       heightDimension: .estimated(190)),
                                                      subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 5, leading: 20, bottom: 10, trailing: 20)
+        section.contentInsets = .init(top: 5, leading: 20, bottom: 0, trailing: 20)
         
         section.boundarySupplementaryItems = [
           NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
@@ -331,7 +479,7 @@ extension PurchaseViewController {
                                                             heightDimension: .fractionalHeight(1)))
         item.contentInsets = .init(top: 7, leading: 0, bottom: 7, trailing: 0)
         let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                       heightDimension: .estimated(187)),
+                                                                       heightDimension: .estimated(150)),
                                                      subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         
