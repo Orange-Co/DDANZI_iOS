@@ -117,7 +117,7 @@ final class PurchaseListViewController: UIViewController {
           beforePrice: item.beforePrice,
           price: item.price,
           heartCount: 0,
-          completedAt: item.completedAt
+          completedAt: item.completedAt.toKoreanDateTimeFormat() ?? ""
         )
         cell.listType = self.listTypeRelay.value
         return cell
@@ -150,7 +150,8 @@ final class PurchaseListViewController: UIViewController {
       .subscribe(onNext: { [weak self] indexPath in
         guard let self = self else { return }
         if indexPath.section == 0 {
-          let detailVC = PurchaseDetailViewController()
+          let orderId = purchaseProductRelay.value[indexPath.row].orderId
+          let detailVC = PurchaseDetailViewController(orderId: orderId)
           self.navigationController?.pushViewController(detailVC, animated: true)
         }
       })
@@ -168,7 +169,8 @@ final class PurchaseListViewController: UIViewController {
                 imgURL: product.imgURL,
                 beforePrice: product.originPrice.toKoreanWon(),
                 price: product.salePrice.toKoreanWon(),
-                completedAt: product.paidAt)
+                completedAt: product.paidAt ?? "",
+                orderId: product.orderID)
       }
       
       headerView.setCount(count: data.totalCount)

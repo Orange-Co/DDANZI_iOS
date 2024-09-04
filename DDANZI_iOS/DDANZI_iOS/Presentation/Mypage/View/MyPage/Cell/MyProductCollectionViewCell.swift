@@ -82,11 +82,6 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func prepareForReuse() {
-    imageView.subviews.forEach { $0.removeFromSuperview() }
-    purchaseDateLabel.removeFromSuperview()
-    setUI()
-  }
   
   private func bindUI() {
     listTypeRelay
@@ -150,7 +145,7 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     }
     
     priceLabel.snp.remakeConstraints {
-      $0.top.equalTo(purchaseDateLabel.snp.bottom).offset(5)
+      $0.bottom.equalToSuperview().inset(5)
       $0.trailing.equalToSuperview().inset(5)
     }
     

@@ -22,4 +22,5 @@ struct PurchaseProductModel {
   let beforePrice: String
   let price: String
   let completedAt: String
+  let orderId: String
 }
