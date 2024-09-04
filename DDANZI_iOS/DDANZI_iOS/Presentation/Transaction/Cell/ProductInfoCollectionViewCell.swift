@@ -18,6 +18,7 @@ final class ProductInfoCollectionViewCell: UICollectionViewCell {
   }
   private let productTitleLabel = UILabel().then {
     $0.font = .body4R16
+    $0.numberOfLines = 2
     $0.textColor = .black
   }
   
@@ -51,13 +52,13 @@ final class ProductInfoCollectionViewCell: UICollectionViewCell {
     priceLabel.snp.makeConstraints {
       $0.top.equalTo(productImageView.snp.top).offset(7)
       $0.leading.equalTo(productImageView.snp.trailing).offset(10)
-      $0.trailing.equalToSuperview().offset(20)
+      $0.trailing.equalToSuperview().inset(20)
     }
     
     productTitleLabel.snp.makeConstraints {
       $0.top.equalTo(priceLabel.snp.bottom).offset(10)
       $0.leading.equalTo(productImageView.snp.trailing).offset(10)
-      $0.trailing.equalToSuperview().offset(20)
+      $0.trailing.equalToSuperview().inset(20)
     }
   }
   

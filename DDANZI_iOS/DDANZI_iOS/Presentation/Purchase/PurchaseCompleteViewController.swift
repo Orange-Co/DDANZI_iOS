@@ -14,23 +14,22 @@ import RxCocoa
 import RxDataSources
 
 final class PurchaseCompleteViewController: UIViewController {
+  
+  // MARK: - Property
   private let disposeBag = DisposeBag()
+  private let orderId: String
   
-  let product: [Product] = []
-  let address: [Address] = []
-  let transactionInfo: [Info] = [Info(title: "결제 수단", info: "네이버페이"),
-                                 Info(title: "결제 일자", info: "2024.05.25")]
-  let purchaseInfo: [Info] = [Info(title: "상품 금액", info: "24,000원"),
-                              Info(title: "할인가", info: "-3,000원"),
-                              Info(title: "수수료", info: "+350원")]
-  let saleInfo: [PriceModel] = [PriceModel(title: "상품 금액", price: "24,000원", type: .normal),
-                                PriceModel(title: "할인가", price: "-3,000원", type: .discount),
-                                PriceModel(title: "수수료", price: "+350원", type: .charge),
-                                PriceModel(title: "결제 금액", price: "21,350원", type: .normal),]
-  let totalPrice: Int = 0
+  var product: [Product] = []
+  var address: [Address] = []
+  var transactionInfo: [Info] = []
+  var purchaseInfo: [Info] = []
+  let saleInfo: [PriceModel] = []
+  var totalPrice: Int = 0
   
+  // MARK: - UI
   private let navigationBarView = CustomNavigationBarView(navigationBarType: .home, title: "주문 완료")
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
+    $0.isHidden = true
     $0.backgroundColor = .white
     $0.register(DetailSectionHeaderView.self,
                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -65,17 +64,29 @@ final class PurchaseCompleteViewController: UIViewController {
   }
   private let detailButton = DdanziButton(title: "상세 내역 보러가기")
   
+  // MARK: - Initializer
+  init(orderId: String) {
+    self.orderId = orderId
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: - Lifecycles
   override func viewWillAppear(_ animated: Bool) {
     self.tabBarController?.tabBar.isHidden = true
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    fetchOrderInfo(orderId: orderId)
     setUI()
-    configureCollectionView()
     bind()
   }
   
+  // MARK: - Layout
   private func setUI() {
     view.backgroundColor = .white
     setHierarchy()
@@ -118,6 +129,7 @@ final class PurchaseCompleteViewController: UIViewController {
     }
   }
   
+  // MARK: - Method
   private func bind() {
     navigationBarView.cancelButtonTap
       .subscribe(onNext: { [weak self] in
@@ -142,8 +154,32 @@ final class PurchaseCompleteViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
+  // MARK: - Networking
+  private func fetchOrderInfo(orderId: String) {
+    DdanziLoadingView.shared.startAnimating()
+    Providers.OrderProvider.request(target: .fetchOrderDetail(orderId), instance: BaseResponse<FetchOrderDetailResponseDTO>.self) { response in
+      guard let data = response.data else { return }
+      let paidAt = data.paidAt ?? ""
+      self.product = [.init(imageURL: data.imgURL, productName: data.productName, price: data.totalPrice.toKoreanWon())]
+      self.address = [.init(name: data.addressInfo.recipient ?? "", address: data.addressInfo.address ?? "", phone: data.addressInfo.recipientPhone ?? "")]
+      self.transactionInfo = [Info(title: "결제 수단", info: data.paymentMethod),
+                              Info(title: "결제 일자", info: paidAt.toKoreanDateTimeFormat() ?? paidAt)]
+      self.purchaseInfo = [Info(title: "상품 금액", info: data.originPrice.toKoreanWon()),
+                           Info(title: "할인가", info: "-\(data.discountPrice.toKoreanWon())"),
+                           Info(title: "수수료", info: data.charge.toKoreanWon())]
+      self.totalPrice = data.totalPrice
+      
+      self.configureCollectionView()
+      self.collectionView.isHidden = false
+      self.collectionView.reloadData()
+    }
+  }
+  
+}
+
+// MARK: - CollectionView Configuration
+extension PurchaseCompleteViewController {
   private func configureCollectionView() {
-    
     let sections: [SectionModel<String, Any>] = [
       SectionModel(model: "상품 정보", items: product),
       SectionModel(model: "배송지", items: address),
@@ -216,11 +252,11 @@ final class PurchaseCompleteViewController: UIViewController {
     
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
+    
+    
+    DdanziLoadingView.shared.stopAnimating()
   }
   
-}
-
-extension PurchaseCompleteViewController {
   func createLayout() -> UICollectionViewCompositionalLayout {
     return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
       switch sectionNumber {

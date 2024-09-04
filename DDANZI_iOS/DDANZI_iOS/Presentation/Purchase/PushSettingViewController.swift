@@ -93,7 +93,7 @@ final class PushSettingViewController: UIViewController {
   
   private func bind() {
     conformButton.rx.tap.bind {
-      self.navigationController?.pushViewController(PurchaseCompleteViewController(), animated: true)
+      self.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: ""), animated: true)
     }
     .disposed(by: disposeBag)
   }
