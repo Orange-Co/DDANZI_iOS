@@ -15,6 +15,7 @@ enum Config {
           static let impCode = "IMP_CODE"
           static let impKey = "IMP_KEY"
           static let impSecret = "IMP_SECRET"
+          static let pgPayment = "PG_PAYMENT"
         }
     }
     
@@ -56,6 +57,13 @@ enum Config {
   static let impSecret: String = {
       guard let key = Config.infoDictionary[Keys.Plist.impSecret] as? String else {
           fatalError("impSecret is not set in plist for this configuration.")
+      }
+      return key
+  }()
+  
+  static let pgPayment: String = {
+      guard let key = Config.infoDictionary[Keys.Plist.pgPayment] as? String else {
+          fatalError("pgPayment is not set in plist for this configuration.")
       }
       return key
   }()
