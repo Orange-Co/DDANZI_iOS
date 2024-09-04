@@ -14,7 +14,7 @@ import RxSwift
 final class LoginCompletedViewController: UIViewController {
   
   private var disposeBag = DisposeBag()
-
+  
   private let checkImageView = UIImageView().then {
     $0.image = .icBlackCheck
   }
@@ -76,7 +76,8 @@ final class LoginCompletedViewController: UIViewController {
   private func bind() {
     completeButton.rx.tap
       .bind(with: self) { owner, _ in
-        owner.navigationController?.popViewController(animated: true)
+        let tabBarVC = DdanziTabBarController()
+        owner.navigationController?.setViewControllers([tabBarVC], animated: true)
       }
       .disposed(by: disposeBag)
   }
