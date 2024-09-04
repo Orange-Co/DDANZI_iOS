@@ -63,6 +63,19 @@ class HomeCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+      guard let touch = touches.first else { return }
+      let location = touch.location(in: self)
+      
+      if heartButton.frame.contains(location) {
+          // heartButton이 눌린 경우 선택 이벤트 무시
+          return
+      }
+      
+      super.touchesBegan(touches, with: event)
+  }
+
+  
   // MARK: LayoutHelper
   private func setUI() {
     setHierarchy()

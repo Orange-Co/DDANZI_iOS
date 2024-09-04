@@ -99,6 +99,9 @@ extension AccountViewController: UITableViewDataSource {
       UserApi.shared.logout {(error) in
         if let error = error {
           print(error)
+          
+          UserDefaults.standard.set(false, forKey: .isLogin)
+          self.navigationController?.popToRootViewController(animated: true)
         }
         else {
           UserDefaults.standard.clearAll()

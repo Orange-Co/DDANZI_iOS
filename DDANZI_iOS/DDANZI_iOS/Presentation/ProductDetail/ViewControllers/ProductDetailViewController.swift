@@ -7,13 +7,11 @@
 
 import UIKit
 
-import ReactorKit
+import RxSwift
 import RxCocoa
 import RxDataSources
-import RxSwift
 import SnapKit
 import Then
-import iamport_ios
 
 // MARK: - OptionDelegate
 protocol OptionViewControllerDelegate: AnyObject {
@@ -312,12 +310,12 @@ final class ProductDetailViewController: UIViewController {
       self.bottomButtonView.heartCountLabel.text = "\(self.interestCount - 1)"
     }
   }
-  
 }
 
 extension ProductDetailViewController: OptionViewControllerDelegate {
   func optionViewControllerDidFinish(_ viewController: OptionSelectViewController) {
     let purchaseVC = PurchaseViewController()
+    purchaseVC.orderModel = .init(productId: productId, optionList: optionList.map({ $0.optionID }))
     self.navigationController?.pushViewController(purchaseVC, animated: true)
   }
 }

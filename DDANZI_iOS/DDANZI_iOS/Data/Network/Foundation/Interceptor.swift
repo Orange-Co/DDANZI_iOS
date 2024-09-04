@@ -33,9 +33,7 @@ final class AuthInterceptor: RequestInterceptor {
          request.retryCount < retryLimit {
         if statusCode == 401 {
           
-        } else if statusCode == 404 {
-          
-        } else {
+        }  else {
           completion(.doNotRetryWithError(error))
           return
         }
