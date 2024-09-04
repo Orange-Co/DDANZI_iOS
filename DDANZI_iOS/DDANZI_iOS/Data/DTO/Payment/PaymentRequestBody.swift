@@ -8,8 +8,8 @@
 import Foundation
 
 struct PaymentRequestBody: Codable {
-  let itemId: Int
+  let productId: String
   let charge: Int
   let totalPrice: Int
-  let method: String
+  let method: Payment
 }

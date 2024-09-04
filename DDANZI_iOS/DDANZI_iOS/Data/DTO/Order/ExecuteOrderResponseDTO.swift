@@ -9,4 +9,5 @@ import Foundation
 
 struct ExecuteOrderResponseDTO: Codable {
   let orderId: String
+  let orderStatus: String
 }

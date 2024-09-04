@@ -134,6 +134,7 @@
 		369C63E12C1A8D760021E2E0 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E02C1A8D760021E2E0 /* UIView+.swift */; };
 		369C63E32C1A95060021E2E0 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E22C1A95060021E2E0 /* UIColor+.swift */; };
 		369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369C63E42C1A95280021E2E0 /* UIButton+.swift */; };
+		36A5947A2C87F3120097DE70 /* PaymentStartResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A594792C87F3120097DE70 /* PaymentStartResponseDTO.swift */; };
 		36A5947C2C87F8030097DE70 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 36A5947B2C87F8030097DE70 /* loading.json */; };
 		36A5947E2C87F90C0097DE70 /* DdanziLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A5947D2C87F90C0097DE70 /* DdanziLoadingView.swift */; };
 		36A594802C8800C40097DE70 /* UIWindow+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A5947F2C8800C40097DE70 /* UIWindow+.swift */; };
@@ -328,6 +329,7 @@
 		369C63E02C1A8D760021E2E0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		369C63E22C1A95060021E2E0 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		369C63E42C1A95280021E2E0 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
+		36A594792C87F3120097DE70 /* PaymentStartResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStartResponseDTO.swift; sourceTree = "<group>"; };
 		36A5947B2C87F8030097DE70 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		36A5947D2C87F90C0097DE70 /* DdanziLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziLoadingView.swift; sourceTree = "<group>"; };
 		36A5947F2C8800C40097DE70 /* UIWindow+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+.swift"; sourceTree = "<group>"; };
@@ -1167,6 +1169,7 @@
 				36D5144D2C74827D003E1B65 /* PaymentResponseDTO.swift */,
 				36D5144F2C748357003E1B65 /* PaymentCompletedBody.swift */,
 				36D514512C74846E003E1B65 /* PaymentCompletedDTO.swift */,
+				36A594792C87F3120097DE70 /* PaymentStartResponseDTO.swift */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -1517,6 +1520,7 @@
 				36BE65C02C45849E00CD4511 /* PaymentTableViewCell.swift in Sources */,
 				3631529D2C3DB9CF00DF689E /* SellerCollectionViewCell.swift in Sources */,
 				36B833F82C5CDD71009C2C3E /* Provider.swift in Sources */,
+				36A5947A2C87F3120097DE70 /* PaymentStartResponseDTO.swift in Sources */,
 				363C24232C6515BF0097FCB7 /* DdanziMiniButton.swift in Sources */,
 				364895562C6282DA00AAA8E2 /* InterestResponseDTO.swift in Sources */,
 				363C243E2C6619F50097FCB7 /* Int+.swift in Sources */,
