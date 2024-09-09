@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		362864CA2C8E985400029452 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362864C92C8E985400029452 /* LandingViewController.swift */; };
 		36305E5A2C21F00600701BDA /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E592C21F00600701BDA /* UILabel+.swift */; };
 		36305E5C2C21F7EB00701BDA /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E5B2C21F7EB00701BDA /* ProductDetailViewModel.swift */; };
 		36305E5E2C21F97100701BDA /* OptionSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36305E5D2C21F97100701BDA /* OptionSelectViewController.swift */; };
@@ -210,6 +211,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		362864C92C8E985400029452 /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		36305E592C21F00600701BDA /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		36305E5B2C21F7EB00701BDA /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "\U0010ProductDetailViewModel.swift"; sourceTree = "<group>"; };
 		36305E5D2C21F97100701BDA /* OptionSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSelectViewController.swift; sourceTree = "<group>"; };
@@ -425,6 +427,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		362864C82C8E984000029452 /* Selling */ = {
+			isa = PBXGroup;
+			children = (
+				362864C92C8E985400029452 /* LandingViewController.swift */,
+			);
+			path = Selling;
+			sourceTree = "<group>";
+		};
 		3631527D2C35EADA00DF689E /* ReusableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -907,6 +917,7 @@
 		369C63BE2C1A7AFA0021E2E0 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				362864C82C8E984000029452 /* Selling */,
 				3664CFD32C6E1B98007FB5DF /* Splash */,
 				36607DA72C4F85BC003803F4 /* Onboarding */,
 				36EB5F992C1D35BD00FAF995 /* Common */,
@@ -1493,6 +1504,7 @@
 				36B833EE2C5CDCFB009C2C3E /* HomeEndpoint.swift in Sources */,
 				36542E732C2E88F500D5BFEB /* SellListViewController.swift in Sources */,
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
+				362864CA2C8E985400029452 /* LandingViewController.swift in Sources */,
 				36542E792C2E892500D5BFEB /* CsCenterViewController.swift in Sources */,
 				363152A12C3DBA0B00DF689E /* InfoCollectionViewCell.swift in Sources */,
 				363C24292C6520DD0097FCB7 /* DdanziChipButton.swift in Sources */,
