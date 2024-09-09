@@ -29,7 +29,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     $0.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: "HeaderCollectionViewCell")
   }
   private let sellButton = UIButton().then {
-    $0.setTitle("판매하기", for: .normal)
+    $0.setTitle("+ 판매하기", for: .normal)
     $0.titleLabel?.font = .body3Sb16
     $0.setTitleColor(.black, for: .normal)
     $0.backgroundColor = .dYellow
@@ -68,7 +68,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     sellButton.snp.makeConstraints {
-      $0.bottom.equalToSuperview().inset(27)
+      $0.bottom.equalToSuperview().inset(127)
       $0.trailing.equalToSuperview().inset(20)
       $0.width.equalTo(108)
       $0.height.equalTo(48)
@@ -159,6 +159,14 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
           self.navigationController?.pushViewController(detailVC, animated: true)
         }
       })
+      .disposed(by: disposeBag)
+
+    // 판매하기 버튼 이벤트
+    sellButton.rx.tap
+      .bind(with: self) { owner, _ in
+        let sellingVC = LandingViewController()
+        self.navigationController?.pushViewController(sellingVC, animated: true)
+      }
       .disposed(by: disposeBag)
   }
   
