@@ -19,6 +19,8 @@ final class LandingViewController: UIViewController {
     "거래성사 시 푸시알림이 도착해요.\n\n정보확인 후 카카오선물창에 직접입력 해주세요!",
     "판매금 정산은 배송 및 구매확정 후 이루어집니다.\n\n딴지와 함께 즐거운 거래 되세요!"
   ]
+  private var presignedURL: String = ""
+  private var imageURL: String = ""
   
   // 현재 이미지 인덱스
   private var currentImageIndex = 0
@@ -107,8 +109,12 @@ final class LandingViewController: UIViewController {
   private func bind() {
     nextButton.rx.tap
       .subscribe(with: self, onNext: { owner, _ in
-        owner.currentImageIndex = (owner.currentImageIndex + 1) % owner.guideImages.count
-        owner.updateImageView(for: owner.currentImageIndex)
+        if owner.currentImageIndex == 2 {
+          owner.checkPhotoPermissionAndShowPicker()
+        } else {
+          owner.currentImageIndex = (owner.currentImageIndex + 1) % owner.guideImages.count
+          owner.updateImageView(for: owner.currentImageIndex)
+        }
       })
       .disposed(by: disposeBag)
     
@@ -119,6 +125,15 @@ final class LandingViewController: UIViewController {
         self.updateImageView(for: self.currentImageIndex)
       })
       .disposed(by: disposeBag)
+    
+    PHPickerManager.shared.selectedPhoto
+      .asDriver(onErrorJustReturn: nil)
+      .compactMap { $0 }
+      .drive(with: self) { owner, image in
+        let imageData = image.jpegData(compressionQuality: 0.5)!
+        owner.uploadImage(data: imageData)
+      }
+      .disposed(by: disposeBag)
   }
   
   private func updateImageView(for index: Int) {
@@ -128,5 +143,60 @@ final class LandingViewController: UIViewController {
     index == 2 ?
     nextButton.setTitle("캡쳐화면 선택하기", for: .normal) : nextButton.setTitle("다음", for: .normal)
     pageControl.currentPage = index
+  }
+  
+  private func checkPhotoPermissionAndShowPicker() {
+    // TODO: - 로그인 여부 생각해야 함
+    // presigned URL 미리 생성
+    let query = PresignedURLQuery(fileName: UUID().uuidString + ".jpeg")
+    Providers.ItemProvider.request(target: .requestPresignedURL(body: query), instance: BaseResponse<PresignedURLDTO>.self) { response in
+      guard let data = response.data else { return }
+      self.presignedURL = data.signedUrl
+    }
+    
+    PermissionManager.shared.checkPermission(for: .photo)
+      .flatMap { isGranted -> Observable<Bool> in
+        if !isGranted {
+          return PermissionManager.shared.requestPhotoPermission()
+        }
+        return Observable.just(isGranted)
+      }
+      .bind(onNext: { [weak self] isGranted in
+        if isGranted {
+          DispatchQueue.main.async {
+            PHPickerManager.shared.presentPicker(vc: self)
+          }
+        }
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  private func checkItem(imageURL: String) {
+    
+    let body = ItemCheckRequestBody(image_url: imageURL)
+    Providers.ItemProvider.request(target: .itemCheck(body: body), instance: BaseResponse<ItemCheckDTO>.self) { response in
+      guard let data = response.data else { return }
+      let checkVC = CheckItemViewController()
+      checkVC.response.accept(data)
+      DdanziLoadingView.shared.stopAnimating()
+      self.navigationController?.pushViewController(checkVC, animated: false)
+    }
+  }
+  
+  private func uploadImage(data: Data) {
+    DdanziLoadingView.shared.startAnimating()
+    Providers.ItemProvider.request(target: .uploadImage(url: presignedURL, data: data)) { isSucess in
+      if isSucess {
+        if let index = self.presignedURL.firstIndex(of: "?") {
+          let imageURL = String(self.presignedURL[..<index])
+          DdanziLoadingView.shared.startAnimating()
+          self.imageURL = imageURL
+          self.checkItem(imageURL: imageURL)
+        }
+      } else {
+        DdanziLoadingView.shared.stopAnimating()
+        print("이미지 업로드에 실패했습니다.")
+      }
+    }
   }
 }
