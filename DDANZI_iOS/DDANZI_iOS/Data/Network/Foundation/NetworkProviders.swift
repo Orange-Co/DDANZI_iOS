@@ -18,6 +18,11 @@ public protocol NetworkProviderProtocol {
     instance: BaseResponse<Model>.Type,
     completion: @escaping (BaseResponse<Model>) -> ()
   )
+  
+  func request(
+    target: Provider,
+    completion: @escaping (Bool) -> ()
+  )
 }
 
 
@@ -83,6 +88,30 @@ class NetworkProvider<Provider: TargetType>: MoyaProvider<Provider>, NetworkProv
           }
         } else {
           print(error.localizedDescription)
+        }
+      }
+    }
+  }
+  
+  func request(
+    target: Provider,
+    completion: @escaping (Bool) -> ()
+  ) {
+    self.request(target) { result in
+      switch result {
+        /// 서버 통신 성공
+      case .success(let response):
+        if (200..<300).contains(response.statusCode) {
+          completion(true)
+        } else{
+          print("🚨 Image Upload Error 발생")
+        }
+        /// 서버 통신 실패
+      case .failure(let error):
+        completion(false)
+        guard let response = error.response else {
+          print(error.localizedDescription)
+          return
         }
       }
     }

@@ -14,6 +14,7 @@ protocol BaseTargetType: TargetType {}
 
 extension BaseTargetType {
     typealias Parameters = [String: String]
+  
     var baseURL: URL {
         guard let baseURL = URL(string: Config.baseURL) else {
             print("🚨🚨BASEURL ERROR🚨🚨")

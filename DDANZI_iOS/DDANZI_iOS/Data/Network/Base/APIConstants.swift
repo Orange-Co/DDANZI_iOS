@@ -78,4 +78,8 @@ extension APIConstants {
                    auth: appleAccessToken,
                      OS: iOS]
   }
+  
+  static var imageHeader: [String: String] {
+    return [contentType: "image/jpeg"]
+  }
 }
