@@ -11,5 +11,5 @@ struct RegisteItemDTO: Codable {
   let itemId: String
   let productName: String
   let imgUrl: String
-  let salePrice: String
+  let salePrice: Int
 }

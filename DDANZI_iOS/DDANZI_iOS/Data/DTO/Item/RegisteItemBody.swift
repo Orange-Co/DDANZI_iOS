@@ -10,6 +10,6 @@ import Foundation
 struct RegisteItemBody: Codable {
   let productId: String
   let productName: String
-  let dueDate: String
+  let receivedDate: String
   let registeredImage: String
 }

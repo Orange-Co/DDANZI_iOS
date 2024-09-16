@@ -10,6 +10,9 @@ import Foundation
 struct SocialLoginRequestDTO: Codable {
   let token: String
   let type: SocialLoginType
+  let devicetoken: String
+  let deviceType: String
+  let fcmToken: String
 }
 
 enum SocialLoginType: String,Codable {

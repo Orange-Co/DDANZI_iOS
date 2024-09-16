@@ -7,9 +7,11 @@
 
 import Foundation
 
-// MARK: - DataClass
+// MARK: - SellDetailDTO
 struct SellDetailDTO: Codable {
-    let itemID, status, productName: String
+    let itemID: String
+    let imgURL: String
+    let status, productName: String
     let originPrice, salePrice: Int
     let orderID, buyerNickName: String?
     let addressInfo: AddressInfo
@@ -17,6 +19,7 @@ struct SellDetailDTO: Codable {
 
     enum CodingKeys: String, CodingKey {
         case itemID = "itemId"
+        case imgURL = "imgUrl"
         case status, productName, originPrice, salePrice
         case orderID = "orderId"
         case buyerNickName, addressInfo, paidAt, paymentMethod

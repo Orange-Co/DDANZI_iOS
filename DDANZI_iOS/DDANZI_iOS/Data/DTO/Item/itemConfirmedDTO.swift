@@ -8,10 +8,15 @@
 import Foundation
 
 struct itemConformedDTO: Codable {
-  let productId: String
-  let productName: String
-  let originPrice: Int
-  let salePrice: Int
-  let isAccounExist: Bool
-  let imgUrl: String
-}
+  let productID, productName: String
+     let imgURL: String
+     let originPrice, salePrice: Int
+     let isAccountExist: Bool
+
+     enum CodingKeys: String, CodingKey {
+         case productID = "productId"
+         case productName
+         case imgURL = "imgUrl"
+         case originPrice, salePrice, isAccountExist
+     }
+ }
