@@ -17,6 +17,7 @@ enum UserDefaultsKeyType: String {
   case isLogin
   case name = "name"
   case phone = "phone"
+  case fcmToken = "fcmToken"
 }
 
 extension UserDefaults {
