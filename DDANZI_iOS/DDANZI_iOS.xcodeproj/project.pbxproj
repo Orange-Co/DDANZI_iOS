@@ -61,6 +61,8 @@
 		364895642C62859200AAA8E2 /* UserAddressResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364895632C62859200AAA8E2 /* UserAddressResponseDTO.swift */; };
 		364895662C6285C900AAA8E2 /* UserAddressRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364895652C6285C900AAA8E2 /* UserAddressRequestDTO.swift */; };
 		3648956D2C62896700AAA8E2 /* SearchQueryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648956C2C62896700AAA8E2 /* SearchQueryDTO.swift */; };
+		3648DB852C93E50E003EA6BE /* PushNotificationListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648DB842C93E50E003EA6BE /* PushNotificationListDTO.swift */; };
+		3648DB872C93E5AE003EA6BE /* NotificationEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648DB862C93E5AE003EA6BE /* NotificationEndpoint.swift */; };
 		36542E5F2C2D44B500D5BFEB /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */; };
 		36542E612C2D495B00D5BFEB /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */; };
 		36542E632C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */; };
@@ -264,6 +266,8 @@
 		364895632C62859200AAA8E2 /* UserAddressResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAddressResponseDTO.swift; sourceTree = "<group>"; };
 		364895652C6285C900AAA8E2 /* UserAddressRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAddressRequestDTO.swift; sourceTree = "<group>"; };
 		3648956C2C62896700AAA8E2 /* SearchQueryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchQueryDTO.swift; sourceTree = "<group>"; };
+		3648DB842C93E50E003EA6BE /* PushNotificationListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationListDTO.swift; sourceTree = "<group>"; };
+		3648DB862C93E5AE003EA6BE /* NotificationEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEndpoint.swift; sourceTree = "<group>"; };
 		36542E5E2C2D44B500D5BFEB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		36542E602C2D495A00D5BFEB /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		36542E622C2D4D9500D5BFEB /* MyPageSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -520,6 +524,7 @@
 		3648954C2C6281AA00AAA8E2 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				3648DB832C93E4F0003EA6BE /* Push */,
 				36D514532C7484A9003E1B65 /* Payment */,
 				36D514442C747BD5003E1B65 /* Order */,
 				36B744FA2C6C5542002892C4 /* Onboarding */,
@@ -1098,6 +1103,7 @@
 				36B833F52C5CDD2C009C2C3E /* MypageEndpoint.swift */,
 				36B833F32C5CDD20009C2C3E /* OrderEndpoint.swift */,
 				36D514402C746E98003E1B65 /* PaymentEndpoint.swift */,
+				3648DB862C93E5AE003EA6BE /* NotificationEndpoint.swift */,
 			);
 			path = Endpoint;
 			sourceTree = "<group>";
@@ -1392,6 +1398,7 @@
 				36B745022C6C56B4002892C4 /* VerificationResponseDTO.swift in Sources */,
 				363C24372C66126C0097FCB7 /* HomeUseCase.swift in Sources */,
 				36B7450A2C6D2BEC002892C4 /* PortOneTokenDTO.swift in Sources */,
+				3648DB852C93E50E003EA6BE /* PushNotificationListDTO.swift in Sources */,
 				369C63DF2C1A84DD0021E2E0 /* Fonts.swift in Sources */,
 				36B833F02C5CDD06009C2C3E /* SearchEndpoint.swift in Sources */,
 				36B744E92C6BEEE4002892C4 /* OptionModel.swift in Sources */,
