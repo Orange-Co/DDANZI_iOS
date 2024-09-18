@@ -14,6 +14,7 @@ enum AuthEndpoint {
   case certification(VerificationRequestDTO)
   case revoke
   case logout
+  case refreshToken
 }
 
 extension AuthEndpoint: BaseTargetType {
@@ -27,6 +28,8 @@ extension AuthEndpoint: BaseTargetType {
       return APIConstants.hasAccessTokenHeader
     case .logout:
       return APIConstants.hasAccessTokenHeader
+    case .refreshToken:
+      return APIConstants.hasRefreshTokenHeader
     }
   }
   
@@ -39,7 +42,9 @@ extension AuthEndpoint: BaseTargetType {
     case .revoke:
       return "/api/v1/auth/withdraw"
     case .logout:
-      return ""
+      return "/api/v1/auth/logout"
+    case .refreshToken:
+      return "/api/v1/auth/refreshtoken"
     }
   }
   
@@ -52,6 +57,8 @@ extension AuthEndpoint: BaseTargetType {
     case .revoke:
       return .delete
     case .logout:
+      return .post
+    case .refreshToken:
       return .post
     }
   }
@@ -66,6 +73,8 @@ extension AuthEndpoint: BaseTargetType {
       return .requestPlain
     case .logout:
       return .requestPlain
+    case .refreshToken:
+      return .requestPlain
     }
   }
   
@@ -78,6 +87,8 @@ extension AuthEndpoint: BaseTargetType {
     case .revoke:
       return .successCodes
     case .logout:
+      return .successCodes
+    case .refreshToken:
       return .successCodes
     }
   }
