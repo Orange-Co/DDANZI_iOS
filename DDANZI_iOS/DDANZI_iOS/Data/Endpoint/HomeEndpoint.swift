@@ -10,15 +10,16 @@ import Foundation
 import Moya
 
 enum HomeEndpoint {
-    case loadHomeItems
+    case loadHomeItems(Int)
     case loadItemsDetail(String)
 }
 
 extension HomeEndpoint: BaseTargetType {
     var headers: Parameters? {
+      let isLogin = UserDefaults.standard.bool(forKey: .isLogin)
       switch self {
       case .loadHomeItems:
-        return APIConstants.hasAccessTokenHeader
+        return isLogin ? APIConstants.hasAccessTokenHeader : APIConstants.plain
       case .loadItemsDetail:
         return APIConstants.hasNickname
       }
@@ -44,8 +45,8 @@ extension HomeEndpoint: BaseTargetType {
     
     var task: Moya.Task {
       switch self {
-      case .loadHomeItems:
-        return .requestPlain
+      case .loadHomeItems(let page):
+        return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
       case .loadItemsDetail:
         return .requestPlain
       }
