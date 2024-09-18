@@ -8,11 +8,16 @@
 import UIKit
 
 import RxSwift
+import RxCocoa
 import Kingfisher
 
 class HomeCollectionViewCell: UICollectionViewCell {
   // MARK: Properties
-  let disposeBag = DisposeBag()
+  var disposeBag = DisposeBag()
+  private var isInterst: Bool = false
+  private var itemId: String = ""
+  
+  var isLogoutInterest = BehaviorRelay<Bool>(value: false)
   
   // MARK: Compenets
   private let productImageView = UIImageView().then {
@@ -64,17 +69,24 @@ class HomeCollectionViewCell: UICollectionViewCell {
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      guard let touch = touches.first else { return }
-      let location = touch.location(in: self)
-      
-      if heartButton.frame.contains(location) {
-          // heartButton이 눌린 경우 선택 이벤트 무시
-          return
-      }
-      
-      super.touchesBegan(touches, with: event)
+    guard let touch = touches.first else { return }
+    let location = touch.location(in: self)
+    
+    if heartButton.frame.contains(location) {
+      addInterest()
+      return
+    }
+    
+    super.touchesBegan(touches, with: event)
   }
-
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    isLogoutInterest.accept(false)
+    self.isInterst = false
+    self.itemId = ""
+    disposeBag = DisposeBag()
+  }
   
   // MARK: LayoutHelper
   private func setUI() {
@@ -130,18 +142,53 @@ class HomeCollectionViewCell: UICollectionViewCell {
     }
   }
   
+  private func addInterest() {
+    var heartCount: Int = 0
+    if let count = Int(self.heartCountLabel.text ?? "0") {
+      heartCount = count
+    }
+    
+    if !(UserDefaults.standard.bool(forKey: .isLogin)) {
+      isLogoutInterest.accept(true)
+      return
+    }
+    
+    if isInterst {
+      Providers.InterestProvider.request(target: .deleteInterest(self.itemId), instance: BaseResponse<InterestResponseDTO>.self) { response in
+        guard let data = response.data else { return }
+        self.heartCountLabel.text = "\(max(heartCount - 1, 0))"
+        self.heartButton.setImage(.icEmptyHeart, for: .normal)
+        self.isInterst.toggle()
+      }
+    } else {
+      Providers.InterestProvider.request(target: .addInterest(self.itemId), instance: BaseResponse<InterestResponseDTO>.self) { response in
+        guard let data = response.data else { return }
+        self.heartCountLabel.text = "\(heartCount + 1)"
+        self.heartButton.setImage(.icFillHeartYellow, for: .normal)
+        self.isInterst.toggle()
+      }
+    }
+  }
+  
   func bindData(
     productImageURL: String,
     productTitle: String,
     beforePrice: String,
     price: String,
-    heartCount: Int
+    heartCount: Int,
+    isInterest: Bool,
+    itemID: String
   ) {
+    self.isInterst = isInterest
+    self.itemId = itemID
+    
     productImageView.setImage(with: productImageURL)
     titleLabel.text = productTitle
     beforePriceLabel.text = beforePrice
     priceLabel.text = price
     heartCountLabel.text = "\(heartCount)"
+    
+    heartButton.setImage(isInterest ? .icFillHeartYellow : .icEmptyHeart, for: .normal)
     
     beforePriceLabel.attributedText = beforePriceLabel.text?.strikeThrough()
   }
