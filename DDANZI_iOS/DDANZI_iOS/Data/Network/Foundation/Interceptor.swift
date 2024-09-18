@@ -5,7 +5,7 @@
 //  Created by 이지희 on 7/23/24.
 //
 
-import Foundation
+import UIKit
 
 import Alamofire
 import Moya
@@ -27,16 +27,32 @@ final class AuthInterceptor: RequestInterceptor {
       print("🚨status code 오류")
       return completion(.doNotRetry)
     }
-  
+    
     if  request.retryCount < retryLimit {
       if let statusCode = request.response?.statusCode,
          request.retryCount < retryLimit {
-        if statusCode == 401 {
-          
+        if statusCode == 403 {
+          refreshToken()
         }  else {
           completion(.doNotRetryWithError(error))
           return
         }
+      }
+    }
+  }
+}
+
+extension AuthInterceptor {
+  private func refreshToken() {
+    Providers.AuthProvider.request(target: .refreshToken, instance: BaseResponse<RefreshTokenDTO>.self) { response in
+      guard let data = response.data else { return }
+      if let accessToken = data.accesstoken {
+        KeychainWrapper.shared.setAccessToken(accessToken)
+        UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
+      }
+      
+      if response.status == 401  {
+        UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
       }
     }
   }
