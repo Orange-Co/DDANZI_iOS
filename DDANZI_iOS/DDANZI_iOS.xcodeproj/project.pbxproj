@@ -401,6 +401,7 @@
 				368E369E2C4A3B61003FA911 /* RxBlocking in Frameworks */,
 				368E36A52C4A3BA9003FA911 /* SnapKit in Frameworks */,
 				36B744EE2C6C4CD2002892C4 /* KakaoSDK in Frameworks */,
+				36130D042C92B0F90028CF3A /* FirebaseMessaging in Frameworks */,
 				368E36A02C4A3B61003FA911 /* RxCocoa in Frameworks */,
 				36B744F92C6C50D3002892C4 /* RxKakaoSDKCommon in Frameworks */,
 				36B744F22C6C4CD2002892C4 /* KakaoSDKCommon in Frameworks */,
@@ -1253,6 +1254,7 @@
 				36B744F62C6C50D3002892C4 /* RxKakaoSDKAuth */,
 				36B744F82C6C50D3002892C4 /* RxKakaoSDKCommon */,
 				3664CFD92C6E2179007FB5DF /* Lottie */,
+				36130D032C92B0F90028CF3A /* FirebaseMessaging */,
 			);
 			productName = DDANZI_iOS;
 			productReference = 369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */;
@@ -1338,6 +1340,7 @@
 				36B744EC2C6C4CD2002892C4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				36B744F32C6C50D3002892C4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				3664CFD82C6E2179007FB5DF /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				36130D022C92B0F90028CF3A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 369C63882C1A7A240021E2E0 /* Products */;
 			projectDirPath = "";
@@ -1890,6 +1893,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		36130D022C92B0F90028CF3A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.2.0;
+			};
+		};
 		363C243A2C6619950097FCB7 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1981,6 +1992,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		36130D032C92B0F90028CF3A /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36130D022C92B0F90028CF3A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		363C243B2C6619950097FCB7 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 363C243A2C6619950097FCB7 /* XCRemoteSwiftPackageReference "Kingfisher" */;
