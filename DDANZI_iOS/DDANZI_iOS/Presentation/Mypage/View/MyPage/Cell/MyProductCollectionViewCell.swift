@@ -23,6 +23,8 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
   
   private let disposeBag = DisposeBag()
   private let listTypeRelay = BehaviorRelay<ListType>(value: .sales)
+  private var itemId: String = ""
+  private var isInterst: Bool = true
   
   var listType: ListType {
     get {
@@ -69,7 +71,7 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     $0.textColor = .black
   }
   private let heartButton = UIButton().then {
-    $0.setImage(.icHeart, for: .normal)
+    $0.setImage(.icFillHeartYellow, for: .normal)
   }
   
   override init(frame: CGRect) {
@@ -82,6 +84,23 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func prepareForReuse() {
+    self.isInterst = true
+    self.itemId = ""
+    super.prepareForReuse()
+  }
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first else { return }
+    let location = touch.location(in: self)
+    
+    if heartButton.frame.contains(location) {
+      addInterest()
+      return
+    }
+    
+    super.touchesBegan(touches, with: event)
+  }
   
   private func bindUI() {
     listTypeRelay
@@ -203,20 +222,46 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
           .disposed(by: disposeBag)
   }
   
+  private func addInterest() {
+    var heartCount: Int = 0
+    if let count = Int(self.heartLabel.text ?? "0") {
+      heartCount = count
+    }
+    
+    if isInterst {
+      Providers.InterestProvider.request(target: .deleteInterest(self.itemId), instance: BaseResponse<InterestResponseDTO>.self) { response in
+        guard let data = response.data else { return }
+        self.heartLabel.text = "\(max(heartCount - 1, 0))"
+        self.heartButton.setImage(.icEmptyHeart, for: .normal)
+        self.isInterst.toggle()
+      }
+    } else {
+      Providers.InterestProvider.request(target: .addInterest(self.itemId), instance: BaseResponse<InterestResponseDTO>.self) { response in
+        guard let data = response.data else { return }
+        self.heartLabel.text = "\(heartCount + 1)"
+        self.heartButton.setImage(.icFillHeartYellow, for: .normal)
+        self.isInterst.toggle()
+      }
+    }
+  }
+  
   func bindData(
     image: String,
     title: String,
     beforePrice: String,
     price: String,
     heartCount: Int,
-    completedAt: String = ""
+    completedAt: String = "",
+    isInterst: Bool = true,
+    itemId: String
   ) {
     imageView.setImage(with: image)
     titleLabel.text = title
     beforeLabel.text = beforePrice
     priceLabel.text = price
     heartLabel.text = "\(heartCount)"
-    
+    self.isInterst = isInterst
+    self.itemId = itemId
     
     beforeLabel.attributedText = beforeLabel.text?.strikeThrough()
     
