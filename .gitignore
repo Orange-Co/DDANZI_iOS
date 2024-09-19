@@ -134,3 +134,5 @@ iOSInjectionProject/
 # End of https://www.toptal.com/developers/gitignore/api/xcode,macos,swift
 
 *.xcconfig
+
+DDANZI_iOS/DDANZI_iOS/GoogleService-Info.plist
