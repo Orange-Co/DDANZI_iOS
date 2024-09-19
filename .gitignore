@@ -135,5 +135,4 @@ iOSInjectionProject/
 
 *.xcconfig
 
-# google info
-GoogleService-Info.plist
+DDANZI_iOS/DDANZI_iOS/GoogleService-Info.plist
