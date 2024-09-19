@@ -11,10 +11,12 @@ import Foundation
 struct HomeItemsResponseDTO: Codable {
   let homeImgURL: String
   let productList: [ProductList]
+  let pageInfo: PageInfo
   
   enum CodingKeys: String, CodingKey {
     case homeImgURL = "homeImgUrl"
     case productList
+    case pageInfo
   }
 }
 
@@ -25,6 +27,7 @@ struct ProductList: Codable {
   let name: String
   let imgURL: String
   let originPrice, salePrice, interestCount: Int
+  let isInterested: Bool
   
   enum CodingKeys: String, CodingKey {
     case productID = "productId"
@@ -32,5 +35,11 @@ struct ProductList: Codable {
     case name
     case imgURL = "imgUrl"
     case originPrice, salePrice, interestCount
+    case isInterested
   }
+}
+
+struct PageInfo: Codable {
+  let totalElements: Int
+  let numberOfElements: Int
 }
