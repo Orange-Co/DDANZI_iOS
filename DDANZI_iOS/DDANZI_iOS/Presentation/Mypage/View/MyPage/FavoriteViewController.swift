@@ -97,7 +97,8 @@ final class FavoriteViewController: UIViewController {
                       title: item.title,
                       beforePrice: item.beforePrice,
                       price: item.price,
-                      heartCount: item.heartCount)
+                      heartCount: item.heartCount,
+                      itemId: item.id)
         cell.listType = self.listTypeRelay.value
         return cell
       }

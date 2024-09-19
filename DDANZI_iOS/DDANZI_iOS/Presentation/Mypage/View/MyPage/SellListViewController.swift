@@ -96,7 +96,8 @@ final class SellListViewController: UIViewController {
                       title: item.title,
                       beforePrice: item.beforePrice,
                       price: item.price,
-                      heartCount: item.heartCount)
+                      heartCount: item.heartCount,
+                      itemId: item.id)
         cell.listType = self.listTypeRelay.value
         return cell
       }
@@ -111,7 +112,7 @@ final class SellListViewController: UIViewController {
     collectionView.rx.modelSelected(ProductInfoModel.self)
       .subscribe(onNext: { [weak self] product in
         guard let self = self else { return }
-        let detailVC = ProductDetailViewController(productId: "\(product.id)")
+        let detailVC = SalesDetailViewController(productId: "\(product.id)")
         self.navigationController?.pushViewController(detailVC, animated: true)
       })
       .disposed(by: disposeBag)
@@ -127,7 +128,7 @@ final class SellListViewController: UIViewController {
       guard let data = result.data else { return }
       
       let products: [ProductInfoModel] = data.itemProductList.map { product in
-          .init(id: product.productID, imageURL: product.imgURL, title: product.name, beforePrice: product.originPrice.toKoreanWon(), price: product.salePrice.toKoreanWon(), heartCount: product.interestCount)
+          .init(id: product.itemID, imageURL: product.imgURL, title: product.productName, beforePrice: product.originPrice.toKoreanWon(), price: product.salePrice.toKoreanWon(), heartCount: product.interestCount)
       }
       
       headerView.setCount(count: data.totalCount)

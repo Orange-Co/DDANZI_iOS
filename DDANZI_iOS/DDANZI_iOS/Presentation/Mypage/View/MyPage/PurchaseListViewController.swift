@@ -117,7 +117,7 @@ final class PurchaseListViewController: UIViewController {
           beforePrice: item.beforePrice,
           price: item.price,
           heartCount: 0,
-          completedAt: item.completedAt.toKoreanDateTimeFormat() ?? ""
+          completedAt: item.completedAt.toKoreanDateTimeFormat() ?? "", itemId: item.productID
         )
         cell.listType = self.listTypeRelay.value
         return cell
