@@ -18,7 +18,7 @@ final class PurchaseDetailViewController: UIViewController {
   var PurchaseState: StatusType = .orderComplete
   var orderId: String
   
-  var status: [Status] = []
+  var status = BehaviorRelay<[Status]>(value: [])
   var product: [Product] = []
   var nickName: [String] = []
   var address: [Address] = []
@@ -45,7 +45,7 @@ final class PurchaseDetailViewController: UIViewController {
     $0.addShadow(offset: .init(width: 0, height: 2), opacity: 0.4)
   }
   
-  private let button = DdanziButton(title: "판매 확정하기", enable: false)
+  private let button = DdanziButton(title: "구매 확정하기")
   
   init(orderId: String) {
     self.orderId = orderId
@@ -107,7 +107,7 @@ final class PurchaseDetailViewController: UIViewController {
   private func fetchOrderDetail(orderID: String) {
     Providers.OrderProvider.request(target: .fetchOrderDetail(orderID), instance: BaseResponse<FetchOrderDetailResponseDTO>.self) { response in
       guard let data = response.data else { return }
-      self.status = [.init(code: data.orderID, status: StatusType(rawValue: data.orderStatus) ?? .complete)]
+      self.status.accept([.init(code: data.orderID, status: StatusType(rawValue: data.orderStatus) ?? .complete)])
       self.product = [.init(imageURL: data.imgURL, productName: data.productName, price: data.totalPrice.toKoreanWon())]
       self.nickName = [data.sellerNickname]
       self.address = [.init(name: data.addressInfo.recipient ?? "", address: data.addressInfo.address ?? "", phone: data.addressInfo.recipientPhone ?? "")]
@@ -122,17 +122,38 @@ final class PurchaseDetailViewController: UIViewController {
     }
   }
   
+  private func conformedPurchase(orderId: String) {
+    Providers.OrderProvider.request(target: .conformedOrderBuy(orderId), instance: BaseResponse<ConformedDTO>.self) { response in
+      guard let data = response.data else { return }
+      self.orderId = data.orderID
+      self.status.accept([Status(code: data.orderID, status: .init(rawValue: data.orderStatus) ?? .complete)])
+      self.navigationController?.popToRootViewController(animated: true)
+    }
+  }
+  
   private func bind() {
     navigaitonBar.cancelButtonTap
       .subscribe(onNext: { [weak self] in
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    status.bind(with: self) { owner, _ in
+      owner.collectionView.reloadData()
+    }
+    .disposed(by: disposeBag)
+    
+    button.rx.tap
+      .subscribe(with: self) { owner, _ in
+        owner.conformedPurchase(orderId: owner.orderId)
+        owner.collectionView.reloadData()
+      }
+      .disposed(by: disposeBag)
   }
   
   private func configureCollectionView() {
     let sections: [SectionModel<String, Any>] = [
-      SectionModel(model: "거래상태", items: status),
+      SectionModel(model: "거래상태", items: status.value),
       SectionModel(model: "상품 정보", items: product),
       SectionModel(model: "판매자 정보", items: nickName),
       SectionModel(model: "배송지 정보", items: address),
