@@ -57,7 +57,7 @@ class BankAccountViewController: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = .white
     setUI()
-    configureButton()
+    fetchAccountInfo()
     bind()
   }
   
@@ -110,10 +110,15 @@ class BankAccountViewController: UIViewController {
     }
   }
   
-  func configureButton() {
-    bankNameLabel.text = "국민 은행"
-    accountNumberLabel.text = "82-123123-123123"
-    nameLabel.text = "이승준"
+  // 계좌 추가 필요
+  func fetchAccountInfo() {
+    Providers.MypageProvider.request(target: .fetchUserAccount, instance: BaseResponse<UserAccountDTO>.self) { response in
+      guard let data = response.data else { return }
+      
+      self.bankNameLabel.text = data.bank ?? ""
+      self.nameLabel.text = data.name
+      self.accountNumberLabel.text = data.accountNumber ?? ""
+    }
   }
   
   private func bind() {

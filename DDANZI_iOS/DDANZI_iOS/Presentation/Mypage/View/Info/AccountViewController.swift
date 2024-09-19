@@ -96,19 +96,39 @@ extension AccountViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.row == 0 {
-      UserApi.shared.logout {(error) in
-        if let error = error {
-          print(error)
-          
-          UserDefaults.standard.set(false, forKey: .isLogin)
-          self.navigationController?.popToRootViewController(animated: true)
+      Providers.AuthProvider.request(target: .logout, instance: BaseResponse<Bool>.self) { response in
+        UserApi.shared.logout {(error) in
+          if let error = error {
+            print(error)
+            
+            UserDefaults.standard.set(false, forKey: .isLogin)
+            self.navigationController?.popToRootViewController(animated: true)
+          }
+          else {
+            UserDefaults.standard.clearAll()
+            
+            UserDefaults.standard.set(false, forKey: .isLogin)
+            self.navigationController?.popToRootViewController(animated: true)
+            print("logout() success.")
+          }
         }
-        else {
-          UserDefaults.standard.clearAll()
-          
-          UserDefaults.standard.set(false, forKey: .isLogin)
-          self.navigationController?.popToRootViewController(animated: true)
-          print("logout() success.")
+      }
+      }
+    if indexPath.row == 1 {
+      Providers.AuthProvider.request(target: .revoke, instance: BaseResponse<WithDrawDTO>.self) { response in
+        UserApi.shared.unlink {(error) in
+          if let error = error {
+            print(error)
+            
+            UserDefaults.standard.set(false, forKey: .isLogin)
+            self.navigationController?.popToRootViewController(animated: true)
+          }
+          else {
+            UserDefaults.standard.clearAll()
+            KeychainWrapper.shared.setAccessToken("")
+            UserDefaults.standard.set(false, forKey: .isLogin)
+            self.navigationController?.popToRootViewController(animated: true)
+          }
         }
       }
     }
