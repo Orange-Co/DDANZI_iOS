@@ -11,6 +11,7 @@ import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import Amplitude
 
 final class PushSettingViewController: UIViewController {
   private let disposeBag = DisposeBag()
@@ -54,6 +55,8 @@ final class PushSettingViewController: UIViewController {
     self.response = response
     self.orderId = orderId
     self.isSelling = isSelling
+    let eventName = isSelling ? "view_sell_push" : "view_purchase_push"
+    Amplitude.instance().logEvent(eventName)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -110,8 +113,11 @@ final class PushSettingViewController: UIViewController {
     laterButton.rx.tap
       .bind(with: self) { owner, _ in
         if owner.isSelling {
+          Amplitude.instance().logEvent("click_sell_push_refuse")
           owner.navigationController?.pushViewController(RegisteCompleteViewController(response: owner.response), animated: true)
         } else {
+          
+            Amplitude.instance().logEvent("click_purchase_push_refuse")
           owner.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: owner.orderId), animated: true)
         }
     }
