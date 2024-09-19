@@ -10,6 +10,7 @@ import UIKit
 import Then
 import SnapKit
 import RxSwift
+import Amplitude
 
 final class RegisteCompleteViewController: UIViewController {
   
@@ -159,12 +160,14 @@ final class RegisteCompleteViewController: UIViewController {
   private func bind() {
     conformedButton.rx.tap
       .subscribe(with: self) { owner, _ in
+        Amplitude.instance().logEvent("click_sell_adjustment_check")
         owner.navigationController?.popToViewController(LandingViewController(), animated: true)
       }
       .disposed(by: disposeBag)
     
     moreButton.rx.tap
       .subscribe(with: self) { owner, _ in
+        Amplitude.instance().logEvent("click_sell_adjustment_add")
         owner.navigationController?.popToRootViewController(animated: true)
       }
       .disposed(by: disposeBag)

@@ -10,9 +10,15 @@ import UIKit
 import RxSwift
 import SnapKit
 import Then
+import Amplitude
 
 final class LandingViewController: UIViewController {
   
+  private let events: [String] = [
+  "click_landing_1_next",
+  "click_landing_2_next",
+  "click_landing_3_next"
+  ]
   private let guideImages: [UIImage] = [UIImage(resource: .image1), UIImage(resource: .image2), UIImage(resource: .image3)]
   private let guideTexts: [String] = [
     "선물받은 배송상품의 캡처화면을 업로드 해주세요.\n\n상품명이 확인 되어야 합니다!",
@@ -68,6 +74,9 @@ final class LandingViewController: UIViewController {
     self.view.backgroundColor = .white
     imageView.image = guideImages[currentImageIndex]
     guideLabel.text = guideTexts[currentImageIndex]
+    if currentImageIndex == 0 {
+      Amplitude.instance().logEvent("view_landing_1")
+    }
     
     
     view.addSubviews(
@@ -117,6 +126,7 @@ final class LandingViewController: UIViewController {
     
     nextButton.rx.tap
       .subscribe(with: self, onNext: { owner, _ in
+        Amplitude.instance().logEvent(owner.events[owner.currentImageIndex])
         if owner.currentImageIndex == 2 {
           if !(UserDefaults.standard.bool(forKey: .isLogin)) {
             owner.navigationController?.pushViewController(LoginViewController(), animated: true)
@@ -179,6 +189,7 @@ final class LandingViewController: UIViewController {
       .bind(onNext: { [weak self] isGranted in
         if isGranted {
           DispatchQueue.main.async {
+            Amplitude.instance().logEvent("view_gallery")
             PHPickerManager.shared.presentPicker(vc: self)
           }
         }
