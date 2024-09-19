@@ -15,6 +15,10 @@ import RxCocoa
 final class CsCenterViewController: UIViewController {
     private let disposeBag = DisposeBag()
     let navigaionBar = CustomNavigationBarView(navigationBarType: .normal, title: "상담 센터")
+  
+  let imageView = UIImageView().then {
+    $0.image = .cs
+  }
     
     let titleLabel = UILabel().then {
         $0.textColor = .black
@@ -64,6 +68,7 @@ final class CsCenterViewController: UIViewController {
     
     private func setHierarchy() {
         view.addSubviews(navigaionBar,
+                         imageView,
                          titleLabel,
                          guideView,
                          contactButton)
@@ -74,6 +79,11 @@ final class CsCenterViewController: UIViewController {
         navigaionBar.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
+      
+      imageView.snp.makeConstraints {
+        $0.bottom.equalTo(titleLabel.snp.top).offset(-20)
+        $0.centerX.equalToSuperview()
+      }
         
         titleLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -101,6 +111,14 @@ final class CsCenterViewController: UIViewController {
         .subscribe(onNext: { [weak self] in
           self?.navigationController?.popViewController(animated: true)
         })
+        .disposed(by: disposeBag)
+      
+      contactButton.rx.tap
+        .subscribe(with: self) { owner, _ in
+          if let url = URL(string: "https://open.kakao.com/o/sJ9nJsKg") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+          }
+        }
         .disposed(by: disposeBag)
     }
     
