@@ -28,7 +28,9 @@ final class LandingViewController: UIViewController {
   
   // MARK: - UI
   private let navigationBar = CustomNavigationBarView(navigationBarType: .cancel, title: "판매하기")
-  private let imageView = UIImageView()
+  private let imageView = UIImageView().then {
+    $0.contentMode = .scaleAspectFill
+  }
   
   private let pageControl = UIPageControl().then {
     $0.numberOfPages = 3
@@ -107,9 +109,20 @@ final class LandingViewController: UIViewController {
   }
   
   private func bind() {
+    navigationBar.cancelButtonTap
+      .subscribe(with: self) { owner, _ in
+        owner.navigationController?.popViewController(animated: true)
+      }
+      .disposed(by: disposeBag)
+    
     nextButton.rx.tap
       .subscribe(with: self, onNext: { owner, _ in
         if owner.currentImageIndex == 2 {
+          if !(UserDefaults.standard.bool(forKey: .isLogin)) {
+            owner.navigationController?.pushViewController(LoginViewController(), animated: true)
+            owner.view.showToast(message: "로그인이 필요한 서비스 입니다.", at: 50)
+            return
+          }
           owner.checkPhotoPermissionAndShowPicker()
         } else {
           owner.currentImageIndex = (owner.currentImageIndex + 1) % owner.guideImages.count
@@ -146,14 +159,16 @@ final class LandingViewController: UIViewController {
   }
   
   private func checkPhotoPermissionAndShowPicker() {
-    // TODO: - 로그인 여부 생각해야 함
     // presigned URL 미리 생성
     let query = PresignedURLQuery(fileName: UUID().uuidString + ".jpeg")
     Providers.ItemProvider.request(target: .requestPresignedURL(body: query), instance: BaseResponse<PresignedURLDTO>.self) { response in
       guard let data = response.data else { return }
       self.presignedURL = data.signedUrl
+      self.checkPermissionAndPresent()
     }
-    
+  }
+  
+  private func checkPermissionAndPresent(){
     PermissionManager.shared.checkPermission(for: .photo)
       .flatMap { isGranted -> Observable<Bool> in
         if !isGranted {
@@ -172,11 +187,10 @@ final class LandingViewController: UIViewController {
   }
   
   private func checkItem(imageURL: String) {
-    
     let body = ItemCheckRequestBody(image_url: imageURL)
     Providers.ItemProvider.request(target: .itemCheck(body: body), instance: BaseResponse<ItemCheckDTO>.self) { response in
       guard let data = response.data else { return }
-      let checkVC = CheckItemViewController()
+      let checkVC = CheckItemViewController(responseData: data, productId: data.productId)
       checkVC.response.accept(data)
       DdanziLoadingView.shared.stopAnimating()
       self.navigationController?.pushViewController(checkVC, animated: false)
