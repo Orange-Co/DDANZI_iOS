@@ -14,6 +14,10 @@ import RxCocoa
 
 final class PushSettingViewController: UIViewController {
   private let disposeBag = DisposeBag()
+  var isSelling: Bool
+  var orderId: String
+  private var response: RegisteItemDTO
+  
   private let cancelButton = UIButton().then {
     $0.setImage(.icCancel, for: .normal)
   }
@@ -46,6 +50,17 @@ final class PushSettingViewController: UIViewController {
     $0.setTitleColor(.gray2, for: .normal)
   }
   
+  init(isSelling: Bool = false, orderId: String, response: RegisteItemDTO) {
+    self.response = response
+    self.orderId = orderId
+    self.isSelling = isSelling
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     bind()
@@ -74,13 +89,13 @@ final class PushSettingViewController: UIViewController {
     }
     
     innerStackView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(113)
+      $0.top.equalToSuperview().offset(113.adjusted)
       $0.centerX.equalToSuperview()
     }
     
     laterButton.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview().inset(20)
-      $0.bottom.equalToSuperview().inset(28)
+      $0.bottom.equalToSuperview().inset(28.adjusted)
     }
     
     conformButton.snp.makeConstraints {
@@ -92,10 +107,29 @@ final class PushSettingViewController: UIViewController {
   }
   
   private func bind() {
-    conformButton.rx.tap.bind {
-      self.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: ""), animated: true)
+    laterButton.rx.tap
+      .bind(with: self) { owner, _ in
+        if owner.isSelling {
+          owner.navigationController?.pushViewController(RegisteCompleteViewController(response: owner.response), animated: true)
+        } else {
+          owner.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: owner.orderId), animated: true)
+        }
     }
     .disposed(by: disposeBag)
+    
+    conformButton.rx.tap
+      .bind(with: self) { owner, _ in
+        PermissionManager.shared.requestNotificationPermission()
+          .subscribe(with: self) { owner, isAllow in
+            if owner.isSelling {
+              owner.navigationController?.pushViewController(RegisteCompleteViewController(response: owner.response), animated: true)
+            } else {
+              owner.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: owner.orderId), animated: true)
+            }
+          }
+          .disposed(by: owner.disposeBag)
+      }
+      .disposed(by: disposeBag)
   }
   
 }
