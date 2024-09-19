@@ -14,10 +14,23 @@ import RxCocoa
 import RxDataSources
 
 class SalesDetailViewController: UIViewController {
+  
+  var status = BehaviorRelay<[Status]>(value: [])
+  var product = BehaviorRelay<[Product]>(value: [])
+  var nickName = BehaviorRelay<[String]>(value: [])
+  var address = BehaviorRelay<[Address]>(value: [])
+  var transactionInfo = BehaviorRelay<[Info]>(value: [])
+  var purchaseInfo = BehaviorRelay<[Info]>(value: [])
+  var totalPrice = BehaviorRelay<String>(value: "")
+  var sellStatus = BehaviorRelay<StatusType>(value: .inProgress)
+  
   private let disposeBag = DisposeBag()
+  var orderId: String = ""
+  var imageURL: String = ""
   var PurchaseState: StatusType = .orderComplete
   
-  private let navigaitonBar = CustomNavigationBarView(navigationBarType: .cancel, title: "구매 상세")
+  
+  private let navigaitonBar = CustomNavigationBarView(navigationBarType: .cancel, title: "판매 상세")
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
     $0.backgroundColor = .white
     $0.register(DetailSectionHeaderView.self,
@@ -37,14 +50,28 @@ class SalesDetailViewController: UIViewController {
     $0.addShadow(offset: .init(width: 0, height: 2), opacity: 0.4)
   }
   
-  private let button = DdanziButton(title: "구매 확정하기")
+  private let button = DdanziButton(title: "판매 확정하기")
+  
+  init(productId: String) {
+    super.init(nibName: nil, bundle: nil)
+    
+    fetchSaleDeatail(orderId: productId)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   override func viewWillAppear(_ animated: Bool) {
     self.tabBarController?.tabBar.isHidden = true
+    
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(updateStatus), name: .didCompleteCopyAction, object: nil)
+    
     setUI()
     configureCollectionView()
     bind()
@@ -83,6 +110,37 @@ class SalesDetailViewController: UIViewController {
       $0.centerX.equalToSuperview()
       $0.top.equalToSuperview().offset(12)
       $0.leading.trailing.equalToSuperview().inset(20)
+      $0.height.equalTo(50)
+    }
+  }
+  
+  private func fetchSaleDeatail(orderId: String) {
+    Providers.ItemProvider.request(target: .detailItem(id: orderId), instance: BaseResponse<SellDetailDTO>.self) { response in
+      
+      guard let data = response.data else { return }
+      
+      self.orderId = data.orderID ?? ""
+      
+      self.sellStatus.accept(.init(rawValue: data.status) ?? .inProgress)
+      
+      self.status.accept([Status(code: data.orderID ?? "", status: .init(rawValue: data.status) ?? .inProgress)])
+      self.product.accept([Product(imageURL: data.imgURL,
+                                   productName: data.productName,
+                                   price: data.originPrice.toKoreanWon())])
+      self.nickName.accept([data.buyerNickName ?? ""])
+      if let recipient = data.addressInfo.recipient,
+         let zipcode = data.addressInfo.zipCode,
+         let phone = data.addressInfo.recipientPhone,
+         let address = data.addressInfo.address {
+        self.address.accept([Address(name: recipient,
+                                     address: "(\(zipcode)) \(address)",
+                                     phone: phone)])
+      }
+      self.transactionInfo.accept([Info(title: "결제 수단", info: data.paymentMethod ?? ""),
+                                   Info(title: "결제 일자", info: data.paidAt ?? "")])
+      self.purchaseInfo.accept([Info(title: "카카오톡 선물하기 가격", info: data.originPrice.toKoreanWon()),
+                                Info(title: "판매가", info: data.salePrice.toKoreanWon())])
+      self.totalPrice.accept(data.salePrice.toKoreanWon())
     }
   }
   
@@ -92,31 +150,48 @@ class SalesDetailViewController: UIViewController {
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    
+    sellStatus
+      .withUnretained(self)
+      .bind { owner, type in
+        switch type {
+        case .inProgress, .orderComplete, .notDeposit, .onSale:
+          owner.button.titleLabel?.text = "판매 확정하기"
+        case .deposit:
+          owner.button.titleLabel?.text = "판매 확정하기"
+          owner.button.setEnable()
+        case .delivery:
+          owner.button.titleLabel?.text = "배송 중인 상품입니다."
+        case .complete:
+          owner.button.titleLabel?.text = "거래가 완료된 상품입니다."
+        case .cancel:
+          owner.button.titleLabel?.text = "거래가 취소된 상품입니다."
+        }
+      }
+      .disposed(by: disposeBag)
+    
+    button.rx.tap
+      .subscribe(with: self) { owner, _ in
+        let copyVC = KakaoCopyViewController(orderId: owner.orderId)
+        owner.navigationController?.pushViewController(copyVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+
   }
   
   private func configureCollectionView() {
-    let status: [Status] = [Status(code: "RDAFSD391480", status: .orderComplete)]
-    let product: [Product] = [Product(imageURL: "", 
-                           productName: "상품이름이름이름",
-                           price: "24,000원")]
-    let nickName: [String] = ["등둔"]
-    let address: [Address] = [Address(name: "이단지",
-                                      address: "(02578) 서울특별시 동대문구 무학로45길 34 (용두동), 204호",
-                                      phone: "010-4614-3858")]
-    let transactionInfo: [Info] = [Info(title: "결제 수단", info: "네이버페이"),
-                                   Info(title: "결제 일자", info: "2024.05.25")]
-    let purchaseInfo: [Info] = [Info(title: "상품 금액", info: "24,000원"),
-                                Info(title: "할인가", info: "-3,000원"),
-                                Info(title: "수수료", info: "+350원")]
     
-    let sections: [SectionModel<String, Any>] = [
-      SectionModel(model: "거래상태", items: status),
-      SectionModel(model: "상품 정보", items: product),
-      SectionModel(model: "판매자 정보", items: nickName),
-      SectionModel(model: "배송지 정보", items: address),
-      SectionModel(model: "거래 정보", items: transactionInfo),
-      SectionModel(model: "결제 정보", items: purchaseInfo),
-    ]
+    let sections = Observable.combineLatest(status, product, nickName, address, transactionInfo, purchaseInfo) { status, product, nickName, address, transactionInfo, purchaseInfo -> [SectionModel<String, Any>] in
+      return [
+        SectionModel(model: "거래상태", items: status),
+        SectionModel(model: "상품 정보", items: product),
+        SectionModel(model: "판매자 정보", items: nickName),
+        SectionModel(model: "배송지 정보", items: address),
+        SectionModel(model: "거래 정보", items: transactionInfo),
+        SectionModel(model: "결제 정보", items: purchaseInfo),
+      ]
+    }
     
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
       configureCell: { dataSource, collectionView, indexPath, item in
@@ -175,24 +250,33 @@ class SalesDetailViewController: UIViewController {
           return header
         }
         if kind == UICollectionView.elementKindSectionFooter {
-                  guard indexPath.section == 5, // 마지막 섹션만 체크
-                        let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TotalPriceFooterView.className, for: indexPath) as? TotalPriceFooterView else {
-                    return UICollectionReusableView()
-                  }
-                  footer.configureFooter(totalPrice: "21,350원")
-                  return footer
-                }
+          guard indexPath.section == 5, // 마지막 섹션만 체크
+                let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TotalPriceFooterView.className, for: indexPath) as? TotalPriceFooterView else {
+            return UICollectionReusableView()
+          }
+          footer.configureFooter(totalPrice: self.totalPrice.value)
+          return footer
+        }
         return UICollectionReusableView()
       }
     )
     
-    let items = Observable.just(sections)
-    
-    items.bind(to: collectionView.rx.items(dataSource: dataSource))
+    sections
+      .bind(to: collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
     
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
+  }
+  
+  @objc private func updateStatus() {
+    // 상태 업데이트 로직 (필요한 경우 API 다시 호출)
+    fetchSaleDeatail(orderId: self.orderId)
+    print("Notification을 수신하여 상태를 업데이트했습니다.")
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
   }
   
 }
@@ -205,8 +289,8 @@ extension SalesDetailViewController {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                             heightDimension: .fractionalHeight(1)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                       heightDimension: .estimated(160)),
-                                                     subitems: [item])
+                                                                         heightDimension: .estimated(160)),
+                                                       subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 0, leading: 20, bottom: 15, trailing: 20)
         return section
@@ -293,3 +377,7 @@ extension SalesDetailViewController {
 }
 
 extension SalesDetailViewController: UICollectionViewDelegate { }
+
+extension Notification.Name {
+  static let didCompleteCopyAction = Notification.Name("didCompleteCopyAction")
+}

@@ -13,6 +13,8 @@ enum OrderEndpoint {
   case fetchOrderInfo(String)
   case executeOrder(body: ExecuteRequestBody)
   case fetchOrderDetail(String)
+  case conformedOrderBuy(String)
+  case conformedOrderSale(String)
 }
 
 extension OrderEndpoint: BaseTargetType {
@@ -23,6 +25,10 @@ extension OrderEndpoint: BaseTargetType {
     case .executeOrder:
       return APIConstants.hasAccessTokenHeader
     case .fetchOrderDetail:
+      return APIConstants.hasAccessTokenHeader
+    case .conformedOrderBuy:
+      return APIConstants.hasAccessTokenHeader
+    case .conformedOrderSale:
       return APIConstants.hasAccessTokenHeader
     }
   }
@@ -35,6 +41,10 @@ extension OrderEndpoint: BaseTargetType {
       return "/api/v1/order"
     case .fetchOrderDetail(let id):
       return "/api/v1/order/\(id)"
+    case .conformedOrderBuy(let id):
+      return "/api/v1/order/\(id)/buy"
+    case .conformedOrderSale(let id):
+      return "/api/v1/order/\(id)/sale"
     }
   }
   
@@ -46,6 +56,10 @@ extension OrderEndpoint: BaseTargetType {
       return .post
     case .fetchOrderDetail:
       return .get
+    case .conformedOrderBuy(_):
+      return .patch
+    case .conformedOrderSale(_):
+      return .patch
     }
   }
   
@@ -57,17 +71,14 @@ extension OrderEndpoint: BaseTargetType {
       return .requestJSONEncodable(body)
     case .fetchOrderDetail:
       return .requestPlain
+    case .conformedOrderBuy(_):
+      return .requestPlain
+    case .conformedOrderSale(_):
+      return .requestPlain
     }
   }
   
   var validationType: ValidationType {
-    switch self {
-    case .fetchOrderInfo:
-      return .successCodes
-    case .executeOrder:
-      return .successCodes
-    case .fetchOrderDetail:
-      return .successCodes
-    }
+    return .successCodes
   }
 }

@@ -36,6 +36,7 @@ final class CustomNavigationBarView: UIView {
     private let homeButtonSubject = PublishSubject<Void>()
     private let searchButtonSubject = PublishSubject<Void>()
     private let settingButtonSubject = PublishSubject<Void>()
+    private let alarmButtonSubject = PublishSubject<Void>()
     private let searchBarSubject = PublishSubject<Void>()
     
     var backButtonTap: Observable<Void> { backButtonSubject.asObservable() }
@@ -44,9 +45,11 @@ final class CustomNavigationBarView: UIView {
     var searchButtonTap: Observable<Void> { searchButtonSubject.asObservable() }
     var settingButtonTap: Observable<Void> { settingButtonSubject.asObservable() }
     var searchBarTextEdit: Observable<Void> { searchBarSubject.asObservable() }
+    var alarmButtonTap: Observable<Void> { alarmButtonSubject.asObservable() }
     
     // MARK: - componenets
     private var leftView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
+  private var subView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
     private var rightView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
     
     private let titleLabel = UILabel().then {
@@ -69,6 +72,11 @@ final class CustomNavigationBarView: UIView {
         $0.setImage(.home, for: .normal)
         $0.imageView?.contentMode = .scaleAspectFit
     }
+  
+  private let alarmButton = UIButton().then {
+    $0.setImage(.alarm, for: .normal)
+    $0.imageView?.contentMode = .scaleAspectFit
+  }
     
     private let logoButton = UIImageView().then {
         $0.image = .logo
@@ -111,7 +119,7 @@ final class CustomNavigationBarView: UIView {
     }
     
     private func setHierarchy() {
-        self.addSubviews(leftView, titleLabel, rightView)
+        self.addSubviews(leftView, titleLabel, rightView, subView)
         
         switch navigationType {
         case .normal:
@@ -123,7 +131,6 @@ final class CustomNavigationBarView: UIView {
         case .home:
             leftView.addSubview(backButton)
             rightView.addSubview(homeButton)
-            
             backButton.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
@@ -141,7 +148,12 @@ final class CustomNavigationBarView: UIView {
 
         case .search:
             leftView.addSubview(logoButton)
-            rightView.addSubview(searchButton)
+            subView.addSubview(searchButton)
+            rightView.addSubview(alarmButton)
+          
+            alarmButton.snp.makeConstraints {
+              $0.edges.equalToSuperview()
+            }
             
             logoButton.snp.makeConstraints {
                 $0.edges.equalToSuperview()
@@ -188,6 +200,12 @@ final class CustomNavigationBarView: UIView {
             $0.leading.equalToSuperview().offset(20.adjusted)
             $0.height.equalTo(20)
         }
+      
+      subView.snp.makeConstraints {
+        $0.centerY.equalToSuperview()
+        $0.trailing.equalTo(rightView.snp.leading).offset(-10.adjusted)
+        $0.size.equalTo(20)
+      }
         
         rightView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
@@ -220,11 +238,16 @@ final class CustomNavigationBarView: UIView {
         searchButton.rx.tap
             .bind(to: searchButtonSubject)
             .disposed(by: disposeBag)
+      
         settingButton.rx.tap
             .bind(to: settingButtonSubject)
             .disposed(by: disposeBag)
         
-    
+      
+        alarmButton.rx.tap
+            .bind(to: alarmButtonSubject)
+            .disposed(by: disposeBag)
+      
     }
     
 }

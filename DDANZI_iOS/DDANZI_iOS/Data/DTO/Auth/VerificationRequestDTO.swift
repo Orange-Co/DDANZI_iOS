@@ -11,4 +11,6 @@ struct VerificationRequestDTO: Codable {
   let name, phone: String
   let birth: String /// YYYY-MM-DD
   let sex: String /// FEMALE/MALE
+  let isAgreedMarketingTerm: Bool
+  let ci: String
 }

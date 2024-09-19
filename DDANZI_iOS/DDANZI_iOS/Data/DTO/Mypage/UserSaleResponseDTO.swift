@@ -15,16 +15,17 @@ struct UserSaleResponseDTO: Codable {
 
 // MARK: - ItemProductList
 struct ItemProductList: Codable {
-    let productID: String
-    let name, imgURL: String
+    let productID, itemID, productName: String
+    let imgURL: String
     let originPrice, salePrice: Int
-    let completedAt: String
+    let isInterested: Bool
     let interestCount: Int
 
     enum CodingKeys: String, CodingKey {
         case productID = "productId"
-        case name
+        case itemID = "itemId"
+        case productName
         case imgURL = "imgUrl"
-        case originPrice, salePrice, completedAt, interestCount
+        case originPrice, salePrice, isInterested, interestCount
     }
 }

@@ -15,21 +15,25 @@ import Then
 
 final class HomeViewController: UIViewController, UIScrollViewDelegate {
   // MARK: Properties
-  var disposeBag = DisposeBag()
+  private var disposeBag = DisposeBag()
+  private var isFetchingData = false
   
-  var homeProductItems = BehaviorRelay<[ProductList]>(value: [])
-  var bannerImageURLs = BehaviorRelay<[String]>(value: [])
+  private var homeProductItems = BehaviorRelay<[ProductList]>(value: [])
+  private var bannerImageURLs = BehaviorRelay<[String]>(value: [])
+  private var totalpage = BehaviorRelay<Int>(value: 0)
+  private var currentPage = BehaviorRelay<Int>(value: 0)
   
   
   // MARK: Components
   let navigationBarView = CustomNavigationBarView(navigationBarType: .search)
+  private let refreshControl = UIRefreshControl()
   private lazy var homeViewCollectionView = UICollectionView(frame: .zero, collectionViewLayout: HomeViewController.createLayout()).then {
     $0.backgroundColor = .white
     $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: "HomeCollectionViewCell")
     $0.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: "HeaderCollectionViewCell")
   }
   private let sellButton = UIButton().then {
-    $0.setTitle("판매하기", for: .normal)
+    $0.setTitle("+ 판매하기", for: .normal)
     $0.titleLabel?.font = .body3Sb16
     $0.setTitleColor(.black, for: .normal)
     $0.backgroundColor = .dYellow
@@ -41,11 +45,11 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     super.viewWillAppear(animated)
     self.tabBarController?.tabBar.isHidden = false
     self.navigationController?.navigationBar.isHidden = true
+    reloadData()
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    fetchHomeData()
     setUI()
     bindCollectionView()
     bindNavigationBar()
@@ -54,6 +58,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   // MARK: LayoutHelper
   private func setUI() {
     self.view.backgroundColor = .white
+    self.homeViewCollectionView.refreshControl = refreshControl
     view.addSubviews(navigationBarView,
                      homeViewCollectionView,
                      sellButton)
@@ -68,7 +73,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     }
     
     sellButton.snp.makeConstraints {
-      $0.bottom.equalToSuperview().inset(27)
+      $0.bottom.equalToSuperview().inset(127)
       $0.trailing.equalToSuperview().inset(20)
       $0.width.equalTo(108)
       $0.height.equalTo(48)
@@ -76,10 +81,19 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   }
   
   private func fetchHomeData() {
-    Providers.HomeProvider.request(target: .loadHomeItems, instance: BaseResponse<HomeItemsResponseDTO>.self) { [weak self] result in
+    guard !isFetchingData else { return } // 로딩 중이면 함수 종료
+    isFetchingData = true // 로딩 시작
+    
+    Providers.HomeProvider.request(target: .loadHomeItems(currentPage.value), instance: BaseResponse<HomeItemsResponseDTO>.self) { [weak self] result in
       guard let self = self else { return }
+      self.isFetchingData = false // 로딩 완료 후 플래그 해제
+      
       guard let data = result.data else { return }
       
+      let totalElements = data.pageInfo.totalElements
+      let numberOfElements = data.pageInfo.numberOfElements
+      
+      self.totalpage.accept(totalElements % numberOfElements > 0 ? (totalElements / numberOfElements) + 1 : totalElements / numberOfElements)
       self.bannerImageURLs.accept([data.homeImgURL])
       
       let items = data.productList.map { productDTO in
@@ -90,12 +104,16 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
           imgURL: productDTO.imgURL,
           originPrice: productDTO.originPrice,
           salePrice: productDTO.salePrice,
-          interestCount: productDTO.interestCount
+          interestCount: productDTO.interestCount,
+          isInterested: productDTO.isInterested
         )
       }
       
-      // BehaviorRelay의 값을 업데이트하여 UI 업데이트를 트리거합니다.
-      self.homeProductItems.accept(items)
+      var currentItems = self.homeProductItems.value
+      currentItems.append(contentsOf: items)
+      self.homeProductItems.accept(currentItems)
+      
+      self.currentPage.accept(self.currentPage.value + 1)
     }
   }
   
@@ -109,6 +127,11 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   }
   
   private func bindCollectionView() {
+    refreshControl.rx.controlEvent(.valueChanged)
+      .subscribe(with: self) { owner, _ in
+        owner.reloadData()
+      }
+      .disposed(by: disposeBag)
     
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
       configureCell: { dataSource, collectionView, indexPath, item in
@@ -121,11 +144,22 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
         } else {
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionViewCell", for: indexPath) as! HomeCollectionViewCell
           if let product = item as? ProductList {
-            cell.bindData(productImageURL: product.imgURL,
-                          productTitle: product.name,
-                          beforePrice: product.originPrice.toKoreanWon(),
-                          price: product.salePrice.toKoreanWon(),
-                          heartCount: product.interestCount)
+            cell.bindData(
+              productImageURL: product.imgURL,
+              productTitle: product.name,
+              beforePrice: product.originPrice.toKoreanWon(),
+              price: product.salePrice.toKoreanWon(),
+              heartCount: product.interestCount,
+              isInterest: product.isInterested,
+              itemID: product.productID
+            )
+            cell.isLogoutInterest
+              .subscribe(with: self) { owner, isLogout in
+                if isLogout {
+                  owner.view.showToast(message: "로그인 이후 이용 가능합니다.", at: 130.adjusted)
+                }
+              }
+              .disposed(by: cell.disposeBag)
             cell.heartButtonTap
               .subscribe(onNext: {
                 print("Heart button tapped on row \(indexPath.row)")
@@ -160,6 +194,43 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
         }
       })
       .disposed(by: disposeBag)
+    
+    // 스크롤이 끝에 도달했을 때 다음 페이지 로드
+    homeViewCollectionView.rx.contentOffset
+      .subscribe(onNext: { [weak self] contentOffset in
+        guard let self = self else { return }
+        let contentHeight = self.homeViewCollectionView.contentSize.height
+        let scrollViewHeight = self.homeViewCollectionView.frame.size.height
+        let scrollOffsetThreshold = contentHeight - scrollViewHeight
+        
+        // 스크롤이 끝에 도달했을 때 (다음 페이지 존재 시)
+        if contentOffset.y > scrollOffsetThreshold && self.currentPage.value <= self.totalpage.value {
+          self.fetchHomeData()
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    sellButton.rx.tap
+      .bind(with: self) { owner, _ in
+        let sellingVC = LandingViewController()
+        self.navigationController?.pushViewController(sellingVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    navigationBarView.alarmButtonTap
+      .bind(with: self) { owner, _ in
+        self.navigationController?.pushViewController(PushViewController(), animated: true)
+      }
+      .disposed(by: disposeBag)
+  }
+  
+  private func reloadData() {
+    currentPage.accept(0)
+    homeProductItems.accept([])
+    
+    fetchHomeData()
+    
+    refreshControl.endRefreshing()
   }
   
 }

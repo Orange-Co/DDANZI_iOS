@@ -73,10 +73,10 @@ extension UIView {
   // 토스트 메세지
   func showToast(message: String, at: CGFloat = 25) {
     let toastLabel = UILabel()
-    //        toastLabel.backgroundColor = UIColor(hex: "343A40", alpha: 0.9)
-    //        toastLabel.textColor =
-    //        toastLabel.textAlignment = .center
-    //        toastLabel.font = .uiLabelLarge
+    toastLabel.backgroundColor = UIColor(hex: "343A40", alpha: 0.9)
+    toastLabel.textColor = .white
+    toastLabel.textAlignment = .center
+    toastLabel.font = .body6M12
     toastLabel.text = message
     toastLabel.alpha = 1.0
     toastLabel.layer.cornerRadius = 8
@@ -84,20 +84,30 @@ extension UIView {
     
     let toastWidth = 253
     let toastHeight = 42
-    //        toastLabel.frame = CGRect(x: Int(self.frame.size.width) / 2 - toastWidth / 2,
-    //                                  y: self.frame.size.height - toastHeight - Int(at),
-    //                                  width: toastWidth,
-    //                                  height: toastHeight)
-    if let window = UIApplication.shared.keyWindow {
+    let xPosition = self.frame.size.width / 2 - CGFloat(toastWidth / 2)
+    let yPosition = self.frame.size.height - CGFloat(toastHeight) - at
+    toastLabel.frame = CGRect(x: xPosition, y: yPosition, width: CGFloat(toastWidth), height: CGFloat(toastHeight))
+    
+    if let windowScene = UIApplication.shared.connectedScenes
+      .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+       let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
       window.addSubview(toastLabel)
     }
     
-    UIView.animate(withDuration: 3.0, delay: 0.1, options: .curveEaseOut, animations: {
-      toastLabel.alpha = 0.0
-    }, completion: {(isCompleted) in
-      toastLabel.removeFromSuperview()
-    })
+    // 애니메이션 부분을 분리하여 명확하게 작성
+    UIView.animate(
+      withDuration: 3.0,
+      delay: 0.1,
+      options: .curveEaseOut,
+      animations: {
+        toastLabel.alpha = 0.0
+      },
+      completion: { _ in
+        toastLabel.removeFromSuperview()
+      }
+    )
   }
+  
   
   /// Border를 점선으로 처리해주는 함수
   func addDottedBorder(color: UIColor) {
@@ -158,4 +168,13 @@ extension UIView {
     }
   }
   
+  func findViewController() -> UIViewController? {
+    if let nextResponder = self.next as? UIViewController {
+      return nextResponder
+    } else if let nextResponder = self.next as? UIView {
+      return nextResponder.findViewController()
+    } else {
+      return nil
+    }
+  }
 }

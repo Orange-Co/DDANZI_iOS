@@ -22,6 +22,11 @@ enum MypageEndpoint {
   case addUserAddress(UserAddressRequestDTO)
   case editUserAddress(Int)
   case deleteUserAddress(Int)
+  
+  /// 계좌 관련 API
+  case fetchUserAccount
+  case addUserAccount
+  
   case settingUserNoti
 }
 
@@ -52,6 +57,10 @@ extension MypageEndpoint: BaseTargetType {
         return "/api/v1/mypage/setting/address/\(id)"
       case .settingUserNoti:
         return "/api/v1/mypage/setting/pushAlarm"
+      case .fetchUserAccount:
+        return "/api/v1/mypage/setting/account"
+      case .addUserAccount:
+        return "/api/v1/mypage/setting/account"
       }
     }
     
@@ -77,6 +86,10 @@ extension MypageEndpoint: BaseTargetType {
         return .delete
       case .settingUserNoti:
         return .put
+      case .fetchUserAccount:
+        return .get
+      case .addUserAccount:
+        return .post
       }
     }
     
@@ -101,6 +114,10 @@ extension MypageEndpoint: BaseTargetType {
       case .deleteUserAddress:
         return .requestPlain
       case .settingUserNoti:
+        return .requestPlain
+      case .fetchUserAccount:
+        return .requestPlain
+      case .addUserAccount:
         return .requestPlain
       }
     }

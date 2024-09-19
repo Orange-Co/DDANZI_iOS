@@ -16,7 +16,12 @@ struct APIConstants {
   static let nickname = "nickname"
   
   static var accessToken: String {
-    return "Bearer \(UserDefaults.standard.string(forKey: .accesstoken) ?? "")"
+    if let accessToken = KeychainWrapper.shared.accessToken {
+      return "Bearer \(accessToken)"
+    } else if let accessToken = UserDefaults.standard.string(forKey: .accesstoken) {
+      return "Bearer \(accessToken)"
+    }
+    return "Bearer \(KeychainWrapper.shared.accessToken ?? "")"
   }
   
   static var refreshToken: String {
@@ -75,7 +80,10 @@ extension APIConstants {
   
   static var signUpHeader: [String: String] {
     return [contentType: applicationJSON,
-                   auth: appleAccessToken,
                      OS: iOS]
+  }
+  
+  static var imageHeader: [String: String] {
+    return [contentType: "image/jpeg"]
   }
 }

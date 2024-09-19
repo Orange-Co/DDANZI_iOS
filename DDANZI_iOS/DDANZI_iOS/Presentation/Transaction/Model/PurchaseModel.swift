@@ -14,10 +14,11 @@ enum StatusType {
   case complete
   case cancel
   case notDeposit
+  case onSale
   
   var statusString: String {
     switch self {
-    case .inProgress:
+    case .inProgress, .onSale:
       return "판매 중"
     case .orderComplete:
       return "주문 완료"
@@ -49,6 +50,8 @@ enum StatusType {
       self = .complete
     case "CANCELLED":
       self = .cancel
+    case "ON_SALE":
+      self = .onSale
     default:
       return nil
     }

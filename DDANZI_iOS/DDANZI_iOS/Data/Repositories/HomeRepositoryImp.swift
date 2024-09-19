@@ -18,8 +18,8 @@ final class HomeRepositoryImp: HomeRepository {
   }
   
   func fetchHomeProduct() -> HomeItemsResponseDTO {
-    var DTO: HomeItemsResponseDTO = .init(homeImgURL: "", productList: [])
-    provider.request(target: .loadHomeItems,
+    var DTO: HomeItemsResponseDTO = .init(homeImgURL: "", productList: [], pageInfo: .init(totalElements: 0, numberOfElements: 0))
+    provider.request(target: .loadHomeItems(0),
                      instance: BaseResponse<HomeItemsResponseDTO>.self) { result in
       guard let resultData = result.data else { return }
       DTO = resultData
