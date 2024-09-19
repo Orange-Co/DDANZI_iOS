@@ -11,11 +11,14 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 import FirebaseCore
 import FirebaseMessaging
+import Amplitude
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    /// 카카오 SDK
     KakaoSDK.initSDK(appKey: Config.kakaoAppKey)
+    /// Firebase SDK
     FirebaseApp.configure()
     UNUserNotificationCenter.current().delegate = self
     
@@ -28,6 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     application.registerForRemoteNotifications()
     
     Messaging.messaging().delegate = self
+    /// Amplitude
+    Amplitude.instance().defaultTracking = AMPDefaultTrackingOptions.initWithSessions(false, appLifecycles: true, deepLinks: false, screenViews: false)
+    Amplitude.instance().initializeApiKey(Config.amplitudeKey)
     
     return true
   }
