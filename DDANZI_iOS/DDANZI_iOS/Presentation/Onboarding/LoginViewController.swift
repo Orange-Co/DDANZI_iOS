@@ -14,6 +14,7 @@ import RxCocoa
 import RxKakaoSDKUser
 import KakaoSDKUser
 import AuthenticationServices
+import Amplitude
 
 
 final class LoginViewController: UIViewController {
@@ -73,12 +74,14 @@ final class LoginViewController: UIViewController {
     
     kakaoLoginButton.rx.tap
       .bind(with: self) { owner, void in
+        Amplitude.instance().logEvent("click_sign_up_kakao")
         owner.kakaoLogin()
       }
       .disposed(by: disposeBag)
     
     appleLoginButton.rx.tap
       .bind(with: self, onNext: { owner, _ in
+        Amplitude.instance().logEvent("click_sign_up_apple")
         owner.performAppleLogin()
       })
       .disposed(by: disposeBag)

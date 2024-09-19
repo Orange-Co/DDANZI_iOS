@@ -10,6 +10,7 @@ import UIKit
 import Then
 import SnapKit
 import RxSwift
+import Amplitude
 
 protocol AgreeTermsViewControllerDelegate: AnyObject {
   func termsViewControllerDidFinish(_ viewController: AgreeTermsViewController)
@@ -113,6 +114,7 @@ final class AgreeTermsViewController: UIViewController {
       termButton.rx.tap
         .bind { [weak self] in
           guard let self = self else { return }
+          Amplitude.instance().logEvent("click_verification_terms_all")
           termButton.selectedButton(isSelect: !termButton.checkButton.isSelected)
           self.updateAllSelectState()
         }
@@ -154,6 +156,7 @@ final class AgreeTermsViewController: UIViewController {
       .bind { [weak self] in
         guard let self = self else { return }
         self.dismiss(animated: true) {
+          Amplitude.instance().logEvent("click_verification_terms_next")
           self.delegate?.termsViewControllerDidFinish(self)
         }
       }

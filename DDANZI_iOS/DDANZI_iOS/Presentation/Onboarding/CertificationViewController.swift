@@ -12,6 +12,7 @@ import Then
 import RxSwift
 import RxCocoa
 import iamport_ios
+import Amplitude
 
 final class CertificationViewController: UIViewController {
   private let disposeBag = DisposeBag()
@@ -34,6 +35,7 @@ final class CertificationViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.isNavigationBarHidden = true
+    Amplitude.instance().logEvent("view_verification")
   }
   
   override func viewDidLoad() {
@@ -77,6 +79,7 @@ final class CertificationViewController: UIViewController {
     certificationButton.rx.tap
       .bind { [weak self] in
         guard let self else { return }
+        Amplitude.instance().logEvent("click_verification_next")
         self.fetchToken()
         self.presentTermViewController()
       }
@@ -150,6 +153,7 @@ final class CertificationViewController: UIViewController {
       guard let data = result.data else { return }
       UserDefaults.standard.set(data.nickname, forKey: .nickName)
       UserDefaults.standard.set(true, forKey: .isLogin)
+      Amplitude.instance().logEvent("complete_sign_up")
       self.navigationController?.pushViewController(LoginCompletedViewController(), animated: true)
     }
   }
