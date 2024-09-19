@@ -135,8 +135,11 @@ final class CertificationViewController: UIViewController {
       if let name = data.name,
          let phone = data.phone,
          let birth = data.birthday,
-         let sex = data.gender {
-        self.postVerification(user: .init(name: name, phone: phone, birth: birth, sex: sex.uppercased()))
+         let sex = data.gender,
+         let ci = data.uniqueKey{
+        UserDefaults.standard.set(name, forKey: .name)
+        UserDefaults.standard.set(phone, forKey: .phone)
+        self.postVerification(user: .init(name: name, phone: phone, birth: birth, sex: sex.uppercased(), isAgreedMarketingTerm: true, ci: ci))
       }
     }
   }

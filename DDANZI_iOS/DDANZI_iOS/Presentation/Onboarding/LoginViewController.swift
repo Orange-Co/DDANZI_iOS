@@ -13,6 +13,8 @@ import RxSwift
 import RxCocoa
 import RxKakaoSDKUser
 import KakaoSDKUser
+import AuthenticationServices
+
 
 final class LoginViewController: UIViewController {
   private let disposeBag = DisposeBag()
@@ -49,7 +51,6 @@ final class LoginViewController: UIViewController {
     view.addSubviews(imageView,
                      kakaoLoginButton,
                      appleLoginButton)
-    appleLoginButton.isHidden = true
   }
   
   private func setConstraints() {
@@ -77,10 +78,9 @@ final class LoginViewController: UIViewController {
       .disposed(by: disposeBag)
     
     appleLoginButton.rx.tap
-      .bind { [weak self] in
-        guard let self else { return }
-        self.navigationController?.pushViewController(CertificationViewController(), animated: true)
-      }
+      .bind(with: self, onNext: { owner, _ in
+        owner.performAppleLogin()
+      })
       .disposed(by: disposeBag)
   }
   
@@ -89,7 +89,7 @@ final class LoginViewController: UIViewController {
       UserApi.shared.rx.loginWithKakaoTalk()
         .subscribe(with: self, onNext: { owner, oauthToken in
           print("카카오계정으로 로그인 성공👏")
-          self.postSocialLogin(token: oauthToken.accessToken)
+          self.postSocialLogin(token: oauthToken.accessToken, type: .kakao)
         }, onError: { owner, error in
           print(error)
         })
@@ -98,7 +98,7 @@ final class LoginViewController: UIViewController {
       UserApi.shared.rx.loginWithKakaoAccount()
         .subscribe(with: self, onNext: { owner, oauthToken in
           print("카카오계정으로 로그인 성공👏")
-          self.postSocialLogin(token: oauthToken.accessToken)
+          self.postSocialLogin(token: oauthToken.accessToken, type: .kakao)
         }, onError: { owner, error in
           print(error)
         })
@@ -106,11 +106,24 @@ final class LoginViewController: UIViewController {
     }
   }
   
-  private func postSocialLogin(token: String) {
-    let authDTO = SocialLoginRequestDTO(token: token, type: .kakao)
+  private func performAppleLogin() {
+    let request = ASAuthorizationAppleIDProvider().createRequest()
+    request.requestedScopes = [.fullName, .email]
+    
+    let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+    authorizationController.delegate = self
+    authorizationController.presentationContextProvider = self
+    authorizationController.performRequests()
+  }
+
+  
+  private func postSocialLogin(token: String, type: SocialLoginType) {
+    let authDTO = SocialLoginRequestDTO(token: token, type: type, devicetoken: KeychainWrapper.shared.deviceUUID, deviceType: "iOS", fcmToken: UserDefaults.standard.string(forKey: .fcmToken) ?? "")
     Providers.AuthProvider.request(target: .socialLogin(authDTO), instance: BaseResponse<SocialLoginResponseDTO>.self) { result in
       guard let data = result.data else { return }
-      UserDefaults.standard.set(data.accesstoken, forKey: .accesstoken)
+      if !KeychainWrapper.shared.setAccessToken(data.accesstoken) {
+        UserDefaults.standard.set(data.accesstoken, forKey: .accesstoken)
+      }
       UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
       if data.status == "ACTIVATE" {
         UserDefaults.standard.set(true, forKey: .isLogin)
@@ -122,4 +135,38 @@ final class LoginViewController: UIViewController {
     }
   }
   
+}
+
+extension LoginViewController: ASAuthorizationControllerDelegate {
+  
+  func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+      let userIdentifier = appleIDCredential.user
+      let fullName = appleIDCredential.fullName
+      let email = appleIDCredential.email
+      let identityToken = appleIDCredential.identityToken
+      let authorizationCode = appleIDCredential.authorizationCode
+      
+      guard let code = appleIDCredential.authorizationCode else { return }
+      guard let codeStr = String(data: code, encoding: .utf8) else { return }
+      
+      // 애플 로그인 성공 후 identityToken을 사용해 서버에 토큰 전송
+      if let identityToken = identityToken, let tokenString = String(data: identityToken, encoding: .utf8) {
+        self.postSocialLogin(token: codeStr, type: .apple)
+        print(tokenString)
+      }
+    }
+  }
+  
+  func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    // 애플 로그인 실패 시 처리
+    print("Apple Login Failed: \(error.localizedDescription)")
+  }
+}
+
+extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
+  
+  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    return self.view.window!
+  }
 }
