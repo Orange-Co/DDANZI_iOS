@@ -71,6 +71,7 @@
 		363F1A0E2C9B10AF007527E2 /* WithDrawDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A0D2C9B10AF007527E2 /* WithDrawDTO.swift */; };
 		363F1A102C9B10BA007527E2 /* LogoutDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A0F2C9B10BA007527E2 /* LogoutDTO.swift */; };
 		363F1A122C9B1638007527E2 /* UserAccountDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A112C9B1638007527E2 /* UserAccountDTO.swift */; };
+		363F1A182C9CA04F007527E2 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 363F1A172C9CA04F007527E2 /* Amplitude */; };
 		3648954E2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */; };
 		364895502C62822200AAA8E2 /* ProductDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */; };
 		364895522C62826200AAA8E2 /* SearchItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */; };
@@ -467,6 +468,7 @@
 				368E36992C4A3B55003FA911 /* Moya in Frameworks */,
 				363C243C2C6619950097FCB7 /* Kingfisher in Frameworks */,
 				368E36AE2C4A3C26003FA911 /* ReactorKit in Frameworks */,
+				363F1A182C9CA04F007527E2 /* Amplitude in Frameworks */,
 				368E36962C4A3B3D003FA911 /* iamport-ios in Frameworks */,
 				36B744F52C6C50D3002892C4 /* RxKakaoSDK in Frameworks */,
 			);
@@ -1365,6 +1367,7 @@
 				36B744F82C6C50D3002892C4 /* RxKakaoSDKCommon */,
 				3664CFD92C6E2179007FB5DF /* Lottie */,
 				36130D032C92B0F90028CF3A /* FirebaseMessaging */,
+				363F1A172C9CA04F007527E2 /* Amplitude */,
 			);
 			productName = DDANZI_iOS;
 			productReference = 369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */;
@@ -1451,6 +1454,7 @@
 				36B744F32C6C50D3002892C4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				3664CFD82C6E2179007FB5DF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				36130D022C92B0F90028CF3A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				363F1A162C9CA04F007527E2 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */,
 			);
 			productRefGroup = 369C63882C1A7A240021E2E0 /* Products */;
 			projectDirPath = "";
@@ -2051,6 +2055,14 @@
 				minimumVersion = 7.12.0;
 			};
 		};
+		363F1A162C9CA04F007527E2 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-iOS";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		3664CFD82C6E2179007FB5DF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios";
@@ -2143,6 +2155,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 363C243A2C6619950097FCB7 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		363F1A172C9CA04F007527E2 /* Amplitude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 363F1A162C9CA04F007527E2 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
+			productName = Amplitude;
 		};
 		3664CFD92C6E2179007FB5DF /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
