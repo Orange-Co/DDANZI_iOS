@@ -12,6 +12,7 @@ import RxDataSources
 import RxSwift
 import SnapKit
 import Then
+import Amplitude
 
 final class HomeViewController: UIViewController, UIScrollViewDelegate {
   // MARK: Properties
@@ -46,6 +47,9 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     self.tabBarController?.tabBar.isHidden = false
     self.navigationController?.navigationBar.isHidden = true
     reloadData()
+    
+    // Amplitude 설정
+    Amplitude.instance().logEvent("view_home")
   }
   
   override func viewDidLoad() {
@@ -121,6 +125,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
   private func bindNavigationBar() {
     navigationBarView.searchButtonTap
       .subscribe(onNext: { [weak self] in
+        Amplitude.instance().logEvent("click_home_search")
         self?.navigationController?.pushViewController(SearchViewController(), animated: true)
       })
       .disposed(by: disposeBag)
@@ -188,7 +193,14 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     homeViewCollectionView.rx.itemSelected
       .subscribe(onNext: { [weak self] indexPath in
         guard let self = self else { return }
-        if indexPath.section == 1 {
+        if indexPath.section == 0 {
+          Amplitude.instance().logEvent("click_home_banner")
+          if let url = URL(string: "https://brawny-guan-098.notion.site/d1259ed5fdfd489eb6cc23a4312c13a0?pvs=4") {
+            if UIApplication.shared.canOpenURL(url) {
+              UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+          }
+        } else if indexPath.section == 1 {
           let detailVC = ProductDetailViewController(productId: homeProductItems.value[indexPath.row].productID)
           self.navigationController?.pushViewController(detailVC, animated: true)
         }
@@ -212,6 +224,7 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     sellButton.rx.tap
       .bind(with: self) { owner, _ in
+        Amplitude.instance().logEvent("click_home_sell")
         let sellingVC = LandingViewController()
         self.navigationController?.pushViewController(sellingVC, animated: true)
       }

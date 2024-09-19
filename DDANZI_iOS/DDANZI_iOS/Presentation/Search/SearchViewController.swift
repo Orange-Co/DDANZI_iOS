@@ -11,6 +11,7 @@ import SnapKit
 import RxSwift
 import RxRelay
 import RxDataSources
+import Amplitude
 
 enum CollectionViewState {
   case normal
@@ -109,6 +110,7 @@ class SearchViewController: UIViewController {
   }
   
   private func fetchSearchData(keyword: String) {
+    Amplitude.instance().logEvent("click_search_search")
     let query = SearchQueryDTO(keyword: keyword)
     Providers.SearchProvider.request(target: .loadSearchResult(query),
                                      instance: BaseResponse<SearchResultResponseDTO>.self) { [weak self] result in
@@ -202,6 +204,8 @@ class SearchViewController: UIViewController {
           let selectedKeyword = topSearchedList[indexPath.row]
           
           owner.searchKeyword = selectedKeyword
+          
+          Amplitude.instance().logEvent("click_search_popular")
           owner.fetchSearchData(keyword: selectedKeyword)
         } else if indexPath.section == 1 {
           let recentlyViewedItems = owner.searchData.value.recentlyViewedList
