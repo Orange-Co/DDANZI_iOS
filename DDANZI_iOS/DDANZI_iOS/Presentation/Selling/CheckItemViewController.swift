@@ -14,6 +14,8 @@ import RxCocoa
 
 final class CheckItemViewController: UIViewController {
   let response = PublishRelay<ItemCheckDTO>()
+  
+  let responseData: ItemCheckDTO
   private var productId: String = ""
   private let disposeBag = DisposeBag()
   
@@ -50,6 +52,16 @@ final class CheckItemViewController: UIViewController {
     $0.setUnderline()
   }
   
+  init(responseData: ItemCheckDTO, productId: String) {
+    self.responseData = responseData
+    self.productId = productId
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setUI()
@@ -58,6 +70,10 @@ final class CheckItemViewController: UIViewController {
   
   private func setUI() {
     self.view.backgroundColor = .white.withAlphaComponent(0.3)
+    
+    self.itemImageView.setImage(with: responseData.imgUrl)
+    self.itemNameLabel.text = responseData.productName
+    self.productId = responseData.productId
     setHierarchy()
     setConstraints()
   }
@@ -125,12 +141,18 @@ final class CheckItemViewController: UIViewController {
         owner.conformedItem()
       })
       .disposed(by: disposeBag)
+    
+    retryButton.rx.tap
+      .subscribe { _ in
+        self.navigationController?.popViewController(animated: true)
+      }
+      .disposed(by: disposeBag)
   }
   
   private func conformedItem() {
     Providers.ItemProvider.request(target: .itemConfirmed(id: productId), instance: BaseResponse<itemConformedDTO>.self) { response in
       guard let data = response.data else { return }
-      let registeVC = RegisteItemViewController()
+      let registeVC = RegisteItemViewController(info: data)
       registeVC.itemInfo.accept(data)
       self.navigationController?.pushViewController(registeVC, animated: true)
     }
