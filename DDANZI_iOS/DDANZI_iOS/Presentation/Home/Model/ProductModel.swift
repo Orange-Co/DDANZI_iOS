@@ -16,6 +16,15 @@ struct ProductInfoModel {
   let heartCount: Int
 }
 
+struct SellProductInfoModel {
+  let orderId: String
+  let imageURL: String
+  let title: String
+  let beforePrice: String
+  let price: String
+  let heartCount: Int
+}
+
 struct PurchaseProductModel {
   let productID: String
   let name, imgURL: String
