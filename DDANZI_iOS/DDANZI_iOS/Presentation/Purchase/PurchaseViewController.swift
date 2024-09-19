@@ -21,6 +21,7 @@ final class PurchaseViewController: UIViewController {
   private let disposeBag = DisposeBag()
   
   var orderModel: OrderModel = .init(productId: "", optionList: [])
+  var selectedTerms = BehaviorRelay<[Bool]>(value: [false, false])
   
   // PublishSubject
   private let productSubject = PublishSubject<[Product]>()
@@ -172,7 +173,7 @@ final class PurchaseViewController: UIViewController {
       })
       .disposed(by: disposeBag)
   }
-
+  
   
   private func createPaymentData(merchantUID: String) -> IamportPayment {
     return  IamportPayment(
@@ -198,7 +199,15 @@ final class PurchaseViewController: UIViewController {
     
     // 결제 성공 여부와 상태 결정
     let paymentSuccess = response.success ?? false
-    let payStatus = paymentSuccess ? "PAID" : "FAILED"
+    
+    // 결제 실패 시 로딩 종료 및 에러 처리
+    guard paymentSuccess else {
+      DdanziLoadingView.shared.stopAnimating()
+      showAlert(title: "결제 실패", message: "결제가 실패했습니다. 다시 시도해주세요.")
+      return
+    }
+    
+    let payStatus = "PAID"
     
     // `paymentCompleted`와 `executePayment`를 순차적으로 호출
     paymentCompleted(orderId: merchanUID, payStatus: payStatus)
@@ -210,11 +219,16 @@ final class PurchaseViewController: UIViewController {
       }
       .observe(on: MainScheduler.instance) // 메인 스레드에서 UI 업데이트
       .subscribe(onSuccess: { [weak self] isSuccess, orderId in
+        guard let self = self else { return }
         DdanziLoadingView.shared.stopAnimating()
-        if isSuccess, let orderId = orderId {
-          self?.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: orderId), animated: true)
+        if isSuccess, let orderId = orderId {PermissionManager.shared.checkPermission(for: .notification)
+            .subscribe { [weak self] isAllow in
+              let nextVC = isAllow ? PurchaseCompleteViewController(orderId: orderId) : PushSettingViewController(orderId: orderId, response: .init(itemId: "", productName: "", imgUrl: "", salePrice: 0))
+              self?.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: orderId), animated: true)
+            }
+            .disposed(by: self.disposeBag)
         } else {
-          self?.showAlert(title: "결제 실패", message: "알 수 없는 원인으로 결제 실패입니다.")
+          self.showAlert(title: "결제 실패", message: "알 수 없는 원인으로 결제 실패입니다.")
         }
       }, onFailure: { [weak self] error in
         DdanziLoadingView.shared.stopAnimating()
@@ -222,7 +236,7 @@ final class PurchaseViewController: UIViewController {
       })
       .disposed(by: disposeBag)
   }
-
+  
   
   private func fetchOrderInfo() {
     Providers.OrderProvider.request(target: .fetchOrderInfo(orderModel.productId),
@@ -263,7 +277,7 @@ final class PurchaseViewController: UIViewController {
       self.termsSubject.onNext(terms)
     }
   }
-
+  
   /// 결제 시작 API 통신
   private func paymentStart(productID: String, charge: Int, totalPrice: Int, method: Payment) -> Single<String> {
     return Single<String>.create { single in
@@ -281,7 +295,7 @@ final class PurchaseViewController: UIViewController {
       return Disposables.create()
     }
   }
-
+  
   /// 결제 완료 API 통신
   private func paymentCompleted(orderId: String, payStatus: String) -> Single<Void> {
     return Single<Void>.create { single in
@@ -298,29 +312,29 @@ final class PurchaseViewController: UIViewController {
       return Disposables.create()
     }
   }
-
+  
   private func executePayment(orderId: String, selecteOption: [Int]) -> Single<(Bool, String?)> {
-      return Single.create { single in
-          let body = ExecuteRequestBody(orderId: orderId, selectedOptionDetailIdList: selecteOption)
-          Providers.OrderProvider.request(target: .executeOrder(body: body), instance: BaseResponse<ExecuteOrderResponseDTO>.self) { response in
-              guard let data = response.data else {
-                  single(.success((false, nil)))
-                  return
-              }
-              single(.success((true, data.orderId)))
-          }
-          
-          return Disposables.create()
+    return Single.create { single in
+      let body = ExecuteRequestBody(orderId: orderId, selectedOptionDetailIdList: selecteOption)
+      Providers.OrderProvider.request(target: .executeOrder(body: body), instance: BaseResponse<ExecuteOrderResponseDTO>.self) { response in
+        guard let data = response.data else {
+          single(.success((false, nil)))
+          return
+        }
+        single(.success((true, data.orderId)))
       }
+      
+      return Disposables.create()
+    }
   }
-
+  
   private func showAlert(title: String, message: String) {
-      let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-      let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-      alertController.addAction(okAction)
-      present(alertController, animated: true, completion: nil)
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+    alertController.addAction(okAction)
+    present(alertController, animated: true, completion: nil)
   }
-
+  
 }
 
 // MARK: CollectionView

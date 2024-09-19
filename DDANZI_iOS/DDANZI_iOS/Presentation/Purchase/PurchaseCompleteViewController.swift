@@ -137,6 +137,13 @@ final class PurchaseCompleteViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    
+      navigationBarView.homeButtonTap
+        .subscribe(onNext: { [weak self] in
+          self?.navigationController?.popToRootViewController(animated: true)
+        })
+        .disposed(by: disposeBag)
+    
     keepButton.rx.tap
       .bind {
         let homeViewController = DdanziTabBarController()
