@@ -12,6 +12,7 @@ import RxCocoa
 import RxDataSources
 import SnapKit
 import Then
+import Amplitude
 
 // MARK: - OptionDelegate
 protocol OptionViewControllerDelegate: AnyObject {
@@ -98,6 +99,7 @@ final class ProductDetailViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.tabBarController?.tabBar.isHidden = true
+    Amplitude.instance().logEvent("view_detail", withEventProperties: ["product_id":"productId"])
   }
   
   // MARK: LifeCycles
@@ -244,12 +246,14 @@ final class ProductDetailViewController: UIViewController {
   private func bind() {
     customNavigationBar.backButtonTap
       .subscribe(onNext: { [weak self] in
+        Amplitude.instance().logEvent("click_detail_quit")
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
     
     customNavigationBar.homeButtonTap
       .subscribe(onNext: {
+        Amplitude.instance().logEvent("click_detail_home")
         let homeViewController = DdanziTabBarController()
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
         sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: homeViewController)
@@ -258,6 +262,7 @@ final class ProductDetailViewController: UIViewController {
     
     bottomButtonView.heartButtonTap
       .subscribe(with: self) { owner, _ in
+        Amplitude.instance().logEvent("click_detail_heart")
         let id = owner.productId
         owner.isInterest ? owner.deleteInterest(id: id) : owner.addInterest(id: id)
       }
@@ -265,6 +270,7 @@ final class ProductDetailViewController: UIViewController {
     
     moreLinkButton.rx.tap
       .bind(with: self) { owner, _ in
+        Amplitude.instance().logEvent("click_detail_detail")
         if let url = URL(string: owner.moreLink) {
           if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -275,6 +281,7 @@ final class ProductDetailViewController: UIViewController {
     
     bottomButtonView.button.rx.tap
       .bind(with: self, onNext: { owner, void in
+        Amplitude.instance().logEvent("click_detail_purchase")
         if !(UserDefaults.standard.bool(forKey: .isLogin)) {
           self.navigationController?.pushViewController(LoginViewController(), animated: true)
           return

@@ -11,6 +11,7 @@ import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import Amplitude
 
 final class TermsCollectionViewCell: UICollectionViewCell {
   
@@ -79,6 +80,7 @@ final class TermsCollectionViewCell: UICollectionViewCell {
     fullAgreementButton.rx.tap
       .withLatestFrom(selectedTerms)
       .subscribe(onNext: { [weak self] termsSelected in
+        Amplitude.instance().logEvent("click_purchase_terms_all")
         let allSelected = termsSelected.allSatisfy { $0 }
         self?.toggleSelectAllTerms(!allSelected)
       })

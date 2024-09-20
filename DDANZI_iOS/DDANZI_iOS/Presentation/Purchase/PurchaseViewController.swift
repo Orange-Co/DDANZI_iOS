@@ -15,6 +15,7 @@ import RxCocoa
 import RxDataSources
 
 import iamport_ios
+import Amplitude
 
 final class PurchaseViewController: UIViewController {
   
@@ -64,6 +65,7 @@ final class PurchaseViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.tabBarController?.tabBar.isHidden = true
+    Amplitude.instance().logEvent("view_purchase", withEventProperties: ["product_id": payment.productId])
   }
   
   override func viewDidLoad() {
@@ -115,11 +117,13 @@ final class PurchaseViewController: UIViewController {
     navigationBar.cancelButtonTap
       .subscribe(onNext: { [weak self] in
         self?.navigationController?.popViewController(animated: true)
+        Amplitude.instance().logEvent("click_purchase_quit")
       })
       .disposed(by: disposeBag)
     
     button.rx.tap
       .bind {
+        Amplitude.instance().logEvent("click_purchase_purchase")
         self.requestPayment(payment: self.payment)
       }
       .disposed(by: disposeBag)
@@ -223,6 +227,7 @@ final class PurchaseViewController: UIViewController {
         DdanziLoadingView.shared.stopAnimating()
         if isSuccess, let orderId = orderId {PermissionManager.shared.checkPermission(for: .notification)
             .subscribe { [weak self] isAllow in
+              Amplitude.instance().logEvent("complete_purchase_adjustment", withEventProperties: ["item_id" : self?.payment.productId])
               let nextVC = isAllow ? PurchaseCompleteViewController(orderId: orderId) : PushSettingViewController(orderId: orderId, response: .init(itemId: "", productName: "", imgUrl: "", salePrice: 0))
               self?.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: orderId), animated: true)
             }
@@ -397,6 +402,7 @@ extension PurchaseViewController {
           if self.isEmptyAddress {
             header.buttonTapRelay
               .subscribe(onNext: { [weak self] in
+                Amplitude.instance().logEvent("click_purchase_address")
                 guard let self = self else { return }
                 let addressListVC = AddressSettingViewController()
                 self.navigationController?.pushViewController(addressListVC, animated: true)
