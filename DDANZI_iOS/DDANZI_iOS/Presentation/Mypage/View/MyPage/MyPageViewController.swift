@@ -101,7 +101,7 @@ final class MyPageViewController: UIViewController {
     if let headerView = headerView as? LoginHeaderView {
       headerView.loginButtonTapped
         .subscribe(with: self) { owner, _ in
-          owner.navigationController?.pushViewController(LoginViewController(), animated: true)
+          owner.navigationController?.pushViewController(LoginViewController(signUpFrom: "mypage"), animated: true)
         }
         .disposed(by: disposeBag)
     }

@@ -283,7 +283,7 @@ final class ProductDetailViewController: UIViewController {
       .bind(with: self, onNext: { owner, void in
         Amplitude.instance().logEvent("click_detail_purchase")
         if !(UserDefaults.standard.bool(forKey: .isLogin)) {
-          self.navigationController?.pushViewController(LoginViewController(), animated: true)
+          self.navigationController?.pushViewController(LoginViewController(signUpFrom: "buy"), animated: true)
           return
         }
         if owner.optionList.isEmpty {

@@ -129,7 +129,7 @@ final class LandingViewController: UIViewController {
         Amplitude.instance().logEvent(owner.events[owner.currentImageIndex])
         if owner.currentImageIndex == 2 {
           if !(UserDefaults.standard.bool(forKey: .isLogin)) {
-            owner.navigationController?.pushViewController(LoginViewController(), animated: true)
+            owner.navigationController?.pushViewController(LoginViewController(signUpFrom: "sell"), animated: true)
             owner.view.showToast(message: "로그인이 필요한 서비스 입니다.", at: 50)
             return
           }
