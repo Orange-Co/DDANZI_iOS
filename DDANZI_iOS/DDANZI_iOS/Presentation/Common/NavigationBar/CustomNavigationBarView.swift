@@ -49,7 +49,7 @@ final class CustomNavigationBarView: UIView {
     
     // MARK: - componenets
     private var leftView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
-  private var subView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
+    private var subView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
     private var rightView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
     
     private let titleLabel = UILabel().then {
