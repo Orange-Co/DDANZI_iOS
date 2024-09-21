@@ -11,6 +11,7 @@ import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import Amplitude
 
 final class CheckItemViewController: UIViewController {
   let response = PublishRelay<ItemCheckDTO>()
@@ -60,6 +61,11 @@ final class CheckItemViewController: UIViewController {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    Amplitude.instance().logEvent("view_confirm")
   }
   
   override func viewDidLoad() {
@@ -138,12 +144,14 @@ final class CheckItemViewController: UIViewController {
     
     nextButton.rx.tap
       .subscribe(with: self, onNext: { owner, _ in
+        Amplitude.instance().logEvent("click_confirm_next")
         owner.conformedItem()
       })
       .disposed(by: disposeBag)
     
     retryButton.rx.tap
       .subscribe { _ in
+        Amplitude.instance().logEvent("click_confirm_quit")
         self.navigationController?.popViewController(animated: true)
       }
       .disposed(by: disposeBag)

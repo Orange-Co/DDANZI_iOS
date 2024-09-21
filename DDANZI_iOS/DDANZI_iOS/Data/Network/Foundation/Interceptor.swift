@@ -31,7 +31,7 @@ final class AuthInterceptor: RequestInterceptor {
     if  request.retryCount < retryLimit {
       if let statusCode = request.response?.statusCode,
          request.retryCount < retryLimit {
-        if statusCode == 403 {
+        if statusCode == 401 {
           refreshToken()
         }  else {
           completion(.doNotRetryWithError(error))

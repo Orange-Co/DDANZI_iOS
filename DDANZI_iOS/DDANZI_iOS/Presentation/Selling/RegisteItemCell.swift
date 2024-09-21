@@ -11,6 +11,7 @@ import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import Amplitude
 
 final class RegisteItemCell: UICollectionViewCell {
   
@@ -231,6 +232,7 @@ final class RegisteItemCell: UICollectionViewCell {
       .subscribe(onNext: { [weak self] termsSelected in
         let allSelected = termsSelected.allSatisfy { $0 }
         self?.toggleSelectAllTerms(!allSelected)
+        Amplitude.instance().logEvent("click_sell_terms_all")
       })
       .disposed(by: disposeBag)
     
@@ -245,6 +247,7 @@ final class RegisteItemCell: UICollectionViewCell {
     // dateLabelButton을 눌렀을 때 DatePicker 표시
     dateLabelButton.rx.tap
       .subscribe(onNext: { [weak self] in
+        Amplitude.instance().logEvent("click_sell_date")
         self?.showDatePicker()
       })
       .disposed(by: disposeBag)

@@ -12,6 +12,7 @@ import Then
 import RxSwift
 import RxCocoa
 import RxDataSources
+import Amplitude
 
 final class PurchaseCompleteViewController: UIViewController {
   
@@ -146,6 +147,7 @@ final class PurchaseCompleteViewController: UIViewController {
     
     keepButton.rx.tap
       .bind {
+        Amplitude.instance().logEvent("click_purchase_adjustment_add")
         let homeViewController = DdanziTabBarController()
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
         sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: homeViewController)
@@ -154,6 +156,7 @@ final class PurchaseCompleteViewController: UIViewController {
     
     detailButton.rx.tap
       .bind {
+        Amplitude.instance().logEvent("click_purchase_adjustment_check")
         let tabBarViewController = DdanziTabBarController()
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
         sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: tabBarViewController)

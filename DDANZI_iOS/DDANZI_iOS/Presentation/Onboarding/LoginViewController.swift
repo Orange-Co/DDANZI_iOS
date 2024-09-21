@@ -14,10 +14,12 @@ import RxCocoa
 import RxKakaoSDKUser
 import KakaoSDKUser
 import AuthenticationServices
+import Amplitude
 
 
 final class LoginViewController: UIViewController {
   private let disposeBag = DisposeBag()
+  private var signUpFrom: String
   
   private let imageView = UIImageView().then {
     $0.image = .onboarding
@@ -29,10 +31,20 @@ final class LoginViewController: UIViewController {
     $0.setImage(.appleLogin, for: .normal)
   }
   
+  init(signUpFrom: String) {
+    self.signUpFrom = signUpFrom
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.navigationBar.isHidden = true
     self.tabBarController?.tabBar.isHidden = true
+    Amplitude.instance().logEvent("view_sign_up", withEventProperties: ["sign_up_from":signUpFrom])
   }
   
   override func viewDidLoad() {
@@ -73,12 +85,14 @@ final class LoginViewController: UIViewController {
     
     kakaoLoginButton.rx.tap
       .bind(with: self) { owner, void in
+        Amplitude.instance().logEvent("click_sign_up_kakao")
         owner.kakaoLogin()
       }
       .disposed(by: disposeBag)
     
     appleLoginButton.rx.tap
       .bind(with: self, onNext: { owner, _ in
+        Amplitude.instance().logEvent("click_sign_up_apple")
         owner.performAppleLogin()
       })
       .disposed(by: disposeBag)

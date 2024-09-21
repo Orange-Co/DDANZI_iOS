@@ -11,6 +11,7 @@ import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import Amplitude
 
 final class RegisteItemViewController: UIViewController {
   
@@ -36,6 +37,11 @@ final class RegisteItemViewController: UIViewController {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    Amplitude.instance().logEvent("view_sell", withEventProperties: ["product_id": info.productID])
   }
   
   override func viewDidLoad() {
@@ -95,12 +101,14 @@ final class RegisteItemViewController: UIViewController {
           return
         }
         let dueDate = cell.dateString.value
+        Amplitude.instance().logEvent("click_sell_next", withEventProperties: ["product_id": owner.info.productID])
         owner.registeItem(due: dueDate)
       }
       .disposed(by: disposeBag)
     
     navigationBar.cancelButtonTap
       .subscribe(with: self) { owner, _ in
+        Amplitude.instance().logEvent("click_sell_quit")
         owner.navigationController?.popViewController(animated: true)
       }
       .disposed(by: disposeBag)
@@ -119,6 +127,7 @@ final class RegisteItemViewController: UIViewController {
       let pushVC = PushSettingViewController(isSelling: true, orderId: "", response: data)
       PermissionManager.shared.checkPermission(for: .notification)
         .bind(with: self, onNext: { owner, isAllow in
+          Amplitude.instance().logEvent("complete_sell_adjustment", withEventProperties: ["item_id": data.itemId])
           if isAllow {
             self.navigationController?.pushViewController(registeCompleteVC, animated: true)
           } else  {

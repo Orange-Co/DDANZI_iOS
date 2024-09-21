@@ -14,6 +14,7 @@ struct APIConstants {
   static let auth = "Authorization"
   static let deviceToken = "devicetoken"
   static let nickname = "nickname"
+  static let refreshtoken = "refreshtoken"
   
   static var accessToken: String {
     if let accessToken = KeychainWrapper.shared.accessToken {
@@ -25,7 +26,7 @@ struct APIConstants {
   }
   
   static var refreshToken: String {
-    return "Bearer \(UserDefaults.standard.string(forKey: .refreshToken) ?? "")"
+    return "\(UserDefaults.standard.string(forKey: .refreshToken) ?? "")"
   }
   
   static var appleAccessToken: String {
@@ -62,7 +63,7 @@ extension APIConstants {
   
   static var hasRefreshTokenHeader: [String: String] {
     return [contentType: applicationJSON,
-                   auth: refreshToken]
+           refreshtoken: refreshToken]
   }
   
   static var hasDeviceToken: [String: String] {

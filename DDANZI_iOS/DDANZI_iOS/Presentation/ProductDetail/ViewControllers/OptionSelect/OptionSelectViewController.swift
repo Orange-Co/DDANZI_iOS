@@ -13,6 +13,7 @@ import RxCocoa
 import RxDataSources
 
 import iamport_ios
+import Amplitude
 
 typealias StrOption = StringLiterals.ProductDetail.Option
 
@@ -59,6 +60,11 @@ final class OptionSelectViewController: UIViewController {
   private let bottomButton = BottomButtonView(buttonText: "구매하기")
   
   // MARK: LifeCycles
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    Amplitude.instance().logEvent("view_option")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     bind()
@@ -110,6 +116,7 @@ final class OptionSelectViewController: UIViewController {
       .bind {
         self.dismiss(animated: true) {
           self.delegate?.optionViewControllerDidFinish(self)
+          Amplitude.instance().logEvent("click_option_next")
         }
       }
       .disposed(by: disposeBag)
