@@ -145,15 +145,21 @@ class AddressSettingViewController: UIViewController {
     Providers.MypageProvider.request(target: .fetchUserAddress,
                                      instance: BaseResponse<UserAddressResponseDTO>.self) { result in
       guard let data = result.data else { return }
-      let newAddress = Address(name: data.recipient ?? "",
-                               address: "(\(data.zipCode) \(data.address), \(data.detailAddress))",
-                               phone: data.recipientPhone)
-      
-      var currentList = (try? self.addressListSubject.value()) ?? []
-      currentList.append(newAddress)
-      self.addressId = data.addressID ?? 0
-      
-      self.addressListSubject.onNext(currentList)
+      if let name = data.recipient,
+         let zipcode = data.zipCode,
+         let address = data.address,
+         let detailAddress = data.detailAddress,
+         let phone = data.recipientPhone {
+        let newAddress = Address(name: name,
+                                 address: "(\(zipcode) \(address), \(detailAddress))",
+                                 phone: phone)
+        
+        var currentList = (try? self.addressListSubject.value()) ?? []
+        currentList.append(newAddress)
+        
+        self.addressId = data.addressID ?? 0
+        self.addressListSubject.onNext(currentList)
+      }
     }
   }
   
