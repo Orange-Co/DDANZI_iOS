@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct UserAccountRequestDTO: Codable {
+  let acountName: String
+  let bank: String
+  let accountNumber: String
+}
