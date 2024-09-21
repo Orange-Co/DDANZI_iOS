@@ -72,6 +72,10 @@
 		363F1A102C9B10BA007527E2 /* LogoutDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A0F2C9B10BA007527E2 /* LogoutDTO.swift */; };
 		363F1A122C9B1638007527E2 /* UserAccountDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A112C9B1638007527E2 /* UserAccountDTO.swift */; };
 		363F1A182C9CA04F007527E2 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 363F1A172C9CA04F007527E2 /* Amplitude */; };
+		363F1A1A2C9EE9EB007527E2 /* AccountAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A192C9EE9EB007527E2 /* AccountAddViewController.swift */; };
+		363F1A1C2C9EF029007527E2 /* AccountAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A1B2C9EF029007527E2 /* AccountAddCell.swift */; };
+		363F1A1E2C9F072F007527E2 /* UserAccountRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A1D2C9F072F007527E2 /* UserAccountRequestDTO.swift */; };
+		363F1A252C9F1BE2007527E2 /* BankList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A242C9F1BE2007527E2 /* BankList.swift */; };
 		3648954E2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */; };
 		364895502C62822200AAA8E2 /* ProductDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */; };
 		364895522C62826200AAA8E2 /* SearchItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */; };
@@ -306,6 +310,10 @@
 		363F1A0D2C9B10AF007527E2 /* WithDrawDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithDrawDTO.swift; sourceTree = "<group>"; };
 		363F1A0F2C9B10BA007527E2 /* LogoutDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutDTO.swift; sourceTree = "<group>"; };
 		363F1A112C9B1638007527E2 /* UserAccountDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountDTO.swift; sourceTree = "<group>"; };
+		363F1A192C9EE9EB007527E2 /* AccountAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAddViewController.swift; sourceTree = "<group>"; };
+		363F1A1B2C9EF029007527E2 /* AccountAddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAddCell.swift; sourceTree = "<group>"; };
+		363F1A1D2C9F072F007527E2 /* UserAccountRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountRequestDTO.swift; sourceTree = "<group>"; };
+		363F1A242C9F1BE2007527E2 /* BankList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankList.swift; sourceTree = "<group>"; };
 		3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItemsResponseDTO.swift; sourceTree = "<group>"; };
 		3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailResponseDTO.swift; sourceTree = "<group>"; };
 		364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemsResponseDTO.swift; sourceTree = "<group>"; };
@@ -538,6 +546,7 @@
 				3631528A2C3D120400DF689E /* PurchaseSectionModel.swift */,
 				363C24202C6512E60097FCB7 /* UserInfoModel.swift */,
 				363C242C2C6529500097FCB7 /* UserAddressModel.swift */,
+				363F1A242C9F1BE2007527E2 /* BankList.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -653,6 +662,7 @@
 				3648955D2C6284D000AAA8E2 /* UserSaleResponseDTO.swift */,
 				3648955F2C62850200AAA8E2 /* UserInterestResponesDTO.swift */,
 				363F1A112C9B1638007527E2 /* UserAccountDTO.swift */,
+				363F1A1D2C9F072F007527E2 /* UserAccountRequestDTO.swift */,
 			);
 			path = Mypage;
 			sourceTree = "<group>";
@@ -764,6 +774,8 @@
 				36542E802C308ED000D5BFEB /* BankAccountViewController.swift */,
 				363152F22C44F8BE00DF689E /* AddressSettingViewController.swift */,
 				36BE65B02C4510FE00CD4511 /* AccountViewController.swift */,
+				363F1A192C9EE9EB007527E2 /* AccountAddViewController.swift */,
+				363F1A1B2C9EF029007527E2 /* AccountAddCell.swift */,
 				363C242E2C6537840097FCB7 /* KakaoPostCodeViewController.swift */,
 			);
 			path = Info;
@@ -1543,6 +1555,7 @@
 				368E36842C4936AB003FA911 /* APIConstants.swift in Sources */,
 				363C24332C6607080097FCB7 /* HomeRepository.swift in Sources */,
 				369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */,
+				363F1A1C2C9EF029007527E2 /* AccountAddCell.swift in Sources */,
 				3648954E2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift in Sources */,
 				36BE65C62C4591F500CD4511 /* PurchaseHeaderView.swift in Sources */,
 				362864D72C8EBEAB00029452 /* ItemEndpoint.swift in Sources */,
@@ -1554,6 +1567,7 @@
 				363152F12C44F80900DF689E /* SalesDetailViewController.swift in Sources */,
 				363C242F2C6537840097FCB7 /* KakaoPostCodeViewController.swift in Sources */,
 				363C242D2C6529500097FCB7 /* UserAddressModel.swift in Sources */,
+				363F1A1E2C9F072F007527E2 /* UserAccountRequestDTO.swift in Sources */,
 				36BE65C22C458FA600CD4511 /* TermsTableViewCell.swift in Sources */,
 				363152AB2C3DC57800DF689E /* PurchaseModel.swift in Sources */,
 				36B745052C6C5AC2002892C4 /* UserDefaltManager.swift in Sources */,
@@ -1643,6 +1657,7 @@
 				36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */,
 				363152A52C3DBE9500DF689E /* TotalPriceFooterView.swift in Sources */,
 				368833AA2C20A9B7000F3A45 /* String.swift in Sources */,
+				363F1A252C9F1BE2007527E2 /* BankList.swift in Sources */,
 				363152902C3DB37000DF689E /* PurchaseDetailViewController.swift in Sources */,
 				36774A682C466E4000F32637 /* CompleteCollectionViewCell.swift in Sources */,
 				36B833EE2C5CDCFB009C2C3E /* HomeEndpoint.swift in Sources */,
@@ -1652,6 +1667,7 @@
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				362864CA2C8E985400029452 /* LandingViewController.swift in Sources */,
 				36542E792C2E892500D5BFEB /* CsCenterViewController.swift in Sources */,
+				363F1A1A2C9EE9EB007527E2 /* AccountAddViewController.swift in Sources */,
 				363152A12C3DBA0B00DF689E /* InfoCollectionViewCell.swift in Sources */,
 				363C24292C6520DD0097FCB7 /* DdanziChipButton.swift in Sources */,
 				362864E52C8EDE6700029452 /* RegisteItemDTO.swift in Sources */,
