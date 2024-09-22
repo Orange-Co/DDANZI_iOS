@@ -32,7 +32,7 @@ final class AddressFormViewController: UIViewController {
     $0.rowHeight = 75
     $0.separatorStyle = .none
     $0.scrollsToTop = false
-    $0.contentInset = .init(top: 30, left: 0, bottom: 0, right: 0)
+    $0.contentInset = .init(top: 10, left: 0, bottom: 0, right: 0)
   }
   private let headerView = MyPageSectionHeaderView().then {
     $0.setTitleLabel(title: "배송지 등록")

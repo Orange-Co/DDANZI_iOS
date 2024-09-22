@@ -20,12 +20,14 @@ enum MypageEndpoint {
   /// 주소 관련 API
   case fetchUserAddress
   case addUserAddress(UserAddressRequestDTO)
-  case editUserAddress(Int)
+  case editUserAddress(Int,UserAddressRequestDTO)
   case deleteUserAddress(Int)
   
   /// 계좌 관련 API
   case fetchUserAccount
-  case addUserAccount
+  case addUserAccount(UserAccountRequestDTO)
+  case editUserAccount(Int,UserAccountRequestDTO)
+  case deleteUserAccount(Int)
   
   case settingUserNoti
 }
@@ -51,7 +53,7 @@ extension MypageEndpoint: BaseTargetType {
         return "/api/v1/mypage/setting/address"
       case .addUserAddress:
         return "/api/v1/mypage/setting/address"
-      case let .editUserAddress(id):
+      case let .editUserAddress(id, _):
         return "/api/v1/mypage/setting/address/\(id)"
       case let .deleteUserAddress(id):
         return "/api/v1/mypage/setting/address/\(id)"
@@ -61,6 +63,10 @@ extension MypageEndpoint: BaseTargetType {
         return "/api/v1/mypage/setting/account"
       case .addUserAccount:
         return "/api/v1/mypage/setting/account"
+      case let .editUserAccount(id, _):
+        return "/api/v1/mypage/setting/account/\(id)"
+      case let .deleteUserAccount(id):
+        return "/api/v1/mypage/setting/account/\(id)"
       }
     }
     
@@ -90,6 +96,10 @@ extension MypageEndpoint: BaseTargetType {
         return .get
       case .addUserAccount:
         return .post
+      case .editUserAccount:
+        return .put
+      case .deleteUserAccount:
+        return .delete
       }
     }
     
@@ -109,7 +119,7 @@ extension MypageEndpoint: BaseTargetType {
         return .requestPlain
       case let .addUserAddress(body):
         return .requestJSONEncodable(body)
-      case .editUserAddress:
+      case let .editUserAddress(_, body):
         return .requestPlain
       case .deleteUserAddress:
         return .requestPlain
@@ -117,7 +127,11 @@ extension MypageEndpoint: BaseTargetType {
         return .requestPlain
       case .fetchUserAccount:
         return .requestPlain
-      case .addUserAccount:
+      case .addUserAccount(let body):
+        return .requestJSONEncodable(body)
+      case let .editUserAccount(_, body):
+        return .requestJSONEncodable(body)
+      case .deleteUserAccount(_):
         return .requestPlain
       }
     }

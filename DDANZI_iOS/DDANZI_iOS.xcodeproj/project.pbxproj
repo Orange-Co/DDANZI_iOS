@@ -72,6 +72,13 @@
 		363F1A102C9B10BA007527E2 /* LogoutDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A0F2C9B10BA007527E2 /* LogoutDTO.swift */; };
 		363F1A122C9B1638007527E2 /* UserAccountDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A112C9B1638007527E2 /* UserAccountDTO.swift */; };
 		363F1A182C9CA04F007527E2 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 363F1A172C9CA04F007527E2 /* Amplitude */; };
+		363F1A1A2C9EE9EB007527E2 /* AccountAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A192C9EE9EB007527E2 /* AccountAddViewController.swift */; };
+		363F1A1C2C9EF029007527E2 /* AccountAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A1B2C9EF029007527E2 /* AccountAddCell.swift */; };
+		363F1A1E2C9F072F007527E2 /* UserAccountRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A1D2C9F072F007527E2 /* UserAccountRequestDTO.swift */; };
+		363F1A232C9F15EB007527E2 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 363F1A222C9F15EB007527E2 /* RxGesture */; };
+		363F1A252C9F1BE2007527E2 /* BankList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A242C9F1BE2007527E2 /* BankList.swift */; };
+		363F1A272C9F57D4007527E2 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A262C9F57D4007527E2 /* CustomAlertView.swift */; };
+		363F1A292CA067C7007527E2 /* RefreshTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A282CA067C7007527E2 /* RefreshTokenRequestDTO.swift */; };
 		3648954E2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */; };
 		364895502C62822200AAA8E2 /* ProductDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */; };
 		364895522C62826200AAA8E2 /* SearchItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */; };
@@ -306,6 +313,12 @@
 		363F1A0D2C9B10AF007527E2 /* WithDrawDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithDrawDTO.swift; sourceTree = "<group>"; };
 		363F1A0F2C9B10BA007527E2 /* LogoutDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutDTO.swift; sourceTree = "<group>"; };
 		363F1A112C9B1638007527E2 /* UserAccountDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountDTO.swift; sourceTree = "<group>"; };
+		363F1A192C9EE9EB007527E2 /* AccountAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAddViewController.swift; sourceTree = "<group>"; };
+		363F1A1B2C9EF029007527E2 /* AccountAddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAddCell.swift; sourceTree = "<group>"; };
+		363F1A1D2C9F072F007527E2 /* UserAccountRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountRequestDTO.swift; sourceTree = "<group>"; };
+		363F1A242C9F1BE2007527E2 /* BankList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankList.swift; sourceTree = "<group>"; };
+		363F1A262C9F57D4007527E2 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
+		363F1A282CA067C7007527E2 /* RefreshTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenRequestDTO.swift; sourceTree = "<group>"; };
 		3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItemsResponseDTO.swift; sourceTree = "<group>"; };
 		3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailResponseDTO.swift; sourceTree = "<group>"; };
 		364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemsResponseDTO.swift; sourceTree = "<group>"; };
@@ -464,6 +477,7 @@
 				36B744F92C6C50D3002892C4 /* RxKakaoSDKCommon in Frameworks */,
 				36B744F22C6C4CD2002892C4 /* KakaoSDKCommon in Frameworks */,
 				3664CFDA2C6E2179007FB5DF /* Lottie in Frameworks */,
+				363F1A232C9F15EB007527E2 /* RxGesture in Frameworks */,
 				368E36A82C4A3BBE003FA911 /* RxDataSources in Frameworks */,
 				368E36992C4A3B55003FA911 /* Moya in Frameworks */,
 				363C243C2C6619950097FCB7 /* Kingfisher in Frameworks */,
@@ -528,6 +542,7 @@
 				363152802C35EAF400DF689E /* DdanziButton.swift */,
 				363C24282C6520DD0097FCB7 /* DdanziChipButton.swift */,
 				36A5947D2C87F90C0097DE70 /* DdanziLoadingView.swift */,
+				363F1A262C9F57D4007527E2 /* CustomAlertView.swift */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -538,6 +553,7 @@
 				3631528A2C3D120400DF689E /* PurchaseSectionModel.swift */,
 				363C24202C6512E60097FCB7 /* UserInfoModel.swift */,
 				363C242C2C6529500097FCB7 /* UserAddressModel.swift */,
+				363F1A242C9F1BE2007527E2 /* BankList.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -653,6 +669,7 @@
 				3648955D2C6284D000AAA8E2 /* UserSaleResponseDTO.swift */,
 				3648955F2C62850200AAA8E2 /* UserInterestResponesDTO.swift */,
 				363F1A112C9B1638007527E2 /* UserAccountDTO.swift */,
+				363F1A1D2C9F072F007527E2 /* UserAccountRequestDTO.swift */,
 			);
 			path = Mypage;
 			sourceTree = "<group>";
@@ -764,6 +781,8 @@
 				36542E802C308ED000D5BFEB /* BankAccountViewController.swift */,
 				363152F22C44F8BE00DF689E /* AddressSettingViewController.swift */,
 				36BE65B02C4510FE00CD4511 /* AccountViewController.swift */,
+				363F1A192C9EE9EB007527E2 /* AccountAddViewController.swift */,
+				363F1A1B2C9EF029007527E2 /* AccountAddCell.swift */,
 				363C242E2C6537840097FCB7 /* KakaoPostCodeViewController.swift */,
 			);
 			path = Info;
@@ -1179,6 +1198,7 @@
 				363F1A0B2C9ADD22007527E2 /* RefreshTokenDTO.swift */,
 				363F1A0D2C9B10AF007527E2 /* WithDrawDTO.swift */,
 				363F1A0F2C9B10BA007527E2 /* LogoutDTO.swift */,
+				363F1A282CA067C7007527E2 /* RefreshTokenRequestDTO.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -1368,6 +1388,7 @@
 				3664CFD92C6E2179007FB5DF /* Lottie */,
 				36130D032C92B0F90028CF3A /* FirebaseMessaging */,
 				363F1A172C9CA04F007527E2 /* Amplitude */,
+				363F1A222C9F15EB007527E2 /* RxGesture */,
 			);
 			productName = DDANZI_iOS;
 			productReference = 369C63872C1A7A240021E2E0 /* DDANZI_iOS.app */;
@@ -1455,6 +1476,7 @@
 				3664CFD82C6E2179007FB5DF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				36130D022C92B0F90028CF3A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				363F1A162C9CA04F007527E2 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */,
+				363F1A212C9F15EB007527E2 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = 369C63882C1A7A240021E2E0 /* Products */;
 			projectDirPath = "";
@@ -1543,6 +1565,7 @@
 				368E36842C4936AB003FA911 /* APIConstants.swift in Sources */,
 				363C24332C6607080097FCB7 /* HomeRepository.swift in Sources */,
 				369C63E52C1A95280021E2E0 /* UIButton+.swift in Sources */,
+				363F1A1C2C9EF029007527E2 /* AccountAddCell.swift in Sources */,
 				3648954E2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift in Sources */,
 				36BE65C62C4591F500CD4511 /* PurchaseHeaderView.swift in Sources */,
 				362864D72C8EBEAB00029452 /* ItemEndpoint.swift in Sources */,
@@ -1554,6 +1577,7 @@
 				363152F12C44F80900DF689E /* SalesDetailViewController.swift in Sources */,
 				363C242F2C6537840097FCB7 /* KakaoPostCodeViewController.swift in Sources */,
 				363C242D2C6529500097FCB7 /* UserAddressModel.swift in Sources */,
+				363F1A1E2C9F072F007527E2 /* UserAccountRequestDTO.swift in Sources */,
 				36BE65C22C458FA600CD4511 /* TermsTableViewCell.swift in Sources */,
 				363152AB2C3DC57800DF689E /* PurchaseModel.swift in Sources */,
 				36B745052C6C5AC2002892C4 /* UserDefaltManager.swift in Sources */,
@@ -1592,6 +1616,7 @@
 				364895542C62829200AAA8E2 /* SearchResultResponseDTO.swift in Sources */,
 				363C24252C651E620097FCB7 /* AddressFormViewController.swift in Sources */,
 				364895662C6285C900AAA8E2 /* UserAddressRequestDTO.swift in Sources */,
+				363F1A272C9F57D4007527E2 /* CustomAlertView.swift in Sources */,
 				3648DB802C93E134003EA6BE /* PushViewController.swift in Sources */,
 				36B833EC2C5CDCE4009C2C3E /* AuthEndpoint.swift in Sources */,
 				362864CE2C8EBC2C00029452 /* PickerManager.swift in Sources */,
@@ -1643,15 +1668,18 @@
 				36EB5FA82C1ED6B600FAF995 /* ProductModel.swift in Sources */,
 				363152A52C3DBE9500DF689E /* TotalPriceFooterView.swift in Sources */,
 				368833AA2C20A9B7000F3A45 /* String.swift in Sources */,
+				363F1A252C9F1BE2007527E2 /* BankList.swift in Sources */,
 				363152902C3DB37000DF689E /* PurchaseDetailViewController.swift in Sources */,
 				36774A682C466E4000F32637 /* CompleteCollectionViewCell.swift in Sources */,
 				36B833EE2C5CDCFB009C2C3E /* HomeEndpoint.swift in Sources */,
 				36542E732C2E88F500D5BFEB /* SellListViewController.swift in Sources */,
 				362864E72C8EDF0000029452 /* SellDetailDTO.swift in Sources */,
 				362864CC2C8EA7B700029452 /* CheckItemViewController.swift in Sources */,
+				363F1A292CA067C7007527E2 /* RefreshTokenRequestDTO.swift in Sources */,
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				362864CA2C8E985400029452 /* LandingViewController.swift in Sources */,
 				36542E792C2E892500D5BFEB /* CsCenterViewController.swift in Sources */,
+				363F1A1A2C9EE9EB007527E2 /* AccountAddViewController.swift in Sources */,
 				363152A12C3DBA0B00DF689E /* InfoCollectionViewCell.swift in Sources */,
 				363C24292C6520DD0097FCB7 /* DdanziChipButton.swift in Sources */,
 				362864E52C8EDE6700029452 /* RegisteItemDTO.swift in Sources */,
@@ -1850,7 +1878,7 @@
 		369C63B22C1A7A270021E2E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = DDANZI_iOS/DDANZI_iOS.entitlements;
@@ -1859,7 +1887,7 @@
 				DEVELOPMENT_TEAM = 65NSM7Z327;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDANZI_iOS/Application/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "딴지";
+				INFOPLIST_KEY_CFBundleDisplayName = "딴지(DEV)";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "상품 캡처본을 위해 접근이 필요합니다. ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1872,7 +1900,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.orangeCo.DDANZI-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.orangeCo.DDANZI-iOS.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -2063,6 +2091,14 @@
 				kind = branch;
 			};
 		};
+		363F1A212C9F15EB007527E2 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 		3664CFD82C6E2179007FB5DF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios";
@@ -2160,6 +2196,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 363F1A162C9CA04F007527E2 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
 			productName = Amplitude;
+		};
+		363F1A222C9F15EB007527E2 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 363F1A212C9F15EB007527E2 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 		3664CFD92C6E2179007FB5DF /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;

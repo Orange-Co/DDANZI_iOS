@@ -232,7 +232,12 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
     
     navigationBarView.alarmButtonTap
       .bind(with: self) { owner, _ in
-        self.navigationController?.pushViewController(PushViewController(), animated: true)
+        if UserDefaults.standard.bool(forKey: .isLogin) {
+          self.navigationController?.pushViewController(PushViewController(), animated: true)
+        } else {
+          owner.navigationController?.pushViewController(LoginViewController(signUpFrom: "sell"), animated: true)
+          owner.view.showToast(message: "로그인이 필요한 서비스 입니다.", at: 50)
+        }
       }
       .disposed(by: disposeBag)
   }

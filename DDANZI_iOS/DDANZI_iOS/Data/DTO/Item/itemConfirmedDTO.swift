@@ -11,7 +11,7 @@ struct itemConformedDTO: Codable {
   let productID, productName: String
      let imgURL: String
      let originPrice, salePrice: Int
-     let isAccountExist: Bool
+     var isAccountExist: Bool
 
      enum CodingKeys: String, CodingKey {
          case productID = "productId"

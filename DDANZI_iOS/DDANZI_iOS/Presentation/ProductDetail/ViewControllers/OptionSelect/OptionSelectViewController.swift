@@ -115,7 +115,8 @@ final class OptionSelectViewController: UIViewController {
     bottomButton.button.rx.tap
       .bind {
         self.dismiss(animated: true) {
-          self.delegate?.optionViewControllerDidFinish(self)
+          let unwrappedOptions = self.selectedOptions.compactMap { $0 }
+          self.delegate?.optionViewControllerDidFinish(self, optionList: unwrappedOptions)
           Amplitude.instance().logEvent("click_option_next")
         }
       }
@@ -154,26 +155,30 @@ final class OptionSelectViewController: UIViewController {
     
     optionCollectionView.rx.itemSelected
       .bind(with: self) { owner, indexPath in
-        if let cell = owner.optionCollectionView.cellForItem(at: indexPath) as? OptionCollectionViewCell {
-          cell.isSelectedRelay.accept(true)
-          owner.selectedOptions[indexPath.section] = self.option[indexPath.section].optionDetailList[indexPath.row].optionDetailID
-          owner.updateButtonState()
+        // 섹션 내 이전 선택 해제
+        if let selectedIndex = owner.selectedOptions[indexPath.section] {
+          let deselectedIndexPath = IndexPath(row: selectedIndex, section: indexPath.section)
+          if let cell = owner.optionCollectionView.cellForItem(at: deselectedIndexPath) as? OptionCollectionViewCell {
+            cell.isSelectedRelay.accept(false) // 이전 선택 해제
+          }
         }
+
+        // 선택한 옵션을 섹션별로 저장
+        let selectedOptionId = owner.option[indexPath.section].optionDetailList[indexPath.row].optionDetailID
+            owner.selectedOptions[indexPath.section] = selectedOptionId // optionDetailId 저장
+
+        if let cell = owner.optionCollectionView.cellForItem(at: indexPath) as? OptionCollectionViewCell {
+          cell.isSelectedRelay.accept(true) // 새로운 선택 적용
+        }
+
+        owner.updateButtonState() // 버튼 상태 업데이트
       }
       .disposed(by: disposeBag)
     
-    optionCollectionView.rx.itemDeselected
-      .bind(with: self) { owner, indexPath in
-        if let cell = owner.optionCollectionView.cellForItem(at: indexPath) as? OptionCollectionViewCell {
-          cell.isSelectedRelay.accept(false)
-          owner.selectedOptions[indexPath.section] = nil
-          owner.updateButtonState()
-        }
-      }
-      .disposed(by: disposeBag)
   }
   
   private func updateButtonState() {
+    print(selectedOptions)
     let allSectionsSelected = selectedOptions.allSatisfy { $0 != nil }
     bottomButton.button.isEnabled = allSectionsSelected
     bottomButton.button.backgroundColor = allSectionsSelected ? .black : .gray2

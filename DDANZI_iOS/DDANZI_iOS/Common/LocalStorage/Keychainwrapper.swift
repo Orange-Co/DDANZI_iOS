@@ -131,7 +131,7 @@ public final class KeychainWrapper {
     return status == errSecSuccess
   }
   
-  private func deleteAccessToken() -> Bool {
+  func deleteAccessToken() -> Bool {
     let query: [CFString: Any] = [
       kSecClass: kSecClassGenericPassword,
       kSecAttrService: userKey

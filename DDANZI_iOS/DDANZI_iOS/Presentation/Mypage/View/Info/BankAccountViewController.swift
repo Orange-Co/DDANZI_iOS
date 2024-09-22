@@ -14,13 +14,26 @@ import RxSwift
 class BankAccountViewController: UIViewController {
   
   private let disposeBag = DisposeBag()
+  private var bankAccountId: Int?
   
   private let navigationBarView = CustomNavigationBarView(navigationBarType: .normal)
   private let headerView = MyPageSectionHeaderView()
+  
+  private let registerButton = UIButton().then {
+    $0.backgroundColor = .white
+    $0.makeBorder(width: 1, color: .gray2)
+    $0.setTitleColor(.black, for: .normal)
+    $0.setTitle("+ 계좌 등록", for: .normal)
+    $0.titleLabel?.font = .body4R16
+    $0.makeCornerRound(radius: 10)
+    $0.isHidden = true // 초기 상태는 숨김
+  }
+  
   private let accountButton = UIButton().then {
     $0.backgroundColor = .white
     $0.makeCornerRound(radius: 10)
     $0.makeBorder(width: 1, color: .gray2)
+    $0.isHidden = true // 초기 상태는 숨김
   }
   
   private let stackView = UIStackView().then {
@@ -70,10 +83,11 @@ class BankAccountViewController: UIViewController {
   private func setHierarchy() {
     view.addSubviews(navigationBarView,
                      headerView,
-                     accountButton)
+                     accountButton,
+                     registerButton)
     
     accountButton.addSubviews(stackView,
-                             detailButton)
+                              detailButton)
     
     stackView.addArrangedSubviews(bankNameLabel,
                                   innerStackView)
@@ -99,6 +113,12 @@ class BankAccountViewController: UIViewController {
       $0.height.equalTo(100)
     }
     
+    registerButton.snp.makeConstraints {
+      $0.top.equalTo(headerView.snp.bottom).offset(19)
+      $0.leading.trailing.equalToSuperview().inset(20)
+      $0.height.equalTo(100)
+    }
+    
     stackView.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.leading.equalToSuperview().offset(18)
@@ -114,10 +134,20 @@ class BankAccountViewController: UIViewController {
   func fetchAccountInfo() {
     Providers.MypageProvider.request(target: .fetchUserAccount, instance: BaseResponse<UserAccountDTO>.self) { response in
       guard let data = response.data else { return }
-      
-      self.bankNameLabel.text = data.bank ?? ""
-      self.nameLabel.text = data.name
-      self.accountNumberLabel.text = data.accountNumber ?? ""
+      if let bank = data.bank,
+         let accountNumber = data.accountNumber,
+         let accountId = data.accountId {
+        self.bankNameLabel.text = bank
+        self.nameLabel.text = data.name
+        self.accountNumberLabel.text = accountNumber
+        self.accountButton.isHidden = false
+        self.registerButton.isHidden = true // 계좌 정보가 있으면 등록 버튼을 숨김
+        self.bankAccountId = accountId
+      } else {
+        // 계좌 정보가 없으면 등록 버튼을 보이고 계좌 정보 버튼을 숨김
+        self.accountButton.isHidden = true
+        self.registerButton.isHidden = false
+      }
     }
   }
   
@@ -127,5 +157,19 @@ class BankAccountViewController: UIViewController {
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    registerButton.rx.tap
+      .subscribe(onNext: { [weak self] in
+        // 계좌 등록 화면으로 이동하는 로직 추가
+        self?.navigateToAccountRegistration()
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  // 계좌 등록 화면으로 이동하는 함수
+  private func navigateToAccountRegistration() {
+    // 계좌 등록 화면 이동 로직을 구현
+    let accountRegistrationVC = AccountAddViewController(bankAccountId: bankAccountId)
+    self.navigationController?.pushViewController(accountRegistrationVC, animated: true)
   }
 }

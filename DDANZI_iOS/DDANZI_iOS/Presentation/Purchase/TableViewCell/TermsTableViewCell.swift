@@ -51,7 +51,7 @@ final class TermsTableViewCell: UITableViewCell {
   private func setConstraints() {
     containerView.snp.makeConstraints {
       $0.height.equalTo(38)
-      $0.horizontalEdges.equalToSuperview().inset(20)
+      $0.horizontalEdges.equalToSuperview()
       $0.verticalEdges.equalToSuperview().inset(5)
     }
     

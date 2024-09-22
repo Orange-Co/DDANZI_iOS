@@ -19,6 +19,15 @@ final class RegisteItemCell: UICollectionViewCell {
   var selectedTerms = BehaviorRelay<[Bool]>(value: [false, false])
   var itemInfo = PublishRelay<itemConformedDTO>()
   var dateString = BehaviorRelay<String>(value: "")
+  
+  var isReadyToRegister: Observable<Bool> {
+    return Observable.combineLatest(selectedTerms.asObservable(), dateString.asObservable())
+      .map { termsSelected, date in
+        let allSelected = termsSelected.allSatisfy { $0 }
+        return allSelected && !date.isEmpty
+      }
+  }
+  
   private let disposeBag = DisposeBag()
   
   private let imageView = UIImageView()
@@ -200,7 +209,7 @@ final class RegisteItemCell: UICollectionViewCell {
     }
     
     termsTableView.snp.makeConstraints {
-      $0.top.equalTo(fullAgreementButton.snp.bottom).offset(35.adjusted)
+      $0.top.equalTo(fullAgreementButton.snp.bottom).offset(18.adjusted)
       $0.leading.trailing.bottom.equalToSuperview()
     }
   }

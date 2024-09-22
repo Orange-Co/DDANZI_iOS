@@ -100,13 +100,13 @@ extension AccountViewController: UITableViewDataSource {
         UserApi.shared.logout {(error) in
           if let error = error {
             print(error)
-            
+            KeychainWrapper.shared.deleteAccessToken()
             UserDefaults.standard.set(false, forKey: .isLogin)
             self.navigationController?.popToRootViewController(animated: true)
           }
           else {
             UserDefaults.standard.clearAll()
-            
+            KeychainWrapper.shared.deleteAccessToken()
             UserDefaults.standard.set(false, forKey: .isLogin)
             self.navigationController?.popToRootViewController(animated: true)
             print("logout() success.")
@@ -125,7 +125,7 @@ extension AccountViewController: UITableViewDataSource {
           }
           else {
             UserDefaults.standard.clearAll()
-            KeychainWrapper.shared.setAccessToken("")
+            KeychainWrapper.shared.deleteAccessToken()
             UserDefaults.standard.set(false, forKey: .isLogin)
             self.navigationController?.popToRootViewController(animated: true)
           }
