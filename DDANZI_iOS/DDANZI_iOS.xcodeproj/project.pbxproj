@@ -1870,7 +1870,7 @@
 		369C63B22C1A7A270021E2E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_dev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = DDANZI_iOS/DDANZI_iOS.entitlements;
@@ -1879,7 +1879,7 @@
 				DEVELOPMENT_TEAM = 65NSM7Z327;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DDANZI_iOS/Application/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "딴지";
+				INFOPLIST_KEY_CFBundleDisplayName = "딴지(DEV)";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "상품 캡처본을 위해 접근이 필요합니다. ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1892,7 +1892,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.orangeCo.DDANZI-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.orangeCo.DDANZI-iOS.dev";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
