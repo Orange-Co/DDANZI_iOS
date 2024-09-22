@@ -18,10 +18,13 @@ import RxGesture
 final class AccountAddViewController: UIViewController {
   
   // MARK: Property
+  private var bankAccountId: Int?
   private let titles = ["이름", "은행", "계좌번호"]
   private var userName = UserDefaults.standard.string(forKey: "name") ?? "사용자"
   
   private let disposeBag = DisposeBag()
+  // 계좌 등록 완료 상태를 전달할 Relay
+  var accountRegisteredRelay = PublishRelay<Bool>()
   
   private var selectedBankCode: String?
   private lazy var nameSubject = BehaviorSubject<String>(value: userName)
@@ -40,6 +43,15 @@ final class AccountAddViewController: UIViewController {
     $0.isScrollEnabled = false
   }
   private let conformButton = DdanziButton(title: "입력 완료", enable: false)
+  
+  init(bankAccountId: Int?) {
+    self.bankAccountId = bankAccountId
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: LifeCycle
   override func viewDidLoad() {
@@ -87,6 +99,13 @@ final class AccountAddViewController: UIViewController {
   private func bind() {
     tableView.delegate = self
     tableView.dataSource = self
+    
+    navigationView.backButtonTap
+      .subscribe(with: self) { owner, _ in
+        owner.navigationController?.popViewController(animated: true)
+      }
+      .disposed(by: disposeBag)
+    
     // 모든 필드가 채워졌을 때 버튼 활성화
     Observable.combineLatest(nameSubject, bankSubject, accountNumberSubject)
       .map { !$0.0.isEmpty && !$0.1.isEmpty && !$0.2.isEmpty }
@@ -98,11 +117,14 @@ final class AccountAddViewController: UIViewController {
     conformButton.rx.tap
       .subscribe(with: self) { owner, _ in
         // 등록 버튼 눌렀을 때의 처리
-        let accountName = try? owner.nameSubject.value()
-        let bank = try? owner.bankSubject.value()
+        let accountName = UserDefaults.standard.string(forKey: .name)
+        let bank = self.selectedBankCode
         let accountNumber = try? owner.accountNumberSubject.value()
-        
-        owner.conformAccount(accountName: accountName ?? "", bank: bank ?? "", accountNumber: accountNumber ?? "")
+        if let bankAccountId = self.bankAccountId {
+          owner.editAccount(accountId: bankAccountId, accountName: accountName ?? "", bank: bank ?? "", accountNumber: accountNumber ?? "")
+        } else {
+          owner.conformAccount(accountName: accountName ?? "", bank: bank ?? "", accountNumber: accountNumber ?? "")
+        }
       }
       .disposed(by: disposeBag)
   }
@@ -132,6 +154,18 @@ final class AccountAddViewController: UIViewController {
     return name.replacingCharacters(in: middleIndex...middleIndex, with: "*")
   }
   
+  private func editAccount(accountId: Int, accountName: String, bank: String, accountNumber: String) {
+    let body = UserAccountRequestDTO(acountName: accountName, bank: bank, accountNumber: accountNumber)
+    Providers.MypageProvider.request(target: .editUserAccount(accountId, body), instance: BaseResponse<UserAccountDTO>.self) { response in
+      guard let data = response.data else { return }
+      if response.status != 200 || response.status != 201 {
+        self.view.showToast(message: "계좌 등록 오류 입니다. 잠시 후 다시 시도해주세요", at: 100)
+      } else {
+        self.navigationController?.popViewController(animated: true)
+      }
+    }
+  }
+  
   private func conformAccount(accountName: String, bank: String, accountNumber: String) {
     let body = UserAccountRequestDTO(acountName: accountName, bank: bank, accountNumber: accountNumber)
     Providers.MypageProvider.request(target: .addUserAccount(body), instance: BaseResponse<UserAccountDTO>.self) { response in
@@ -139,6 +173,7 @@ final class AccountAddViewController: UIViewController {
       if response.status != 200 || response.status != 201 {
         self.view.showToast(message: "계좌 등록 오류 입니다. 잠시 후 다시 시도해주세요", at: 100)
       } else {
+        self.accountRegisteredRelay.accept(true)
         self.navigationController?.popViewController(animated: true)
       }
     }

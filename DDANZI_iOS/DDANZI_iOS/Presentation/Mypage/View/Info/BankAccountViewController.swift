@@ -14,6 +14,7 @@ import RxSwift
 class BankAccountViewController: UIViewController {
   
   private let disposeBag = DisposeBag()
+  private var bankAccountId: Int?
   
   private let navigationBarView = CustomNavigationBarView(navigationBarType: .normal)
   private let headerView = MyPageSectionHeaderView()
@@ -141,6 +142,7 @@ class BankAccountViewController: UIViewController {
         self.accountNumberLabel.text = accountNumber
         self.accountButton.isHidden = false
         self.registerButton.isHidden = true // 계좌 정보가 있으면 등록 버튼을 숨김
+        self.bankAccountId = accountId
       } else {
         // 계좌 정보가 없으면 등록 버튼을 보이고 계좌 정보 버튼을 숨김
         self.accountButton.isHidden = true
@@ -167,7 +169,7 @@ class BankAccountViewController: UIViewController {
   // 계좌 등록 화면으로 이동하는 함수
   private func navigateToAccountRegistration() {
     // 계좌 등록 화면 이동 로직을 구현
-    let accountRegistrationVC = AccountAddViewController()
+    let accountRegistrationVC = AccountAddViewController(bankAccountId: bankAccountId)
     self.navigationController?.pushViewController(accountRegistrationVC, animated: true)
   }
 }
