@@ -102,7 +102,20 @@ final class RegisteItemViewController: UIViewController {
         }
         let dueDate = cell.dateString.value
         Amplitude.instance().logEvent("click_sell_next", withEventProperties: ["product_id": owner.info.productID])
-        owner.registeItem(due: dueDate)
+        if !owner.info.isAccountExist {
+          let alertVC = CustomAlertViewController(title: "잠시만요!", content: "상품 판매금액 정산을 위해 입금 받으실 대표계좌 등록이 필요합니다.", buttonText: "계좌 등록 하러 가기", subButton: nil)
+          
+          alertVC.primaryButtonTap
+            .subscribe(onNext: { _ in
+              owner.navigateToAccountAdd(dueDate: dueDate)
+            })
+            .disposed(by: owner.disposeBag)
+          
+          alertVC.modalPresentationStyle = .overFullScreen
+          owner.present(alertVC, animated: false, completion: nil)
+        } else {
+          owner.registeItem(due: dueDate)
+        }
       }
       .disposed(by: disposeBag)
     
@@ -119,12 +132,29 @@ final class RegisteItemViewController: UIViewController {
     collectionView.delegate = self
   }
   
+  private func navigateToAccountAdd(dueDate: String) {
+    let accountAddVC = AccountAddViewController(bankAccountId: nil)
+    
+    // AccountAddViewController의 accountRegisteredRelay를 구독
+    accountAddVC.accountRegisteredRelay
+      .subscribe(onNext: { [weak self] isRegistered in
+        guard let self = self else { return }
+        if isRegistered {
+          self.info.isAccountExist = true
+          self.registeItem(due: dueDate) // 계좌 등록이 완료되면 나머지 플로우 진행
+        }
+      })
+      .disposed(by: disposeBag)
+    self.navigationController?.pushViewController(accountAddVC, animated: true)
+  }
+  
   private func registeItem(due: String) {
     let body = RegisteItemBody(productId: info.productID, productName: info.productName, receivedDate: due, registeredImage: info.imgURL)
     Providers.ItemProvider.request(target: .registeItem(body: body), instance: BaseResponse<RegisteItemDTO>.self) { response in
       guard let data = response.data else { return }
       let registeCompleteVC = RegisteCompleteViewController(response: data)
       let pushVC = PushSettingViewController(isSelling: true, orderId: "", response: data)
+      
       PermissionManager.shared.checkPermission(for: .notification)
         .bind(with: self, onNext: { owner, isAllow in
           Amplitude.instance().logEvent("complete_sell_adjustment", withEventProperties: ["item_id": data.itemId])
@@ -147,20 +177,12 @@ extension RegisteItemViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RegisteItemCell.className, for: indexPath) as? RegisteItemCell else { return UICollectionViewCell() }
     cell.configure(info: self.info)
-    
-    // 날짜와 전체 동의 여부 확인
-    Observable.combineLatest(cell.selectedTerms, cell.dateString)
-      .map { termsSelected, date in
-        // 모든 약관이 동의됐고, 날짜가 선택됐는지 확인
-        let allSelected = termsSelected.allSatisfy { $0 }
-        return allSelected && !date.isEmpty
-      }
-      .bind(onNext: { isAllow in
-        self.registeButton.setEnable()
+    cell.isReadyToRegister
+      .subscribe(onNext: { [weak self] isReady in
+        guard let self = self else { return }
+        self.registeButton.setEnable(isEnable: isReady)
       })
       .disposed(by: disposeBag)
-    
-    
     return cell
     
   }
@@ -168,6 +190,6 @@ extension RegisteItemViewController: UICollectionViewDataSource {
 
 extension RegisteItemViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.frame.width, height: 850.adjusted) // 원하는 크기 설정
+    return CGSize(width: collectionView.frame.width, height: 830.adjusted)
   }
 }
