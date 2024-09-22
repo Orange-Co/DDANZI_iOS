@@ -109,7 +109,7 @@ final class MyPageViewController: UIViewController {
   
   private func fetchUser() {
     Providers.MypageProvider.request(target: .fetchUser, instance: BaseResponse<MypageResponseDTO>.self) { result in
-      if result.status == 403 {
+      if result.status != 200 {
         self.isLogin = false
         self.tableView.reloadData()
       }
