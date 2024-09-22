@@ -16,7 +16,7 @@ import Amplitude
 
 // MARK: - OptionDelegate
 protocol OptionViewControllerDelegate: AnyObject {
-  func optionViewControllerDidFinish(_ viewController: OptionSelectViewController)
+  func optionViewControllerDidFinish(_ viewController: OptionSelectViewController, optionList: [Int])
 }
 
 final class ProductDetailViewController: UIViewController {
@@ -324,9 +324,9 @@ final class ProductDetailViewController: UIViewController {
 }
 
 extension ProductDetailViewController: OptionViewControllerDelegate {
-  func optionViewControllerDidFinish(_ viewController: OptionSelectViewController) {
+  func optionViewControllerDidFinish(_ viewController: OptionSelectViewController, optionList: [Int]) {
     let purchaseVC = PurchaseViewController()
-    purchaseVC.orderModel = .init(productId: productId, optionList: optionList.map({ $0.optionID }))
+    purchaseVC.orderModel = .init(productId: productId, optionList: optionList)
     self.navigationController?.pushViewController(purchaseVC, animated: true)
   }
 }
