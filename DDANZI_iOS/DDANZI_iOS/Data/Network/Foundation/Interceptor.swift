@@ -21,56 +21,57 @@ final class AuthInterceptor: RequestInterceptor {
   }
   
   func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-      print("-------🔧retry 시작🔧-------")
-      guard let statusCode = request.response?.statusCode else {
-          print("🚨status code 오류")
-          return completion(.doNotRetry)
-      }
-      
-      if request.retryCount < retryLimit {
-          if statusCode == 401 {
-              refreshToken { success in
-                  if success {
-                      // Retry the request if token refresh was successful
-                      completion(.retry)
-                  } else {
-                      // Token refresh failed; do not retry
-                      completion(.doNotRetry)
-                  }
-              }
+    print("-------🔧retry 시작🔧-------")
+    guard let statusCode = request.response?.statusCode else {
+      print("🚨status code 오류")
+      return completion(.doNotRetry)
+    }
+    
+    if request.retryCount < retryLimit {
+      if statusCode == 401 {
+        refreshToken { success in
+          if success {
+            // Retry the request if token refresh was successful
+            completion(.retry)
           } else {
-              completion(.doNotRetryWithError(error))
+            // Token refresh failed; do not retry
+            completion(.doNotRetry)
           }
+        }
       } else {
-          completion(.doNotRetry)
+        completion(.doNotRetryWithError(error))
       }
+    } else {
+      completion(.doNotRetry)
+    }
   }
-
+  
 }
 
 extension AuthInterceptor {
   private func refreshToken(completion: @escaping (Bool) -> Void) {
-      Providers.AuthProvider.request(target: .refreshToken, instance: BaseResponse<RefreshTokenDTO>.self) { response in
-          guard let data = response.data else {
-              // Token refresh failed
-              self.handleTokenRefreshFailure()
-              completion(false) // Indicate failure
-              return
-          }
-          
-          if let accessToken = data.accesstoken {
-              KeychainWrapper.shared.setAccessToken(accessToken)
-              UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
-          }
-          
-          if response.status == 401 {
-              UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
-          }
-          
-          completion(true) // Indicate success
+    let body = RefreshTokenRequestDTO(refreshtoken: UserDefaults.standard.string(forKey: .refreshToken) ?? "")
+    Providers.AuthProvider.request(target: .refreshToken(body), instance: BaseResponse<RefreshTokenDTO>.self) { response in
+      guard let data = response.data else {
+        // Token refresh failed
+        self.handleTokenRefreshFailure()
+        completion(false) // Indicate failure
+        return
       }
+      
+      if let accessToken = data.accesstoken {
+        KeychainWrapper.shared.setAccessToken(accessToken)
+        UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
+      }
+      
+      if response.status == 401 {
+        UserDefaults.standard.set(data.refreshtoken, forKey: .refreshToken)
+      }
+      
+      completion(true) // Indicate success
+    }
   }
-
+  
   
   private func handleTokenRefreshFailure() {
     // Clear tokens

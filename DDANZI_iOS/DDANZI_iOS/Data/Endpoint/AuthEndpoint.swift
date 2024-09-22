@@ -14,7 +14,7 @@ enum AuthEndpoint {
   case certification(VerificationRequestDTO)
   case revoke
   case logout
-  case refreshToken
+  case refreshToken(RefreshTokenRequestDTO)
 }
 
 extension AuthEndpoint: BaseTargetType {
@@ -73,8 +73,8 @@ extension AuthEndpoint: BaseTargetType {
       return .requestPlain
     case .logout:
       return .requestPlain
-    case .refreshToken:
-      return .requestPlain
+    case let .refreshToken(dto):
+      return .requestJSONEncodable(dto)
     }
   }
   

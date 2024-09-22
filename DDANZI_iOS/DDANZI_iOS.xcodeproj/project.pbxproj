@@ -78,6 +78,7 @@
 		363F1A232C9F15EB007527E2 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 363F1A222C9F15EB007527E2 /* RxGesture */; };
 		363F1A252C9F1BE2007527E2 /* BankList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A242C9F1BE2007527E2 /* BankList.swift */; };
 		363F1A272C9F57D4007527E2 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A262C9F57D4007527E2 /* CustomAlertView.swift */; };
+		363F1A292CA067C7007527E2 /* RefreshTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F1A282CA067C7007527E2 /* RefreshTokenRequestDTO.swift */; };
 		3648954E2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */; };
 		364895502C62822200AAA8E2 /* ProductDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */; };
 		364895522C62826200AAA8E2 /* SearchItemsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */; };
@@ -317,6 +318,7 @@
 		363F1A1D2C9F072F007527E2 /* UserAccountRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountRequestDTO.swift; sourceTree = "<group>"; };
 		363F1A242C9F1BE2007527E2 /* BankList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankList.swift; sourceTree = "<group>"; };
 		363F1A262C9F57D4007527E2 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
+		363F1A282CA067C7007527E2 /* RefreshTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenRequestDTO.swift; sourceTree = "<group>"; };
 		3648954D2C6281BB00AAA8E2 /* HomeItemsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItemsResponseDTO.swift; sourceTree = "<group>"; };
 		3648954F2C62822200AAA8E2 /* ProductDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailResponseDTO.swift; sourceTree = "<group>"; };
 		364895512C62826200AAA8E2 /* SearchItemsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemsResponseDTO.swift; sourceTree = "<group>"; };
@@ -1196,6 +1198,7 @@
 				363F1A0B2C9ADD22007527E2 /* RefreshTokenDTO.swift */,
 				363F1A0D2C9B10AF007527E2 /* WithDrawDTO.swift */,
 				363F1A0F2C9B10BA007527E2 /* LogoutDTO.swift */,
+				363F1A282CA067C7007527E2 /* RefreshTokenRequestDTO.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -1672,6 +1675,7 @@
 				36542E732C2E88F500D5BFEB /* SellListViewController.swift in Sources */,
 				362864E72C8EDF0000029452 /* SellDetailDTO.swift in Sources */,
 				362864CC2C8EA7B700029452 /* CheckItemViewController.swift in Sources */,
+				363F1A292CA067C7007527E2 /* RefreshTokenRequestDTO.swift in Sources */,
 				36EB5FA52C1ECDED00FAF995 /* String+.swift in Sources */,
 				362864CA2C8E985400029452 /* LandingViewController.swift in Sources */,
 				36542E792C2E892500D5BFEB /* CsCenterViewController.swift in Sources */,
