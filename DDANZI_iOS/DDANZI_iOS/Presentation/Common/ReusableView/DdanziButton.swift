@@ -17,9 +17,9 @@ final class DdanziButton: UIButton {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func setEnable() {
-    self.backgroundColor = .black
-    self.isEnabled = true
+  func setEnable(isEnable: Bool = true) {
+    self.backgroundColor = isEnable ? .black : .gray2
+    self.isEnabled = isEnable
   }
   
   private func configureButton(title: String) {
