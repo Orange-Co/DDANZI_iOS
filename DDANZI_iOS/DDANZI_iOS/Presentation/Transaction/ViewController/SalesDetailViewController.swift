@@ -161,7 +161,7 @@ class SalesDetailViewController: UIViewController {
         case .deposit:
           owner.button.titleLabel?.text = "판매 확정하기"
           owner.button.setEnable()
-        case .delivery:
+        case .delivery, .delayedShipping, .warning:
           owner.button.titleLabel?.text = "배송 중인 상품입니다."
         case .complete:
           owner.button.titleLabel?.text = "거래가 완료된 상품입니다."
