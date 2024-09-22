@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserAccountRequestDTO: Codable {
-  let acountName: String
+  let accountName: String
   let bank: String
   let accountNumber: String
 }

@@ -155,7 +155,7 @@ final class AccountAddViewController: UIViewController {
   }
   
   private func editAccount(accountId: Int, accountName: String, bank: String, accountNumber: String) {
-    let body = UserAccountRequestDTO(acountName: accountName, bank: bank, accountNumber: accountNumber)
+    let body = UserAccountRequestDTO(accountName: accountName, bank: bank, accountNumber: accountNumber)
     Providers.MypageProvider.request(target: .editUserAccount(accountId, body), instance: BaseResponse<UserAccountDTO>.self) { response in
       guard let data = response.data else { return }
       if response.status != 200 || response.status != 201 {
@@ -167,7 +167,7 @@ final class AccountAddViewController: UIViewController {
   }
   
   private func conformAccount(accountName: String, bank: String, accountNumber: String) {
-    let body = UserAccountRequestDTO(acountName: accountName, bank: bank, accountNumber: accountNumber)
+    let body = UserAccountRequestDTO(accountName: accountName, bank: bank, accountNumber: accountNumber)
     Providers.MypageProvider.request(target: .addUserAccount(body), instance: BaseResponse<UserAccountDTO>.self) { response in
       guard let data = response.data else { return }
       if response.status != 200 || response.status != 201 {
