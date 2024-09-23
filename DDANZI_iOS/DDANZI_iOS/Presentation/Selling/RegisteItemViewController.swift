@@ -110,7 +110,6 @@ final class RegisteItemViewController: UIViewController {
               owner.navigateToAccountAdd(dueDate: dueDate)
             })
             .disposed(by: owner.disposeBag)
-          
           alertVC.modalPresentationStyle = .overFullScreen
           owner.present(alertVC, animated: false, completion: nil)
         } else {

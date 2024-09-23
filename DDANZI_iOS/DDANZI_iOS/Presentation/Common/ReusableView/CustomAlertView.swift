@@ -14,6 +14,7 @@ import RxSwift
 final class CustomAlertViewController: UIViewController {
   
   var primaryButtonTap = PublishSubject<Void>()
+  var subButtonTap = PublishSubject<Void>()
   private let disposeBag = DisposeBag()
   
   private let dimView = UIView().then {
@@ -80,6 +81,7 @@ final class CustomAlertViewController: UIViewController {
   }
   
   private func setUI() {
+    self.modalPresentationStyle = .overFullScreen
     setHierarchy()
     setConstraints()
     // Add tap gesture recognizer to dimView
@@ -88,7 +90,7 @@ final class CustomAlertViewController: UIViewController {
   }
   
   @objc private func dismissAlert() {
-    dismiss(animated: true, completion: nil)
+    dismiss(animated: false, completion: nil)
   }
   
   private func setHierarchy() {
@@ -126,6 +128,12 @@ final class CustomAlertViewController: UIViewController {
         self?.dismiss(animated: false, completion: nil)
       })
       .bind(to: primaryButtonTap)
+      .disposed(by: disposeBag)    
+    subButton.rx.tap
+      .do(onNext: { [weak self] in
+        self?.dismiss(animated: false, completion: nil)
+      })
+      .bind(to: subButtonTap)
       .disposed(by: disposeBag)
   }
 }
