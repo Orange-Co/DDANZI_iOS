@@ -16,7 +16,9 @@ final class AddressCollectionViewCell: UICollectionViewCell {
   
   let disposeBag = DisposeBag()
   private let deleteSubject = PublishSubject<Void>()
+  private let editSubject = PublishSubject<Void>()
   var deleteButtonTap: Observable<Void> { deleteSubject.asObservable() }
+  var editButtonTap: Observable<Void> { editSubject.asObservable() }
   
   private let nameLabel = UILabel().then {
     $0.font = .body2Sb18
@@ -80,6 +82,10 @@ final class AddressCollectionViewCell: UICollectionViewCell {
   }
   
   private func bind() {
+    editButton.rx.tap
+      .bind(to: editSubject)
+      .disposed(by: disposeBag)
+    
     deleteButton.rx.tap
       .bind(to: deleteSubject)
       .disposed(by: disposeBag)

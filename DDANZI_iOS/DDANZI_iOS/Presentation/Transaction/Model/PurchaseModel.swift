@@ -76,6 +76,7 @@ struct Product {
 }
 
 struct Address {
+  var addressId: Int?
   var name: String
   var address: String
   var phone: String

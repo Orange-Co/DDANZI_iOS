@@ -26,9 +26,8 @@ class AddressSettingViewController: UIViewController {
     flowLayout.scrollDirection = .vertical
     flowLayout.itemSize = .init(width: UIScreen.main.bounds.width - 40, height: 164)
     $0.collectionViewLayout = flowLayout
-    
-    $0.register(AddressCollectionViewCell.self,
-                forCellWithReuseIdentifier: AddressCollectionViewCell.className)
+    $0.register(AddressCollectionViewCell.self,forCellWithReuseIdentifier: AddressCollectionViewCell.className)
+    $0.isHidden = true
   }
   private let addButton = UIButton().then {
     $0.setTitle("+ 배송지 등록", for: .normal)
@@ -37,7 +36,7 @@ class AddressSettingViewController: UIViewController {
     $0.makeCornerRound(radius: 10)
     $0.makeBorder(width: 1, color: .gray3)
     $0.setTitleColor(.gray4, for: .normal)
-    $0.isHidden = true // 초기에는 숨겨둡니다.
+    $0.isHidden = true
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -60,10 +59,12 @@ class AddressSettingViewController: UIViewController {
   }
   
   private func setHierarchy() {
-    view.addSubviews(navigationBarView,
-                     headerView,
-                     addButton,
-                     collectionView)
+    view.addSubviews(
+      navigationBarView,
+      headerView,
+      addButton,
+      collectionView
+    )
   }
   
   private func setConstraints() {
@@ -97,12 +98,22 @@ class AddressSettingViewController: UIViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddressCollectionViewCell.className, for: indexPath) as! AddressCollectionViewCell
         let address = item as Address
         cell.configureView(name: address.name, address: address.address, phone: address.phone, isEditable: true)
+        
+        // 주소 삭제
         cell.deleteButtonTap
           .subscribe(onNext: { [weak self] in
             // 해당 주소 삭제 로직
             self?.deleteAddress(at: indexPath)
           })
           .disposed(by: cell.disposeBag)
+        
+        // 주소 변경
+        cell.editButtonTap
+          .subscribe(with: self) { owner, _ in
+            self.editAddress(at: indexPath)
+          }
+          .disposed(by: cell.disposeBag)
+        
         return cell
       }
     )
@@ -145,20 +156,22 @@ class AddressSettingViewController: UIViewController {
     Providers.MypageProvider.request(target: .fetchUserAddress,
                                      instance: BaseResponse<UserAddressResponseDTO>.self) { result in
       guard let data = result.data else { return }
-      if let name = data.recipient,
+      
+      if let addressId = data.addressID,
+         let name = data.recipient,
          let zipcode = data.zipCode,
          let address = data.address,
          let detailAddress = data.detailAddress,
          let phone = data.recipientPhone {
-        let newAddress = Address(name: name,
-                                 address: "(\(zipcode) \(address), \(detailAddress))",
-                                 phone: phone)
-        
-        var currentList = (try? self.addressListSubject.value()) ?? []
-        currentList.append(newAddress)
-        
+        let newAddress = Address(addressId: addressId, name: name,address: "(\(zipcode) \(address), \(detailAddress))",phone: phone)
         self.addressId = data.addressID ?? 0
-        self.addressListSubject.onNext(currentList)
+        self.addressListSubject.onNext([newAddress])
+        self.collectionView.reloadData()
+        self.collectionView.isHidden = false
+        self.addButton.isHidden = true
+      } else {
+        self.collectionView.isHidden = true
+        self.addButton.isHidden = false
       }
     }
   }
@@ -172,6 +185,13 @@ class AddressSettingViewController: UIViewController {
         currentList.remove(at: indexPath.item)
         self.addressListSubject.onNext(currentList)
       }
+    }
+  }
+  
+  private func editAddress(at indexPath: IndexPath) {
+    var currentList = (try? self.addressListSubject.value()) ?? []
+    if !currentList.isEmpty {
+      self.navigationController?.pushViewController(AddressFormViewController(addressInfo: currentList[0]), animated: true)
     }
   }
 }
