@@ -12,7 +12,7 @@ import Then
 import RxSwift
 
 final class KakaoCopyTableViewCell: UITableViewCell {
-  private let disposeBag = DisposeBag()
+  private var disposeBag = DisposeBag()
   
   private let titleLabel = UILabel().then {
     $0.font = .body2Sb18
@@ -33,6 +33,7 @@ final class KakaoCopyTableViewCell: UITableViewCell {
   
   override func prepareForReuse() {
     super.prepareForReuse()
+    disposeBag = DisposeBag()
     copyChipButton.isHidden = false
   }
   
