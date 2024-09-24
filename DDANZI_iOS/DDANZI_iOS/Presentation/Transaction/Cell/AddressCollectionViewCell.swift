@@ -14,12 +14,15 @@ import RxCocoa
 
 final class AddressCollectionViewCell: UICollectionViewCell {
   
-  let disposeBag = DisposeBag()
-  private let deleteSubject = PublishSubject<Void>()
-  private let editSubject = PublishSubject<Void>()
-  var deleteButtonTap: Observable<Void> { deleteSubject.asObservable() }
-  var editButtonTap: Observable<Void> { editSubject.asObservable() }
+  var disposeBag = DisposeBag()
+  var editButtonTap: Observable<Void> {
+      return editButton.rx.tap.asObservable()
+  }
   
+  var deleteButtonTap: Observable<Void> {
+      return deleteButton.rx.tap.asObservable()
+  }
+
   private let nameLabel = UILabel().then {
     $0.font = .body2Sb18
     $0.textColor = .black
@@ -51,11 +54,16 @@ final class AddressCollectionViewCell: UICollectionViewCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setUI()
-    bind()
+ //   bindButtons()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    disposeBag = DisposeBag() // 셀 재사용 시 disposeBag 초기화
   }
   
   private func setUI() {
@@ -81,15 +89,16 @@ final class AddressCollectionViewCell: UICollectionViewCell {
     }
   }
   
-  private func bind() {
-    editButton.rx.tap
-      .bind(to: editSubject)
-      .disposed(by: disposeBag)
-    
-    deleteButton.rx.tap
-      .bind(to: deleteSubject)
-      .disposed(by: disposeBag)
-  }
+//  private func bindButtons() {
+//    print("asdjfhaoioj")
+//      editButton.rx.tap
+//          .bind(to: editButtonSubject) // Bind tap to Subject
+//          .disposed(by: disposeBag)
+//      
+//      deleteButton.rx.tap
+//          .bind(to: deleteButtonSubject) // Bind tap to Subject
+//          .disposed(by: disposeBag)
+//  }
   
   func configureView(name: String, address: String, phone: String, isEditable: Bool = false){
     nameLabel.text = name

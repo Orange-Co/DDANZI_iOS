@@ -120,7 +120,7 @@ extension MypageEndpoint: BaseTargetType {
       case let .addUserAddress(body):
         return .requestJSONEncodable(body)
       case let .editUserAddress(_, body):
-        return .requestPlain
+        return .requestJSONEncodable(body)
       case .deleteUserAddress:
         return .requestPlain
       case .settingUserNoti:

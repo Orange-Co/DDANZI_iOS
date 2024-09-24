@@ -91,8 +91,6 @@ class AddressSettingViewController: UIViewController {
   }
   
   private func configureCollectionView() {
-    collectionView.delegate = nil
-    
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Address>>(
       configureCell: { dataSource, collectionView, indexPath, item in
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddressCollectionViewCell.className, for: indexPath) as! AddressCollectionViewCell
@@ -102,40 +100,28 @@ class AddressSettingViewController: UIViewController {
         // 주소 삭제
         cell.deleteButtonTap
           .subscribe(onNext: { [weak self] in
-            // 해당 주소 삭제 로직
             self?.deleteAddress(at: indexPath)
           })
           .disposed(by: cell.disposeBag)
         
         // 주소 변경
         cell.editButtonTap
-          .subscribe(with: self) { owner, _ in
-            self.editAddress(at: indexPath)
-          }
+          .subscribe(onNext: { [weak self] in
+            self?.editAddress(at: indexPath)
+          })
           .disposed(by: cell.disposeBag)
         
         return cell
       }
     )
     
+    headerView.setTitleLabel(title: "배송지 관리")
+    
     addressListSubject
       .map { [SectionModel(model: "배송지 관리", items: $0)] }
       .bind(to: collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
-    
-    headerView.setTitleLabel(title: "배송지 관리")
-    
-    collectionView.rx.setDelegate(self)
-      .disposed(by: disposeBag)
-    
-    addressListSubject
-      .subscribe(onNext: { [weak self] addressList in
-        guard let self = self else { return }
-        let isEmpty = addressList.isEmpty
-        self.collectionView.isHidden = isEmpty
-        self.addButton.isHidden = !isEmpty
-      })
-      .disposed(by: disposeBag)
+
   }
   
   private func bind() {
@@ -148,6 +134,15 @@ class AddressSettingViewController: UIViewController {
     addButton.rx.tap
       .subscribe(onNext: { [weak self] in
         self?.navigationController?.pushViewController(AddressFormViewController(), animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    addressListSubject
+      .subscribe(onNext: { [weak self] addressList in
+        guard let self = self else { return }
+        let isEmpty = addressList.isEmpty
+        self.collectionView.isHidden = isEmpty
+        self.addButton.isHidden = !isEmpty
       })
       .disposed(by: disposeBag)
   }
@@ -189,11 +184,11 @@ class AddressSettingViewController: UIViewController {
   }
   
   private func editAddress(at indexPath: IndexPath) {
-    var currentList = (try? self.addressListSubject.value()) ?? []
-    if !currentList.isEmpty {
-      self.navigationController?.pushViewController(AddressFormViewController(addressInfo: currentList[0]), animated: true)
+    let currentList = (try? self.addressListSubject.value()) ?? []
+    if indexPath.row < currentList.count {  // indexPath가 유효한지 확인
+      let selectedAddress = currentList[indexPath.row]
+      self.navigationController?.pushViewController(AddressFormViewController(addressInfo: selectedAddress), animated: true)
     }
   }
+  
 }
-
-extension AddressSettingViewController: UICollectionViewDelegate { }
