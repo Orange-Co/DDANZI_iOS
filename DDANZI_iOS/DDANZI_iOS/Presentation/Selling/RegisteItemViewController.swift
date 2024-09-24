@@ -155,6 +155,7 @@ final class RegisteItemViewController: UIViewController {
       let pushVC = PushSettingViewController(isSelling: true, orderId: "", response: data)
       
       PermissionManager.shared.checkPermission(for: .notification)
+        .observe(on: MainScheduler.instance)
         .bind(with: self, onNext: { owner, isAllow in
           Amplitude.instance().logEvent("complete_sell_adjustment", withEventProperties: ["item_id": data.itemId])
           if isAllow {

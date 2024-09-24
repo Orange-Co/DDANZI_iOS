@@ -107,8 +107,10 @@ public final class PermissionManager {
         .requestAuthorization(
           options: [.alert, .sound, .badge]
         ) { isAllow, _ in
-          observable.onNext(isAllow)
-          observable.onCompleted()
+          DispatchQueue.main.async {
+            observable.onNext(isAllow)
+            observable.onCompleted()
+          }
         }
       return Disposables.create()
     }

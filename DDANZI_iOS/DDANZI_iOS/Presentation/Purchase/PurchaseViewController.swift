@@ -122,7 +122,8 @@ final class PurchaseViewController: UIViewController {
       .disposed(by: disposeBag)
     
     button.rx.tap
-      .bind {
+      .withUnretained(self)
+      .bind { owner,_ in
         Amplitude.instance().logEvent("click_purchase_purchase")
         self.requestPayment(payment: self.payment)
       }
@@ -225,11 +226,13 @@ final class PurchaseViewController: UIViewController {
       .subscribe(onSuccess: { [weak self] isSuccess, orderId in
         guard let self = self else { return }
         DdanziLoadingView.shared.stopAnimating()
-        if isSuccess, let orderId = orderId {PermissionManager.shared.checkPermission(for: .notification)
+        if isSuccess, let orderId = orderId {
+          PermissionManager.shared.checkPermission(for: .notification)
+            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] isAllow in
               Amplitude.instance().logEvent("complete_purchase_adjustment", withEventProperties: ["item_id" : self?.payment.productId])
               let nextVC = isAllow ? PurchaseCompleteViewController(orderId: orderId) : PushSettingViewController(orderId: orderId, response: .init(itemId: "", productName: "", imgUrl: "", salePrice: 0))
-              self?.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: orderId), animated: true)
+              self?.navigationController?.pushViewController(nextVC, animated: true)
             }
             .disposed(by: self.disposeBag)
         } else {
@@ -254,7 +257,7 @@ final class PurchaseViewController: UIViewController {
          let address = data.addressInfo.address,
          let zipCode = data.addressInfo.zipCode,
          let recipientPhone = data.addressInfo.recipientPhone {
-        addresses = [Address(name: recipient, address: "\(address) (\(zipCode))", phone: recipientPhone)]
+        addresses = [Address(addressId: nil, name: recipient, address: "\(address) (\(zipCode))", phone: recipientPhone)]
         self.addressSelectedSubject.accept(true)
       } else {
         self.addressSelectedSubject.accept(false)
