@@ -39,8 +39,12 @@ final class OptionCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    isSelectedRelay.accept(false)
+  }
+  
   private func bindUI() {
-    // Bind the selection state to UI changes
     isSelectedRelay
       .asDriver()
       .drive(onNext: { [weak self] isSelected in
@@ -49,8 +53,9 @@ final class OptionCollectionViewCell: UICollectionViewCell {
       .disposed(by: disposeBag)
   }
   
-  func configureCell(text: String, isEnable: Bool) {
+  func configureCell(text: String, isEnable: Bool, isSelected: Bool = false) {
     titleLabel.text = text
     isUserInteractionEnabled = isEnable
+    isSelectedRelay.accept(isSelected)
   }
 }
