@@ -163,6 +163,7 @@ final class KakaoCopyViewController: UIViewController {
     Providers.OrderProvider.request(target: .conformedOrderSale(id), instance: BaseResponse<ConformedDTO>.self) { response in
       guard let data = response.data else { return }
       self.statusType = .init(rawValue: data.orderStatus) ?? .inProgress
+      self.view.showToast(message: "판매 확정이 완료되었습니다.", at: 120.adjusted)
       self.navigationController?.popViewController(animated: true)
     }
   }
