@@ -14,8 +14,11 @@ import RxCocoa
 import RxDataSources
 
 class AddressSettingViewController: UIViewController {
+  var onAddressChanged: ((Address) -> Void)?
+  
   private let disposeBag = DisposeBag()
-  private var addressList: [Address] = []
+  
+  private var newAddress: Address?
   private let addressListSubject = BehaviorSubject<[Address]>(value: [])
   private var addressId = 0
   
@@ -42,6 +45,13 @@ class AddressSettingViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     fetchAddress()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    if let newAddress = self.newAddress {
+      onAddressChanged?(newAddress)
+    }
   }
   
   override func viewDidLoad() {
@@ -121,14 +131,17 @@ class AddressSettingViewController: UIViewController {
       .map { [SectionModel(model: "배송지 관리", items: $0)] }
       .bind(to: collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
-
+    
   }
   
   private func bind() {
     navigationBarView.backButtonTap
-      .subscribe(onNext: { [weak self] in
-        self?.navigationController?.popViewController(animated: true)
-      })
+      .subscribe(with: self) { owner, _ in
+        if let newAddress = self.newAddress {
+          owner.onAddressChanged?(newAddress)
+        }// 변경된 주소를 클로저로 전달
+        owner.navigationController?.popViewController(animated: true)
+      }
       .disposed(by: disposeBag)
     
     addButton.rx.tap
@@ -158,9 +171,11 @@ class AddressSettingViewController: UIViewController {
          let address = data.address,
          let detailAddress = data.detailAddress,
          let phone = data.recipientPhone {
-        let newAddress = Address(addressId: addressId, name: name,address: "(\(zipcode) \(address), \(detailAddress))",phone: phone)
+        self.newAddress = Address(addressId: addressId, name: name,address: "(\(zipcode) \(address), \(detailAddress))",phone: phone)
         self.addressId = data.addressID ?? 0
-        self.addressListSubject.onNext([newAddress])
+        if let newAddress = self.newAddress {
+          self.addressListSubject.onNext([newAddress])
+        }
         self.collectionView.reloadData()
         self.collectionView.isHidden = false
         self.addButton.isHidden = true
