@@ -40,12 +40,16 @@ final class PurchaseDetailViewController: UIViewController {
     $0.register(AddressCollectionViewCell.self, forCellWithReuseIdentifier: AddressCollectionViewCell.className)
     $0.register(InfoCollectionViewCell.self, forCellWithReuseIdentifier: InfoCollectionViewCell.className)
   }
+  private let toastImageView = UIImageView().then {
+    $0.image = .buyToast
+    $0.isHidden = true
+  }
   private let bottomButtonView = UIView().then {
     $0.backgroundColor = .white
     $0.addShadow(offset: .init(width: 0, height: 2), opacity: 0.4)
   }
   
-  private let button = DdanziButton(title: "구매 확정하기")
+  private let button = DdanziButton(title: "구매 확정하기", enable: false)
   
   init(orderId: String) {
     self.orderId = orderId
@@ -76,7 +80,8 @@ final class PurchaseDetailViewController: UIViewController {
   private func setHierarchy() {
     view.addSubviews(navigaitonBar,
                      collectionView,
-                     bottomButtonView)
+                     bottomButtonView,
+                     toastImageView)
     bottomButtonView.addSubview(button)
   }
   
@@ -89,6 +94,11 @@ final class PurchaseDetailViewController: UIViewController {
       $0.top.equalTo(navigaitonBar.snp.bottom)
       $0.leading.trailing.equalToSuperview()
       $0.bottom.equalToSuperview().inset(100)
+    }
+    
+    toastImageView.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.bottom.equalTo(bottomButtonView.snp.top).offset(14)
     }
     
     bottomButtonView.snp.makeConstraints {
@@ -139,6 +149,16 @@ final class PurchaseDetailViewController: UIViewController {
       .disposed(by: disposeBag)
     
     status.bind(with: self) { owner, _ in
+      let purchaseStatus = owner.status.value
+      if let status = purchaseStatus.first {
+        switch status.status {
+        case .delivery,.delayedShipping,.warning:
+          owner.button.setEnable()
+          owner.toastImageView.isHidden = false
+        default:
+          break
+        }
+      }
       owner.collectionView.reloadData()
     }
     .disposed(by: disposeBag)

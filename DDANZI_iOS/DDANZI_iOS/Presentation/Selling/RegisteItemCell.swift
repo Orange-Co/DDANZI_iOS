@@ -210,7 +210,7 @@ final class RegisteItemCell: UICollectionViewCell {
     
     termsTableView.snp.makeConstraints {
       $0.top.equalTo(fullAgreementButton.snp.bottom).offset(18.adjusted)
-      $0.leading.trailing.bottom.equalToSuperview()
+      $0.leading.trailing.bottom.equalToSuperview().inset(20.adjusted)
     }
   }
   

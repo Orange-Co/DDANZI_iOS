@@ -33,7 +33,7 @@ enum StatusType {
     case .cancel:
       return "거래 취소"
     case .notDeposit:
-      return "거래 진행 중"
+      return "판매 중"
     }
   }
   
@@ -76,6 +76,7 @@ struct Product {
 }
 
 struct Address {
+  var addressId: Int?
   var name: String
   var address: String
   var phone: String

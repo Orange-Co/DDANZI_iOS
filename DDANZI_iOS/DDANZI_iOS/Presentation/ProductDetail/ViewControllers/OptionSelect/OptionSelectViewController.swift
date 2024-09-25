@@ -131,7 +131,13 @@ final class OptionSelectViewController: UIViewController {
         let cell = collectionView.dequeueReusableCell(
           withReuseIdentifier: OptionCollectionViewCell.className,
           for: indexPath) as! OptionCollectionViewCell
-        cell.configureCell(text: item.content, isEnable: item.isAvailable)
+        
+        // 해당 섹션의 선택된 옵션 인덱스 확인
+        let isSelected = self.selectedOptions[indexPath.section] == item.optionDetailID
+        
+        // 선택 상태를 반영하여 셀 구성
+        cell.configureCell(text: item.content, isEnable: item.isAvailable, isSelected: isSelected)
+        
         return cell
       },
       configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
@@ -162,20 +168,21 @@ final class OptionSelectViewController: UIViewController {
             cell.isSelectedRelay.accept(false) // 이전 선택 해제
           }
         }
-
+        
         // 선택한 옵션을 섹션별로 저장
         let selectedOptionId = owner.option[indexPath.section].optionDetailList[indexPath.row].optionDetailID
-            owner.selectedOptions[indexPath.section] = selectedOptionId // optionDetailId 저장
-
+        owner.selectedOptions[indexPath.section] = selectedOptionId // optionDetailId 저장
+        
         if let cell = owner.optionCollectionView.cellForItem(at: indexPath) as? OptionCollectionViewCell {
           cell.isSelectedRelay.accept(true) // 새로운 선택 적용
         }
-
+        
         owner.updateButtonState() // 버튼 상태 업데이트
+        owner.optionCollectionView.reloadData()
       }
       .disposed(by: disposeBag)
-    
   }
+  
   
   private func updateButtonState() {
     print(selectedOptions)

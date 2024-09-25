@@ -77,18 +77,22 @@ final class PushSettingViewController: UIViewController {
   }
   
   private func setHierarchy() {
-    view.addSubviews(cancelButton,
-                     innerStackView,
-                     conformButton,
-                     laterButton)
-    innerStackView.addArrangedSubviews(iconImageView,
-                                       titleLabel,
-                                       subTitleLabel)
+    view.addSubviews(
+      cancelButton,
+      innerStackView,
+      conformButton,
+      laterButton
+    )
+    innerStackView.addArrangedSubviews(
+      iconImageView,
+      titleLabel,
+      subTitleLabel
+    )
   }
   
   private func setConstraints() {
     cancelButton.snp.makeConstraints {
-      $0.top.trailing.equalToSuperview().inset(20)
+      $0.top.trailing.equalToSuperview().offset(60)
     }
     
     innerStackView.snp.makeConstraints {
@@ -97,7 +101,7 @@ final class PushSettingViewController: UIViewController {
     }
     
     laterButton.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(20)
+      $0.leading.trailing.equalToSuperview().inset(60)
       $0.bottom.equalToSuperview().inset(28.adjusted)
     }
     
@@ -116,21 +120,27 @@ final class PushSettingViewController: UIViewController {
           Amplitude.instance().logEvent("click_sell_push_refuse")
           owner.navigationController?.pushViewController(RegisteCompleteViewController(response: owner.response), animated: true)
         } else {
-          
-            Amplitude.instance().logEvent("click_purchase_push_refuse")
+          Amplitude.instance().logEvent("click_purchase_push_refuse")
           owner.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: owner.orderId), animated: true)
         }
-    }
-    .disposed(by: disposeBag)
+      }
+      .disposed(by: disposeBag)
     
     conformButton.rx.tap
       .bind(with: self) { owner, _ in
         PermissionManager.shared.requestNotificationPermission()
+          .observe(on: MainScheduler.instance)
           .subscribe(with: self) { owner, isAllow in
-            if owner.isSelling {
-              owner.navigationController?.pushViewController(RegisteCompleteViewController(response: owner.response), animated: true)
-            } else {
-              owner.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: owner.orderId), animated: true)
+            if !isAllow {
+              let alertVC = CustomAlertViewController(title: "알림 설정", content: "설정 > 딴지 > 알림에서 설정을 변경할 수 있습니다.", buttonText: "확인", subButton: nil)
+              alertVC.modalPresentationStyle = .overFullScreen
+              self.present(alertVC, animated: true) {
+                if owner.isSelling {
+                  owner.navigationController?.pushViewController(RegisteCompleteViewController(response: owner.response), animated: true)
+                } else {
+                  owner.navigationController?.pushViewController(PurchaseCompleteViewController(orderId: owner.orderId), animated: true)
+                }
+              }
             }
           }
           .disposed(by: owner.disposeBag)

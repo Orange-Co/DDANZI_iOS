@@ -16,6 +16,8 @@ import RxCocoa
 final class AddressFormViewController: UIViewController {
   
   private let disposeBag = DisposeBag()
+  
+  private var currentAddressInfo: Address?
   private let titles: [String] = ["우편번호", "주소지", "상세주소", "이름", "휴대폰 번호"]
   private let userInfo = UserInfoModel(name: UserDefaults.standard.string(forKey: .name) ?? "",
                                        phone: UserDefaults.standard.string(forKey: .phone) ?? "",
@@ -24,7 +26,7 @@ final class AddressFormViewController: UIViewController {
   private var roadAddress: String?
   private lazy var addressDetails: [String?] = [zoneCode, roadAddress, nil, userInfo.name, userInfo.phone]
   
-  
+  // MARK: UI
   private let navigationBar = CustomNavigationBarView(navigationBarType: .normal)
   private let addressFormTableView = UITableView(frame: .zero, style: .plain).then {
     $0.backgroundColor = .white
@@ -39,6 +41,17 @@ final class AddressFormViewController: UIViewController {
   }
   private let nexButton = DdanziButton(title: "입력 완료", enable: false)
   
+  // MARK: Init
+  init(addressInfo: Address? = nil) {
+    self.currentAddressInfo = addressInfo
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
     setUI()
@@ -94,21 +107,29 @@ final class AddressFormViewController: UIViewController {
     
     nexButton.rx.tap
       .subscribe(with: self, onNext: { owner, event  in
-        print(owner.addressDetails)
         let addressInfo: [String] = owner.addressDetails.map {
           guard let addressInfo = $0 else { return "" }
           return addressInfo
         }
         let body = UserAddressRequestDTO(recipient: addressInfo[3], zipCode: addressInfo[0], type: .road, address: addressInfo[1] , detailAddress: addressInfo[2], recipientPhone: addressInfo[4])
-        owner.postAddress(body: body)
-        
+        if let currentAddressInfo = self.currentAddressInfo,
+           let addressId = currentAddressInfo.addressId {
+          owner.editAddress(addressId: addressId, body: body)
+        } else {
+          owner.postAddress(body: body)
+        }
       })
       .disposed(by: disposeBag)
   }
   
   private func postAddress(body: UserAddressRequestDTO) {
     Providers.MypageProvider.request(target: .addUserAddress(body), instance: BaseResponse<UserAddressResponseDTO>.self) { result in
-
+      self.navigationController?.popViewController(animated: true)
+    }
+  }
+  
+  private func editAddress(addressId: Int, body: UserAddressRequestDTO) {
+    Providers.MypageProvider.request(target: .editUserAddress(addressId, body), instance: BaseResponse<UserAddressResponseDTO>.self) { response in
       self.navigationController?.popViewController(animated: true)
     }
   }
@@ -178,7 +199,7 @@ extension AddressFormViewController: UITableViewDataSource {
       self?.addressDetails[indexPath.row] = text
       self?.checkIsVaild()
     }
-      
+    
     
     return cell
   }

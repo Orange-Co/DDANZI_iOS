@@ -180,6 +180,7 @@ final class LandingViewController: UIViewController {
   
   private func checkPermissionAndPresent(){
     PermissionManager.shared.checkPermission(for: .photo)
+      .observe(on: MainScheduler.instance)
       .flatMap { isGranted -> Observable<Bool> in
         if !isGranted {
           return PermissionManager.shared.requestPhotoPermission()

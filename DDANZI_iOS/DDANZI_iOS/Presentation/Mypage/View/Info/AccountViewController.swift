@@ -96,41 +96,55 @@ extension AccountViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.row == 0 {
-      Providers.AuthProvider.request(target: .logout, instance: BaseResponse<Bool>.self) { response in
-        UserApi.shared.logout {(error) in
-          if let error = error {
-            print(error)
-            KeychainWrapper.shared.deleteAccessToken()
-            UserDefaults.standard.set(false, forKey: .isLogin)
-            self.navigationController?.popToRootViewController(animated: true)
+      let alertVC = CustomAlertViewController(title: "로그아웃", content: "정말 로그아웃 하시나요?", buttonText: "계속 이용하기", subButton: "로그아웃")
+      alertVC.subButtonTap
+        .subscribe(onNext: { _ in
+          Providers.AuthProvider.request(target: .logout, instance: BaseResponse<Bool>.self) { response in
+            UserApi.shared.logout {(error) in
+              if let error = error {
+                print(error)
+                KeychainWrapper.shared.deleteAccessToken()
+                UserDefaults.standard.set(false, forKey: .isLogin)
+                self.navigationController?.popToRootViewController(animated: true)
+              }
+              else {
+                UserDefaults.standard.clearAll()
+                KeychainWrapper.shared.deleteAccessToken()
+                UserDefaults.standard.set(false, forKey: .isLogin)
+                self.navigationController?.popToRootViewController(animated: true)
+                print("logout() success.")
+              }
+            }
           }
-          else {
-            UserDefaults.standard.clearAll()
-            KeychainWrapper.shared.deleteAccessToken()
-            UserDefaults.standard.set(false, forKey: .isLogin)
-            self.navigationController?.popToRootViewController(animated: true)
-            print("logout() success.")
+        })
+        .disposed(by: disposeBag)
+      alertVC.modalPresentationStyle = .overFullScreen
+      self.present(alertVC, animated: false, completion: nil)
+    } else if indexPath.row == 1 {
+      let alertVC = CustomAlertViewController(title: "회원 탈퇴", content: "회원 탈퇴 시,\n계정은 삭제되며 복구되지 않습니다.", buttonText: "계속 이용하기", subButton: "탈퇴하기")
+      alertVC.subButtonTap
+        .subscribe(onNext: { _ in
+          Providers.AuthProvider.request(target: .revoke, instance: BaseResponse<WithDrawDTO>.self) { response in
+            UserApi.shared.unlink {(error) in
+              if let error = error {
+                print(error)
+                UserDefaults.standard.set(false, forKey: .isLogin)
+                self.navigationController?.popToRootViewController(animated: true)
+              }
+              else {
+                UserDefaults.standard.clearAll()
+                KeychainWrapper.shared.deleteAccessToken()
+                UserDefaults.standard.set(false, forKey: .isLogin)
+                self.navigationController?.popToRootViewController(animated: true)
+              }
+            }
           }
-        }
-      }
-      }
-    if indexPath.row == 1 {
-      Providers.AuthProvider.request(target: .revoke, instance: BaseResponse<WithDrawDTO>.self) { response in
-        UserApi.shared.unlink {(error) in
-          if let error = error {
-            print(error)
-            
-            UserDefaults.standard.set(false, forKey: .isLogin)
-            self.navigationController?.popToRootViewController(animated: true)
-          }
-          else {
-            UserDefaults.standard.clearAll()
-            KeychainWrapper.shared.deleteAccessToken()
-            UserDefaults.standard.set(false, forKey: .isLogin)
-            self.navigationController?.popToRootViewController(animated: true)
-          }
-        }
-      }
+        })
+        .disposed(by: disposeBag)
+      
+      alertVC.modalPresentationStyle = .overFullScreen
+      self.present(alertVC, animated: false, completion: nil)
+      // 탈퇴 로직 처리
     }
   }
 }

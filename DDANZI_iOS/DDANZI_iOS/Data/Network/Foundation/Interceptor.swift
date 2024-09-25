@@ -30,16 +30,14 @@ final class AuthInterceptor: RequestInterceptor {
     if request.retryCount < retryLimit {
       if statusCode == 401 {
         refreshToken { success in
-          if success {
-            // Retry the request if token refresh was successful
+          switch success {
+          case true:
             completion(.retry)
-          } else {
-            // Token refresh failed; do not retry
+          case false:
             completion(.doNotRetry)
+            self.handleTokenRefreshFailure()
           }
         }
-      } else {
-        completion(.doNotRetryWithError(error))
       }
     } else {
       completion(.doNotRetry)

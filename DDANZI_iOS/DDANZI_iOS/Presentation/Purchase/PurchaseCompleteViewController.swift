@@ -77,6 +77,7 @@ final class PurchaseCompleteViewController: UIViewController {
   
   // MARK: - Lifecycles
   override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     self.tabBarController?.tabBar.isHidden = true
   }
   
@@ -179,9 +180,12 @@ final class PurchaseCompleteViewController: UIViewController {
                            Info(title: "수수료", info: data.charge.toKoreanWon())]
       self.totalPrice = data.totalPrice
       
-      self.configureCollectionView()
-      self.collectionView.isHidden = false
-      self.collectionView.reloadData()
+      DispatchQueue.main.async {
+          self.configureCollectionView()
+          self.collectionView.isHidden = false
+          self.collectionView.reloadData()
+      }
+
     }
   }
   

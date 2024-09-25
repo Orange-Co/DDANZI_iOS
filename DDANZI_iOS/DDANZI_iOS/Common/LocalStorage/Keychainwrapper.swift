@@ -15,6 +15,8 @@ public final class KeychainWrapper {
   public let userKey = "com.orangeCo.DDANZI-iOS.user"
   public let UUIDKey = "com.orangeCo.DDANZI-iOS.uuid"
   
+  public var isAccessTokenEx = true
+  
   // MARK: - deviceUUID
   
   public var deviceUUID: String {
@@ -138,7 +140,13 @@ public final class KeychainWrapper {
     ]
     
     let status = SecItemDelete(query as CFDictionary)
-    assert(status == errSecSuccess, "AccessToken 키체인 삭제 실패")
-    return status == errSecSuccess
+    
+    if status == errSecItemNotFound {
+      print("AccessToken이 존재하지 않아 삭제할 수 없습니다.")
+      return true // 이미 없으므로 성공으로 처리
+    } else {
+      assert(status == errSecSuccess, "AccessToken 키체인 삭제 실패")
+      return status == errSecSuccess
+    }
   }
 }
