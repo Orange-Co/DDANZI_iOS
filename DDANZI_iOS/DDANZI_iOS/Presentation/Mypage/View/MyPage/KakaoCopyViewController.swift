@@ -68,8 +68,8 @@ final class KakaoCopyViewController: UIViewController {
   }
   
   override func viewDidDisappear(_ animated: Bool) {
-      super.viewDidDisappear(animated)
-      NotificationCenter.default.post(name: .didCompleteCopyAction, object: nil)
+    super.viewDidDisappear(animated)
+    NotificationCenter.default.post(name: .didCompleteCopyAction, object: nil)
   }
   
   override func viewDidLoad() {
@@ -130,6 +130,7 @@ final class KakaoCopyViewController: UIViewController {
   
   private func configureTableView() {
     tableView.dataSource = self
+    tableView.delegate = self
   }
   
   private func bind() {
@@ -147,6 +148,14 @@ final class KakaoCopyViewController: UIViewController {
     completeButton.rx.tap
       .subscribe(with: self) { owner, _ in
         owner.conformedSale(id: self.orderId)
+      }
+      .disposed(by: disposeBag)
+    
+    guideButton.rx.tap
+      .subscribe(with: self) { owner, _ in
+        if let url = URL(string: StringLiterals.Link.Terms.sellTerm) {
+          UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
       }
       .disposed(by: disposeBag)
   }
@@ -167,6 +176,7 @@ final class KakaoCopyViewController: UIViewController {
       self.navigationController?.popViewController(animated: true)
     }
   }
+  
 }
 
 extension KakaoCopyViewController: UITableViewDataSource {
@@ -176,6 +186,8 @@ extension KakaoCopyViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: KakaoCopyTableViewCell.className, for: indexPath) as? KakaoCopyTableViewCell else { return UITableViewCell(style: .subtitle, reuseIdentifier: "") }
+    cell.selectionStyle = .none
+    
     switch indexPath.row {
     case 0:
       cell.configure(title: titles[indexPath.row], content: self.delivery.value.address, isCopy: true)
@@ -192,6 +204,14 @@ extension KakaoCopyViewController: UITableViewDataSource {
     }
     return cell
   }
-  
-  
+}
+
+extension KakaoCopyViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let cell = tableView.cellForRow(at: indexPath) as? KakaoCopyTableViewCell {
+      UIPasteboard.general.string = cell.copycontent
+      self.view.showToast(message: "복사되었습니다.", at: 120.adjusted)
+      print("복사된 내용: \(cell.copycontent)")
+    }
+  }
 }
