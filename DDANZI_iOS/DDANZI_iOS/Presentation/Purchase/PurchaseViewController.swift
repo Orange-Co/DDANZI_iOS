@@ -399,7 +399,7 @@ extension PurchaseViewController {
             return UICollectionReusableView()
           }
           header.configureHeader(title: dataSource.sectionModels[indexPath.section].model,
-                                 isEditable: indexPath.section == 1,
+                                 isEditable: indexPath.section == 1 && self.isEmptyAddress,
                                  isEmptyAddress: self.isEmptyAddress)
           // 주소 유무를 반영
           if self.isEmptyAddress {
@@ -408,6 +408,11 @@ extension PurchaseViewController {
                 Amplitude.instance().logEvent("click_purchase_address")
                 guard let self = self else { return }
                 let addressListVC = AddressSettingViewController()
+                // 주소 변경 클로저 설정
+                addressListVC.onAddressChanged = { [weak self] newAddress in
+                  self?.addressSubject.onNext([newAddress])
+                  self?.fetchOrderInfo()
+                }
                 self.navigationController?.pushViewController(addressListVC, animated: true)
               })
               .disposed(by: header.disposeBag)
