@@ -7,8 +7,8 @@
 
 import UIKit
 
-class DdanziTabBarController: UITabBarController {
-    private var tabs: [UIViewController] = []
+final class DdanziTabBarController: UITabBarController {
+    private var tabBarViewControllers: [UIViewController] = []
     private let tabBarHeight: CGFloat = 100
 
     private let homeViewController = HomeViewController()
@@ -35,17 +35,17 @@ class DdanziTabBarController: UITabBarController {
     }
     
     func setTabBarItems() {
-        tabs = [
+      tabBarViewControllers = [
             UINavigationController(rootViewController: homeViewController),
             UINavigationController(rootViewController: mypageViewController)
         ]
         
         TabBarItem.allCases.forEach {
-            tabs[$0.rawValue].tabBarItem = $0.asTabBarItem()
-            tabs[$0.rawValue].tabBarItem.tag = $0.rawValue
+          tabBarViewControllers[$0.rawValue].tabBarItem = $0.asTabBarItem()
+          tabBarViewControllers[$0.rawValue].tabBarItem.tag = $0.rawValue
         }
         
-        setViewControllers(tabs, animated: true)
+        setViewControllers(tabBarViewControllers, animated: true)
     }
     
     func setTabBarAppearance() {
