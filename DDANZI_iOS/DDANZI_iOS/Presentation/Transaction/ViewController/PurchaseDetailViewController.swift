@@ -152,9 +152,13 @@ final class PurchaseDetailViewController: UIViewController {
       let purchaseStatus = owner.status.value
       if let status = purchaseStatus.first {
         switch status.status {
+        case .onSale:
+          owner.button.setEnable()
+          owner.button.setTitle("판매 취소하기", for: .normal)
         case .delivery,.delayedShipping,.warning:
           owner.button.setEnable()
           owner.toastImageView.isHidden = false
+          owner.button.setTitle("판매 확정하기", for: .normal)
         default:
           break
         }
