@@ -90,10 +90,6 @@ final class PurchaseListViewController: UIViewController {
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
-    
-    headerView.editButton.rx.tap
-      .bind(to: viewModel.editModeTapped)
-      .disposed(by: disposeBag)
   }
   
   
