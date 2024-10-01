@@ -111,6 +111,15 @@ final class SellListViewController: UIViewController {
           .bind(to: cell.deleteButton.rx.isHidden)
           .disposed(by: cell.disposeBag)
         
+        cell.deleteButton.rx.tap
+          .subscribe(with: self) { owner, _ in
+            
+            var currentProducts = self.sellProductRelay.value
+            currentProducts.removeAll { $0.id == item.id }
+            self.sellProductRelay.accept(currentProducts)
+          }
+          .disposed(by: cell.disposeBag)
+        
         return cell
       }
     )
