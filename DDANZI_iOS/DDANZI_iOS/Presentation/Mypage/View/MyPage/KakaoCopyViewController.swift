@@ -46,6 +46,21 @@ final class KakaoCopyViewController: UIViewController {
     $0.titleLabel?.font = .buttonText
     $0.setUnderline()
   }
+  private let errorView = UIView().then {
+    $0.backgroundColor = .red.withAlphaComponent(0.1)
+    $0.layer.borderColor = UIColor.dRed.withAlphaComponent(0.4).cgColor
+    $0.layer.borderWidth = 1.0
+  }
+  private let errorLabel = UILabel().then {
+    $0.text = """
+해당 과정에서의 입력 실수 및 누락은 책임지지 않습니다.
+입력 완료 버튼 클릭 시 판매 확정이 완료됩니다. 
+"""
+    $0.font = .body5R14
+    $0.textColor = .errorRed
+    $0.setUnderline(for: "입력 실수 및 누락")
+    $0.numberOfLines = 2
+  }
   private let infoTitleLabel = UILabel().then {
     $0.text = "구매자 정보"
     $0.textColor = .black
@@ -68,8 +83,8 @@ final class KakaoCopyViewController: UIViewController {
   }
   
   override func viewDidDisappear(_ animated: Bool) {
-      super.viewDidDisappear(animated)
-      NotificationCenter.default.post(name: .didCompleteCopyAction, object: nil)
+    super.viewDidDisappear(animated)
+    NotificationCenter.default.post(name: .didCompleteCopyAction, object: nil)
   }
   
   override func viewDidLoad() {
@@ -86,7 +101,16 @@ final class KakaoCopyViewController: UIViewController {
   }
   
   private func setHierarchy() {
-    view.addSubviews(navigationBar, titleLabel, guideButton, infoTitleLabel, tableView, buttonView)
+    view.addSubviews(
+      navigationBar,
+      titleLabel,
+      errorView,
+      guideButton,
+      infoTitleLabel,
+      tableView,
+      buttonView
+    )
+    errorView.addSubview(errorLabel)
     buttonView.addSubview(completeButton)
   }
   
@@ -106,8 +130,19 @@ final class KakaoCopyViewController: UIViewController {
       $0.leading.equalToSuperview().offset(20)
     }
     
+    errorView.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(-1)
+      $0.top.equalTo(guideButton.snp.bottom).offset(13)
+      $0.height.equalTo(66.adjusted)
+    }
+    
+    errorLabel.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.leading.trailing.equalToSuperview().inset(20.adjusted)
+    }
+    
     infoTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(guideButton.snp.bottom).offset(20)
+      $0.top.equalTo(errorView.snp.bottom).offset(20)
       $0.leading.equalToSuperview().offset(20)
     }
     
@@ -130,6 +165,7 @@ final class KakaoCopyViewController: UIViewController {
   
   private func configureTableView() {
     tableView.dataSource = self
+    tableView.delegate = self
   }
   
   private func bind() {
@@ -147,6 +183,14 @@ final class KakaoCopyViewController: UIViewController {
     completeButton.rx.tap
       .subscribe(with: self) { owner, _ in
         owner.conformedSale(id: self.orderId)
+      }
+      .disposed(by: disposeBag)
+    
+    guideButton.rx.tap
+      .subscribe(with: self) { owner, _ in
+        if let url = URL(string: StringLiterals.Link.Terms.sellTerm) {
+          UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
       }
       .disposed(by: disposeBag)
   }
@@ -167,6 +211,7 @@ final class KakaoCopyViewController: UIViewController {
       self.navigationController?.popViewController(animated: true)
     }
   }
+  
 }
 
 extension KakaoCopyViewController: UITableViewDataSource {
@@ -176,6 +221,8 @@ extension KakaoCopyViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: KakaoCopyTableViewCell.className, for: indexPath) as? KakaoCopyTableViewCell else { return UITableViewCell(style: .subtitle, reuseIdentifier: "") }
+    cell.selectionStyle = .none
+    
     switch indexPath.row {
     case 0:
       cell.configure(title: titles[indexPath.row], content: self.delivery.value.address, isCopy: true)
@@ -192,6 +239,14 @@ extension KakaoCopyViewController: UITableViewDataSource {
     }
     return cell
   }
-  
-  
+}
+
+extension KakaoCopyViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let cell = tableView.cellForRow(at: indexPath) as? KakaoCopyTableViewCell {
+      UIPasteboard.general.string = cell.copycontent
+      self.view.showToast(message: "복사되었습니다.", at: 120.adjusted)
+      print("복사된 내용: \(cell.copycontent)")
+    }
+  }
 }

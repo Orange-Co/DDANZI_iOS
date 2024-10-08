@@ -33,13 +33,22 @@ extension UILabel {
         self.attributedText = attributedString
     }
     
-    func setUnderline(range: NSRange) {
-        
-        guard let attributedString = self.mutableAttributedString() else { return }
-        
-        attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: range)
-        self.attributedText = attributedString
-    }
+  func setUnderline(for rangeText: String) {
+      guard let fullText = self.text else { return }
+      
+      let attributedString = NSMutableAttributedString(string: fullText)
+      
+      // 해당 구간의 NSRange 찾기
+      if let range = fullText.range(of: rangeText) {
+          let nsRange = NSRange(range, in: fullText)
+          
+          // 밑줄 스타일 적용
+          attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: nsRange)
+      }
+      
+      // UILabel의 attributedText에 설정
+      self.attributedText = attributedString
+  }
     
     private func mutableAttributedString() -> NSMutableAttributedString? {
         guard let labelText = self.text, let labelFont = self.font else { return nil }

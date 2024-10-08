@@ -18,7 +18,7 @@ final class SellListViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private let listTypeRelay = BehaviorRelay<ListType>(value: .sales)
   private let sellProductRelay = BehaviorRelay<[ProductInfoModel]>(value: [])
-  
+  private var isEditingMode = BehaviorRelay<Bool>(value: false)
   
   private let navigationBar = CustomNavigationBarView(navigationBarType: .normal,
                                                       title: "판매 목록")
@@ -80,6 +80,12 @@ final class SellListViewController: UIViewController {
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    headerView.editButton.rx.tap
+      .withLatestFrom(isEditingMode)
+      .map { !$0 }
+      .bind(to: isEditingMode)
+      .disposed(by: disposeBag)
   }
   
   private func configureCollectionView() {
@@ -99,6 +105,21 @@ final class SellListViewController: UIViewController {
                       heartCount: item.heartCount,
                       itemId: item.id)
         cell.listType = self.listTypeRelay.value
+        
+        self.isEditingMode
+          .map { !$0 }
+          .bind(to: cell.deleteButton.rx.isHidden)
+          .disposed(by: cell.disposeBag)
+        
+        cell.deleteButton.rx.tap
+          .subscribe(with: self) { owner, _ in
+            
+            var currentProducts = self.sellProductRelay.value
+            currentProducts.removeAll { $0.id == item.id }
+            self.sellProductRelay.accept(currentProducts)
+          }
+          .disposed(by: cell.disposeBag)
+        
         return cell
       }
     )

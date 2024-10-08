@@ -12,7 +12,11 @@ import Then
 import RxSwift
 
 final class KakaoCopyTableViewCell: UITableViewCell {
-  private var disposeBag = DisposeBag()
+  var disposeBag = DisposeBag()
+  var copybuttonTap: Observable<Void> {
+    return copyChipButton.rx.tap.asObservable()
+  }
+  var copycontent = ""
   
   private let titleLabel = UILabel().then {
     $0.font = .body2Sb18
@@ -20,8 +24,9 @@ final class KakaoCopyTableViewCell: UITableViewCell {
   private let contentLabel = UILabel().then {
     $0.font = .body5R14
   }
-  private let copyChipButton = DdanziChipButton(title: "복사")
-  
+  private let copyChipButton = DdanziChipButton(title: "복사").then {
+    $0.isEnabled = true  // 버튼이 활성화 상태인지 확인
+  }
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setUI()
@@ -35,12 +40,12 @@ final class KakaoCopyTableViewCell: UITableViewCell {
     super.prepareForReuse()
     disposeBag = DisposeBag()
     copyChipButton.isHidden = false
+    copycontent = ""
   }
   
   private func setUI() {
     setHierarchy()
     setConstraints()
-    bind()
   }
   
   private func setHierarchy() {
@@ -68,16 +73,7 @@ final class KakaoCopyTableViewCell: UITableViewCell {
   func configure(title: String, content: String, isCopy: Bool) {
     self.titleLabel.text = title
     self.contentLabel.text = content
+    self.copycontent = content
     self.copyChipButton.isHidden = !isCopy
-  }
-  
-  private func bind() {
-    copyChipButton.rx.tap
-      .subscribe(onNext: { [weak self] in
-        guard let content = self?.contentLabel.text else { return }
-        UIPasteboard.general.string = content
-        print("복사된 내용: \(content)")
-      })
-      .disposed(by: disposeBag)
   }
 }

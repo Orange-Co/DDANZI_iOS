@@ -69,6 +69,8 @@ class SalesDetailViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     self.tabBarController?.tabBar.isHidden = true
     
+    NotificationCenter.default.addObserver(self, selector: #selector(updateStatus), name: .didCompleteCopyAction, object: nil)
+    
   }
   
   override func viewDidLoad() {
@@ -283,6 +285,8 @@ class SalesDetailViewController: UIViewController {
   @objc private func updateStatus() {
     // 상태 업데이트 로직 (필요한 경우 API 다시 호출)
     fetchSaleDeatail(orderId: self.orderId)
+    button.setEnable(isEnable: false)
+    toastImageView.isHidden = true
     print("Notification을 수신하여 상태를 업데이트했습니다.")
   }
   
