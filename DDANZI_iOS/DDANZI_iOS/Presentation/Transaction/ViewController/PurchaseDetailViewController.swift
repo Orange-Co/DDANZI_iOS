@@ -122,11 +122,11 @@ final class PurchaseDetailViewController: UIViewController {
       self.nickName = [data.sellerNickname]
       self.address = [.init(name: data.addressInfo.recipient ?? "", address: data.addressInfo.address ?? "", phone: data.addressInfo.recipientPhone ?? "")]
       self.transactionInfo = [Info(title: "결제 수단", info: data.paymentMethod),
-                              Info(title: "결제 일자", info: data.paidAt?.toKoreanDateTimeFormat() ?? "")]
+                              Info(title: "결제 일자", info: data.paidAt?.convertToDateFormat() ?? "")]
       self.purchaseInfo = [Info(title: "상품 금액", info: data.originPrice.toKoreanWon()),
                            Info(title: "할인가", info: "-\(data.discountPrice.toKoreanWon())"),
                            Info(title: "수수료", info: data.charge.toKoreanWon())]
-      
+      self.totalPrice = data.totalPrice.toKoreanWon()
       self.configureCollectionView()
       self.collectionView.reloadData()
     }

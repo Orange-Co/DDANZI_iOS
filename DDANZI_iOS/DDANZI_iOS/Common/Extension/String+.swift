@@ -27,4 +27,24 @@ extension String {
     
     return koreanFormatter.string(from: date)
   }
+  
+  func convertToDateFormat() -> String? {
+    // 입력 형식에 맞는 DateFormatter 생성
+    let inputFormatter = DateFormatter()
+    inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+    inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+    
+    // String -> Date로 변환
+    guard let date = inputFormatter.date(from: self) else {
+      return nil
+    }
+    
+    // 원하는 출력 형식으로 DateFormatter 설정
+    let outputFormatter = DateFormatter()
+    outputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 24시간 형식
+    outputFormatter.locale = Locale(identifier: "en_US_POSIX")
+    
+    // Date -> String으로 변환 후 반환
+    return outputFormatter.string(from: date)
+  }
 }
