@@ -16,6 +16,7 @@ import Amplitude
 final class RegisteItemCell: UICollectionViewCell {
   
   private let terms: [String] = ["서비스 이용 약관", "딴지 판매 가이드"]
+  let moreLinks = [StringLiterals.Link.Terms.serviceTerm, StringLiterals.Link.Terms.purchaseTerm]
   var selectedTerms = BehaviorRelay<[Bool]>(value: [false, false])
   var itemInfo = PublishRelay<itemConformedDTO>()
   var dateString = BehaviorRelay<String>(value: "")
@@ -281,6 +282,8 @@ final class RegisteItemCell: UICollectionViewCell {
     // DatePicker 생성
     let datePicker = UIDatePicker()
     datePicker.datePickerMode = .date
+    datePicker.minimumDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())
+    datePicker.maximumDate = Date() // 오늘 날짜까지
     datePicker.preferredDatePickerStyle = .wheels // iOS 14 이상에서 wheels 스타일
     datePicker.frame = CGRect(x: 0, y: 0, width: alert.view.frame.width - 20, height: 150)
     
@@ -327,10 +330,12 @@ extension RegisteItemCell: UITableViewDataSource {
                                                    for: indexPath) as? TermsTableViewCell else {
       return UITableViewCell()
     }
+    
     cell.selectionStyle = .none
     cell.bindTitle(
       title: terms[indexPath.row],
-      isSelected: selectedTerms.value[indexPath.row]
+      isSelected: selectedTerms.value[indexPath.row],
+      moreLink: moreLinks[indexPath.row]
     )
     return cell
   }

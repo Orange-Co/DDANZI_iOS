@@ -11,8 +11,8 @@ import Then
 
 final class ProductChipView: UIView {
     private let label = UILabel().then {
-        $0.font = .body5R14
-        $0.textColor = .black
+      $0.font = .body6M12
+      $0.textColor = .gray3
     }
 
     init(labelText: String) {
@@ -31,9 +31,8 @@ final class ProductChipView: UIView {
     }
     
     private func setHierarchy() {
-        self.backgroundColor = .white
+      self.backgroundColor = .gray1
         self.makeCornerRound(radius: 5)
-        self.makeBorder(width: 1, color: .black)
         self.addSubview(label)
     }
     

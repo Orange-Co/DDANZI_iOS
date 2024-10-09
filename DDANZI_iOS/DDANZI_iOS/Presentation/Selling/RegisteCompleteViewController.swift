@@ -161,7 +161,7 @@ final class RegisteCompleteViewController: UIViewController {
     conformedButton.rx.tap
       .subscribe(with: self) { owner, _ in
         Amplitude.instance().logEvent("click_sell_adjustment_check")
-        owner.navigationController?.popToViewController(LandingViewController(), animated: true)
+        owner.navigationController?.popToRootViewController(animated: true)
       }
       .disposed(by: disposeBag)
     

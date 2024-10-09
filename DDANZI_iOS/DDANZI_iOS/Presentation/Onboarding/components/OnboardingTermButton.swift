@@ -9,8 +9,10 @@ import UIKit
 
 import Then
 import SnapKit
+import RxSwift
 
 final class OnboardingTermButton: UIButton {
+  private let disposebag = DisposeBag()
   
   let checkButton = UIButton().then {
     $0.setImage(.checkButton, for: .normal)
@@ -22,7 +24,7 @@ final class OnboardingTermButton: UIButton {
     $0.font = .body4R16
   }
   
-  private let moreButton = UIButton().then {
+  let moreButton = UIButton().then {
     $0.setTitle("자세히", for: .normal)
     $0.titleLabel?.font = .buttonText
     $0.setTitleColor(.gray2, for: .normal)
@@ -74,6 +76,14 @@ final class OnboardingTermButton: UIButton {
   func configureButton(terms: TermModel) {
     termTitleLabel.text = terms.title
     moreButton.isHidden = !terms.isRequired
+    
+    moreButton.rx.tap
+      .subscribe(with: self) { owner, _ in
+        if let url = URL(string: terms.moreLink ?? "") {
+          UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+      }
+      .disposed(by: disposebag)
   }
   
   func selectedButton(isSelect: Bool) {

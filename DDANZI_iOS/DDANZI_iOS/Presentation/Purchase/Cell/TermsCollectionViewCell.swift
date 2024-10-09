@@ -16,6 +16,7 @@ import Amplitude
 final class TermsCollectionViewCell: UICollectionViewCell {
   
   private let terms: [String] = ["서비스 이용 약관", "딴지 구매 가이드"]
+  private let termsLink: [String] = [StringLiterals.Link.Terms.serviceTerm, StringLiterals.Link.Terms.purchaseTerm]
   var selectedTerms = BehaviorRelay<[Bool]>(value: [false, false])
   let disposeBag = DisposeBag()
   
@@ -121,7 +122,8 @@ extension TermsCollectionViewCell: UITableViewDataSource {
     cell.selectionStyle = .none
     cell.bindTitle(
       title: terms[indexPath.row],
-      isSelected: selectedTerms.value[indexPath.row]
+      isSelected: selectedTerms.value[indexPath.row],
+      moreLink: termsLink[indexPath.row]
     )
     return cell
   }

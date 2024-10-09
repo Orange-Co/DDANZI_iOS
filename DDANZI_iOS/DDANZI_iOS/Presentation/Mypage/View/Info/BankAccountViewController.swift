@@ -66,6 +66,11 @@ class BankAccountViewController: UIViewController {
     $0.setImage(.blueArrow, for: .normal)
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    fetchAccountInfo()
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
@@ -137,7 +142,11 @@ class BankAccountViewController: UIViewController {
       if let bank = data.bank,
          let accountNumber = data.accountNumber,
          let accountId = data.accountId {
-        self.bankNameLabel.text = bank
+        if let bank = BankList.banks.first(where: { $0.code == bank }) {
+            self.bankNameLabel.text = bank.name // 은행 이름 설정
+        } else {
+            self.bankNameLabel.text = "알 수 없는 은행" // 매칭되지 않는 경우 처리
+        }
         self.nameLabel.text = data.name
         self.accountNumberLabel.text = accountNumber
         self.accountButton.isHidden = false
@@ -159,10 +168,16 @@ class BankAccountViewController: UIViewController {
       .disposed(by: disposeBag)
     
     registerButton.rx.tap
-      .subscribe(onNext: { [weak self] in
+      .subscribe(with: self) { owner, _ in
         // 계좌 등록 화면으로 이동하는 로직 추가
-        self?.navigateToAccountRegistration()
-      })
+        owner.navigateToAccountRegistration()
+      }
+      .disposed(by: disposeBag)
+    
+    accountButton.rx.tap
+      .subscribe(with: self) { owner, _ in
+        owner.navigateToAccountRegistration()
+      }
       .disposed(by: disposeBag)
   }
   

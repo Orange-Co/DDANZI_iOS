@@ -24,6 +24,9 @@ class SalesDetailViewController: UIViewController {
   var totalPrice = BehaviorRelay<String>(value: "")
   var sellStatus = BehaviorRelay<StatusType>(value: .inProgress)
   
+  var isCancelable: Bool = false
+  var itemId: String = ""
+  
   private let disposeBag = DisposeBag()
   var orderId: String = ""
   var imageURL: String = ""
@@ -58,7 +61,7 @@ class SalesDetailViewController: UIViewController {
   
   init(productId: String) {
     super.init(nibName: nil, bundle: nil)
-    
+    self.orderId = productId
     fetchSaleDeatail(orderId: productId)
   }
   
@@ -68,14 +71,11 @@ class SalesDetailViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     self.tabBarController?.tabBar.isHidden = true
-    
+    self.fetchSaleDeatail(orderId: orderId)
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(updateStatus), name: .didCompleteCopyAction, object: nil)
-    
     setUI()
     configureCollectionView()
     bind()
@@ -129,6 +129,8 @@ class SalesDetailViewController: UIViewController {
       
       guard let data = response.data else { return }
       
+      self.itemId = data.itemID
+      
       self.orderId = data.orderID ?? ""
       
       self.sellStatus.accept(.init(rawValue: data.status) ?? .inProgress)
@@ -165,10 +167,16 @@ class SalesDetailViewController: UIViewController {
     sellStatus
       .withUnretained(self)
       .bind { owner, type in
+        print("type: \(type)")
         switch type {
-        case .inProgress, .orderComplete, .notDeposit, .onSale:
+          // 삭제가 가능한 시점
+        case .onSale:
+          owner.button.setEnable()
+          owner.isCancelable = true
+          owner.button.titleLabel?.text = "판매 취소하기"
+        case .inProgress, .orderComplete:
           owner.button.titleLabel?.text = "판매 확정하기"
-        case .deposit:
+        case .deposit, .notDeposit:
           owner.button.titleLabel?.text = "판매 확정하기"
           owner.toastImageView.isHidden = false
           owner.button.setEnable()
@@ -176,7 +184,7 @@ class SalesDetailViewController: UIViewController {
           owner.button.titleLabel?.text = "배송 중인 상품입니다."
         case .complete:
           owner.button.titleLabel?.text = "거래가 완료된 상품입니다."
-        case .cancel:
+        case .cancel, .deleted:
           owner.button.titleLabel?.text = "거래가 취소된 상품입니다."
         }
       }
@@ -184,8 +192,15 @@ class SalesDetailViewController: UIViewController {
     
     button.rx.tap
       .subscribe(with: self) { owner, _ in
-        let copyVC = KakaoCopyViewController(orderId: owner.orderId)
-        owner.navigationController?.pushViewController(copyVC, animated: true)
+        if owner.isCancelable {
+          Providers.ItemProvider.request(target: .deleteItem(id: owner.itemId)) { isDeleted in
+            print("삭제 완료: \(owner.itemId)")
+            owner.navigationController?.popViewController(animated: true)
+          }
+        } else {
+          let copyVC = KakaoCopyViewController(orderId: owner.orderId)
+          owner.navigationController?.pushViewController(copyVC, animated: true)
+        }
       }
       .disposed(by: disposeBag)
 
@@ -283,6 +298,8 @@ class SalesDetailViewController: UIViewController {
   @objc private func updateStatus() {
     // 상태 업데이트 로직 (필요한 경우 API 다시 호출)
     fetchSaleDeatail(orderId: self.orderId)
+    button.setEnable(isEnable: false)
+    toastImageView.isHidden = true
     print("Notification을 수신하여 상태를 업데이트했습니다.")
   }
   

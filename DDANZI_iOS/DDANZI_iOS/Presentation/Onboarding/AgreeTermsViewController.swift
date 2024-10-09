@@ -114,7 +114,6 @@ final class AgreeTermsViewController: UIViewController {
       termButton.rx.tap
         .bind { [weak self] in
           guard let self = self else { return }
-          Amplitude.instance().logEvent("click_verification_terms_all")
           termButton.selectedButton(isSelect: !termButton.checkButton.isSelected)
           self.updateAllSelectState()
         }
@@ -144,6 +143,7 @@ final class AgreeTermsViewController: UIViewController {
       .bind { [weak self] in
         guard let self = self else { return }
         self.isAllSelected.toggle()
+        Amplitude.instance().logEvent("click_verification_terms_all")
         self.checkButton.isSelected = self.isAllSelected
         self.termButtons.forEach {
           $0.selectedButton(isSelect: self.isAllSelected)

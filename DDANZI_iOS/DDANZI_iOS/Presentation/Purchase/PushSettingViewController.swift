@@ -134,7 +134,7 @@ final class PushSettingViewController: UIViewController {
             if !isAllow {
               let alertVC = CustomAlertViewController(title: "알림 설정", content: "설정 > 딴지 > 알림에서 설정을 변경할 수 있습니다.", buttonText: "확인", subButton: nil)
               alertVC.modalPresentationStyle = .overFullScreen
-              self.present(alertVC, animated: true) {
+              self.present(alertVC, animated: false) {
                 if owner.isSelling {
                   owner.navigationController?.pushViewController(RegisteCompleteViewController(response: owner.response), animated: true)
                 } else {

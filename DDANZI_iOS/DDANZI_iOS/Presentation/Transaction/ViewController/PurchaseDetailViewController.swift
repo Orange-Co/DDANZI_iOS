@@ -17,6 +17,7 @@ final class PurchaseDetailViewController: UIViewController {
   private let disposeBag = DisposeBag()
   var PurchaseState: StatusType = .orderComplete
   var orderId: String
+  var totalPrice: String = ""
   
   var status = BehaviorRelay<[Status]>(value: [])
   var product: [Product] = []
@@ -122,11 +123,11 @@ final class PurchaseDetailViewController: UIViewController {
       self.nickName = [data.sellerNickname]
       self.address = [.init(name: data.addressInfo.recipient ?? "", address: data.addressInfo.address ?? "", phone: data.addressInfo.recipientPhone ?? "")]
       self.transactionInfo = [Info(title: "결제 수단", info: data.paymentMethod),
-                              Info(title: "결제 일자", info: data.paidAt?.toKoreanDateTimeFormat() ?? "")]
+                              Info(title: "결제 일자", info: data.paidAt?.convertToDateFormat() ?? "")]
       self.purchaseInfo = [Info(title: "상품 금액", info: data.originPrice.toKoreanWon()),
                            Info(title: "할인가", info: "-\(data.discountPrice.toKoreanWon())"),
                            Info(title: "수수료", info: data.charge.toKoreanWon())]
-      
+      self.totalPrice = data.totalPrice.toKoreanWon()
       self.configureCollectionView()
       self.collectionView.reloadData()
     }
@@ -152,9 +153,12 @@ final class PurchaseDetailViewController: UIViewController {
       let purchaseStatus = owner.status.value
       if let status = purchaseStatus.first {
         switch status.status {
+        case .onSale:
+          owner.button.setEnable()
         case .delivery,.delayedShipping,.warning:
           owner.button.setEnable()
           owner.toastImageView.isHidden = false
+          owner.button.setTitle("구매 확정하기", for: .normal)
         default:
           break
         }
@@ -182,7 +186,8 @@ final class PurchaseDetailViewController: UIViewController {
     ]
     
     let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Any>>(
-      configureCell: { dataSource, collectionView, indexPath, item in
+      configureCell: { [weak self] dataSource, collectionView, indexPath, item in
+        guard let self = self else { return UICollectionViewCell() }
         switch indexPath.section {
         case 0:
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StatusCollectionViewCell.className, for: indexPath) as! StatusCollectionViewCell
@@ -238,13 +243,13 @@ final class PurchaseDetailViewController: UIViewController {
           return header
         }
         if kind == UICollectionView.elementKindSectionFooter {
-                  guard indexPath.section == 5, // 마지막 섹션만 체크
-                        let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TotalPriceFooterView.className, for: indexPath) as? TotalPriceFooterView else {
-                    return UICollectionReusableView()
-                  }
-                  footer.configureFooter(totalPrice: "21,350원")
-                  return footer
-                }
+          guard indexPath.section == 5, // 마지막 섹션만 체크
+                let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TotalPriceFooterView.className, for: indexPath) as? TotalPriceFooterView else {
+            return UICollectionReusableView()
+          }
+          footer.configureFooter(totalPrice: self.totalPrice)
+          return footer
+        }
         return UICollectionReusableView()
       }
     )
@@ -268,8 +273,8 @@ extension PurchaseDetailViewController {
         let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1),
                                                             heightDimension: .fractionalHeight(1)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
-                                                                       heightDimension: .estimated(160)),
-                                                     subitems: [item])
+                                                                         heightDimension: .estimated(160)),
+                                                       subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 0, leading: 20, bottom: 15, trailing: 20)
         return section

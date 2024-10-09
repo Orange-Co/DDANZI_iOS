@@ -17,6 +17,7 @@ enum StatusType {
   case onSale
   case delayedShipping
   case warning
+  case deleted
   
   var statusString: String {
     switch self {
@@ -34,6 +35,8 @@ enum StatusType {
       return "거래 취소"
     case .notDeposit:
       return "판매 중"
+    case .deleted:
+      return "삭제된 상품"
     }
   }
   
@@ -58,6 +61,8 @@ enum StatusType {
       self = .delayedShipping
     case "WARNING":
       self = .warning
+    case "DELETED":
+      self = .deleted
     default:
       return nil
     }

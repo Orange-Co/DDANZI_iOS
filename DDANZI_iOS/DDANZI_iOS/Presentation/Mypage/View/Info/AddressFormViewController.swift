@@ -14,7 +14,8 @@ import RxSwift
 import RxCocoa
 
 final class AddressFormViewController: UIViewController {
-  
+  var onAddressChanged: ((Address) -> Void)?
+  var newAddress: Address?
   private let disposeBag = DisposeBag()
   
   private var currentAddressInfo: Address?
@@ -124,12 +125,16 @@ final class AddressFormViewController: UIViewController {
   
   private func postAddress(body: UserAddressRequestDTO) {
     Providers.MypageProvider.request(target: .addUserAddress(body), instance: BaseResponse<UserAddressResponseDTO>.self) { result in
+      let newAddress = Address(name: body.recipient, address: "(\(body.zipCode) \(body.address), \(body.detailAddress))", phone: body.recipientPhone)
+      self.onAddressChanged?(newAddress)
       self.navigationController?.popViewController(animated: true)
     }
   }
   
   private func editAddress(addressId: Int, body: UserAddressRequestDTO) {
     Providers.MypageProvider.request(target: .editUserAddress(addressId, body), instance: BaseResponse<UserAddressResponseDTO>.self) { response in
+      let newAddress = Address(name: body.recipient, address: "(\(body.zipCode) \(body.address), \(body.detailAddress))", phone: body.recipientPhone)
+      self.onAddressChanged?(newAddress)
       self.navigationController?.popViewController(animated: true)
     }
   }

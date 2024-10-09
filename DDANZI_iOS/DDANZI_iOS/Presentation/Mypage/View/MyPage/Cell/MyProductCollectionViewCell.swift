@@ -21,7 +21,7 @@ enum ListType {
 final class MyProductCollectionViewCell: UICollectionViewCell {
   static let identifier = "MyProductCollectionViewCell"
   
-  private let disposeBag = DisposeBag()
+  var disposeBag = DisposeBag()
   private let listTypeRelay = BehaviorRelay<ListType>(value: .sales)
   private var itemId: String = ""
   private var isInterst: Bool = true
@@ -74,6 +74,11 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     $0.setImage(.icFillHeartYellow, for: .normal)
   }
   
+  let deleteButton = UIButton().then {
+    $0.setImage(.btnXCircle, for: .normal)
+    $0.isHidden = true
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setUI()
@@ -87,6 +92,7 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
   override func prepareForReuse() {
     self.isInterst = true
     self.itemId = ""
+    self.disposeBag = DisposeBag()
     super.prepareForReuse()
   }
   
@@ -97,6 +103,10 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     if heartButton.frame.contains(location) {
       addInterest()
       return
+    }
+    
+    if deleteButton.frame.contains(location) {
+      // 삭제 로직 추가하기
     }
     
     super.touchesBegan(touches, with: event)
@@ -139,13 +149,19 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
                      titleLabel,
                      beforeLabel,
                      priceLabel,
-                     heartView)
+                     heartView,
+                     deleteButton)
   }
   
   private func setConstraints() {
     imageView.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(164)
+    }
+    
+    deleteButton.snp.makeConstraints {
+      $0.size.equalTo(18.adjusted)
+      $0.trailing.top.equalToSuperview().inset(8.adjusted)
     }
     
     titleLabel.snp.makeConstraints {
@@ -216,12 +232,6 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     }
   }
   
-  func bind(to viewModel: PurchaseListViewModel) {
-      viewModel.isEditMode
-          .bind(to: cancelButton.rx.isHidden)
-          .disposed(by: disposeBag)
-  }
-  
   private func addInterest() {
     var heartCount: Int = 0
     if let count = Int(self.heartLabel.text ?? "0") {
@@ -269,4 +279,3 @@ final class MyProductCollectionViewCell: UICollectionViewCell {
     purchaseDateLabel.text = completedAt
   }
 }
-

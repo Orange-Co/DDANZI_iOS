@@ -21,7 +21,7 @@ final class PurchaseViewController: UIViewController {
   
   private let disposeBag = DisposeBag()
   
-  var orderModel: OrderModel = .init(productId: "", optionList: [])
+  var orderModel: OrderModel/// 여기여기
   var selectedTerms = BehaviorRelay<[Bool]>(value: [false, false])
   
   // PublishSubject
@@ -61,6 +61,15 @@ final class PurchaseViewController: UIViewController {
     $0.addShadow(offset: .init(width: 0, height: 2), opacity: 0.4)
   }
   private let button = DdanziButton(title: "구매하기", enable: false)
+  
+  init(orderModel: OrderModel) {
+    self.orderModel = orderModel
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -220,7 +229,7 @@ final class PurchaseViewController: UIViewController {
         guard let self = self else { return Single.just((false, nil)) }
         
         // `executePayment` 호출
-        return self.executePayment(orderId: self.merchanUID, selecteOption: [])
+        return self.executePayment(orderId: self.merchanUID, selecteOption: self.orderModel.optionList) //여기다여기
       }
       .observe(on: MainScheduler.instance) // 메인 스레드에서 UI 업데이트
       .subscribe(onSuccess: { [weak self] isSuccess, orderId in
@@ -399,7 +408,7 @@ extension PurchaseViewController {
             return UICollectionReusableView()
           }
           header.configureHeader(title: dataSource.sectionModels[indexPath.section].model,
-                                 isEditable: indexPath.section == 1,
+                                 isEditable: indexPath.section == 1 && self.isEmptyAddress,
                                  isEmptyAddress: self.isEmptyAddress)
           // 주소 유무를 반영
           if self.isEmptyAddress {
@@ -408,6 +417,11 @@ extension PurchaseViewController {
                 Amplitude.instance().logEvent("click_purchase_address")
                 guard let self = self else { return }
                 let addressListVC = AddressSettingViewController()
+                // 주소 변경 클로저 설정
+                addressListVC.onAddressChanged = { [weak self] newAddress in
+                  self?.addressSubject.onNext([newAddress])
+                  self?.fetchOrderInfo()
+                }
                 self.navigationController?.pushViewController(addressListVC, animated: true)
               })
               .disposed(by: header.disposeBag)

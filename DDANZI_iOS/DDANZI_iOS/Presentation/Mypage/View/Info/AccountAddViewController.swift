@@ -158,11 +158,12 @@ final class AccountAddViewController: UIViewController {
     let body = UserAccountRequestDTO(accountName: accountName, bank: bank, accountNumber: accountNumber)
     Providers.MypageProvider.request(target: .editUserAccount(accountId, body), instance: BaseResponse<UserAccountDTO>.self) { response in
       guard let data = response.data else { return }
-      if response.status != 200 || response.status != 201 {
-        self.view.showToast(message: "계좌 등록 오류 입니다. 잠시 후 다시 시도해주세요", at: 100)
-      } else {
+      if response.status == 200 || response.status == 201 {
+        self.accountRegisteredRelay.accept(true)
         self.navigationController?.popViewController(animated: true)
-      }
+      } else {
+          self.view.showToast(message: "계좌 등록 오류 입니다. 잠시 후 다시 시도해주세요", at: 100)
+        }
     }
   }
   
@@ -173,6 +174,8 @@ final class AccountAddViewController: UIViewController {
       if response.status == 200 || response.status == 201 {
         self.accountRegisteredRelay.accept(true)
         self.navigationController?.popViewController(animated: true)
+      } else {
+        self.view.showToast(message: "계좌 등록 오류 입니다. 잠시 후 다시 시도해주세요", at: 100)
       }
     }
   }

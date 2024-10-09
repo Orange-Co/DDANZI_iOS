@@ -28,6 +28,8 @@ final class ProductDetailViewController: UIViewController {
   private var isInterest: Bool = false
   private var interestCount = 0
   private var moreLink = ""
+  private var isOptionExist = false
+  private var isImminent = false
   
   // MARK: Compenets
   private let customNavigationBar = CustomNavigationBarView(navigationBarType: .home)
@@ -37,38 +39,47 @@ final class ProductDetailViewController: UIViewController {
     $0.backgroundColor = .gray2
   }
   
+  private let labelStackView: UIStackView = UIStackView().then {
+    $0.axis = .horizontal
+    $0.spacing = 5
+    $0.alignment = .center
+  }
+  
   private let labelView = ProductChipView(labelText: "향수")
+  private let immienetlabelView = ProductChipView(labelText: "마감 임박")
+  private let optionLabelView = ProductChipView(labelText: "선택 옵션 존재")
   
   private let productTitleLabel = UILabel().then {
-    $0.font = .title4Sb24
+    $0.font = .body2Sb18
     $0.textColor = .black
-    $0.numberOfLines = 2
+    $0.numberOfLines = 5
     $0.textAlignment = .left
-  }
-  
-  private let discountLabel = UILabel().then {
-    $0.font = .title3Sb28
-    $0.textColor = .black
-  }
-  
-  private let priceLabel = UILabel().then {
-    $0.font = .title3Sb28
-    $0.textColor = .black
+    $0.lineBreakStrategy = .hangulWordPriority
   }
   
   private let beforePriceLabel = UILabel().then {
-    $0.font = .body1B20
+    $0.font = .body3Sb16
     $0.textColor = .gray2
+  }
+  
+  private let discountLabel = UILabel().then {
+    $0.font = .title4Sb24
+    $0.textColor = .discountRed
+  }
+  
+  private let priceLabel = UILabel().then {
+    $0.font = .title4Sb24
+    $0.textColor = .black
   }
   
   private let remainLabel = UILabel().then {
     $0.text = StringLiterals.ProductDetail.Label.remainLabel
-    $0.font = .body3Sb16
+    $0.font = .body5R14
     $0.textColor = .black
   }
   
   private let amountLabel = UILabel().then {
-    $0.font = .body3Sb16
+    $0.font = .body5R14
     $0.textColor = .gray3
   }
   
@@ -82,6 +93,8 @@ final class ProductDetailViewController: UIViewController {
     var config = UIButton.Configuration.plain()
     config.imagePadding = 10
     $0.configuration = config
+    $0.layer.borderColor = UIColor.gray2.cgColor
+    $0.layer.borderWidth = 1
   }
   
   private let bottomButtonView = BottomButtonView(buttonText: "구매하기", isEnable: true)
@@ -123,14 +136,17 @@ final class ProductDetailViewController: UIViewController {
                      scrollView,
                      bottomButtonView)
     scrollView.addSubview(contentView)
-    contentView.addSubviews(productImageView,
-                            labelView,
-                            productTitleLabel,
-                            discountLabel,
-                            priceLabel,
-                            beforePriceLabel,remainLabel,
-                            amountLabel,
-                            moreLinkButton)
+    contentView.addSubviews(
+      productImageView,
+      labelStackView,
+      productTitleLabel,
+      discountLabel,
+      priceLabel,
+      beforePriceLabel,remainLabel,
+      amountLabel,
+      moreLinkButton
+    )
+    labelStackView.addArrangedSubviews(labelView, optionLabelView, immienetlabelView)
   }
   
   private func setConstraints() {
@@ -152,48 +168,48 @@ final class ProductDetailViewController: UIViewController {
     productImageView.snp.makeConstraints {
       $0.top.equalToSuperview()
       $0.leading.trailing.equalToSuperview()
-      $0.height.equalTo(375)
+      $0.height.equalTo(375.adjusted)
     }
     
-    labelView.snp.makeConstraints {
-      $0.top.equalTo(productImageView.snp.bottom).offset(13)
-      $0.leading.equalToSuperview().offset(20)
+    labelStackView.snp.makeConstraints {
+      $0.top.equalTo(productImageView.snp.bottom).offset(15.adjusted)
+      $0.leading.equalToSuperview().offset(20.adjusted)
     }
     
     productTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(labelView.snp.bottom).offset(13)
-      $0.leading.trailing.equalToSuperview().inset(21)
-      $0.height.equalTo(58)
-    }
-    
-    discountLabel.snp.makeConstraints {
-      $0.top.equalTo(productTitleLabel.snp.bottom).offset(15)
-      $0.leading.equalToSuperview().offset(21)
+      $0.top.equalTo(labelStackView.snp.bottom).offset(17.adjusted)
+      $0.leading.trailing.equalToSuperview().inset(20.adjusted)
     }
     
     beforePriceLabel.snp.makeConstraints {
-      $0.trailing.equalTo(priceLabel.snp.leading).offset(-8)
-      $0.bottom.equalTo(discountLabel.snp.bottom)
+      $0.top.equalTo(productTitleLabel.snp.bottom).offset(17.adjusted)
+      $0.leading.equalTo(productTitleLabel.snp.leading)
+    }
+    
+    discountLabel.snp.makeConstraints {
+      $0.top.equalTo(beforePriceLabel.snp.bottom).offset(7)
+      $0.leading.equalToSuperview().offset(20.adjusted)
     }
     
     priceLabel.snp.makeConstraints {
-      $0.trailing.equalToSuperview().inset(16)
-      $0.bottom.equalTo(discountLabel.snp.bottom)
+      $0.leading.equalTo(discountLabel.snp.trailing).offset(3.adjusted)
+      $0.centerY.equalTo(discountLabel.snp.centerY)
     }
     
     remainLabel.snp.makeConstraints {
-      $0.top.equalTo(priceLabel.snp.bottom).offset(15)
-      $0.leading.equalToSuperview().offset(21)
+      $0.trailing.equalTo(amountLabel.snp.leading).offset(-4.adjusted)
+      $0.bottom.equalTo(priceLabel.snp.bottom)
     }
     
     amountLabel.snp.makeConstraints {
-      $0.leading.equalTo(remainLabel.snp.trailing).offset(8)
+      $0.trailing.equalToSuperview().inset(20.adjusted)
       $0.centerY.equalTo(remainLabel.snp.centerY)
     }
     
     moreLinkButton.snp.makeConstraints {
-      $0.leading.equalTo(remainLabel.snp.leading).offset(-10)
-      $0.top.equalTo(remainLabel.snp.bottom).offset(5)
+      $0.top.equalTo(discountLabel.snp.bottom).offset(23.adjusted)
+      $0.height.equalTo(37.adjusted)
+      $0.leading.trailing.equalToSuperview().inset(20.adjusted)
     }
     
     bottomButtonView.snp.makeConstraints {
@@ -241,6 +257,8 @@ final class ProductDetailViewController: UIViewController {
     amountLabel.text = "\(productDetail.remainAmount)개"
     bottomButtonView.heartCountLabel.text = "\(productDetail.interestCount)"
     bottomButtonView.heartButton.isSelected = productDetail.isInterest
+    immienetlabelView.isHidden = !productDetail.isImminent
+    optionLabelView.isHidden = !optionList.isEmpty
   }
   
   private func bind() {
@@ -287,8 +305,9 @@ final class ProductDetailViewController: UIViewController {
           return
         }
         if owner.optionList.isEmpty {
-          let purchaseVC = PurchaseViewController()
-          purchaseVC.orderModel = .init(productId: owner.productId, optionList: owner.optionList.map({ $0.optionID }))
+          let orderModel = OrderModel(productId: owner.productId, optionList: owner.optionList.map({ $0.optionID }))
+          
+          let purchaseVC = PurchaseViewController(orderModel: orderModel)
           self.navigationController?.pushViewController(purchaseVC, animated: true)
         } else {
           let optionViewController = OptionSelectViewController()
@@ -325,8 +344,8 @@ final class ProductDetailViewController: UIViewController {
 
 extension ProductDetailViewController: OptionViewControllerDelegate {
   func optionViewControllerDidFinish(_ viewController: OptionSelectViewController, optionList: [Int]) {
-    let purchaseVC = PurchaseViewController()
-    purchaseVC.orderModel = .init(productId: productId, optionList: optionList)
+    let orderModel = OrderModel(productId: productId, optionList: optionList)
+    let purchaseVC = PurchaseViewController(orderModel: orderModel)
     self.navigationController?.pushViewController(purchaseVC, animated: true)
   }
 }
