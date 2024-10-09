@@ -28,7 +28,9 @@ final class PurchaseCompleteViewController: UIViewController {
   var totalPrice: Int = 0
   
   // MARK: - UI
-  private let navigationBarView = CustomNavigationBarView(navigationBarType: .home, title: "주문 완료")
+  private let navigationBarView = CustomNavigationBarView(navigationBarType: .home, title: "주문 완료").then {
+    $0.backButton.isHidden = true
+  }
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
     $0.isHidden = true
     $0.backgroundColor = .white
@@ -148,6 +150,7 @@ final class PurchaseCompleteViewController: UIViewController {
     
     keepButton.rx.tap
       .bind {
+        // 계속 쇼핑하기
         Amplitude.instance().logEvent("click_purchase_adjustment_add")
         let homeViewController = DdanziTabBarController()
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
@@ -156,11 +159,22 @@ final class PurchaseCompleteViewController: UIViewController {
       .disposed(by: disposeBag)
     
     detailButton.rx.tap
-      .bind {
+      .withUnretained(self)
+      .bind { owner, _ in
+        // 구매 상세로 이동
         Amplitude.instance().logEvent("click_purchase_adjustment_check")
-        let tabBarViewController = DdanziTabBarController()
-        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
-        sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: tabBarViewController)
+        
+        // TabBarController의 두 번째 탭으로 이동
+        if let tabBarController = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+           let tabController = tabBarController.window?.rootViewController as? DdanziTabBarController {
+          tabController.selectedIndex = 1  // 두 번째 탭으로 이동
+          
+          // 두 번째 탭의 NavigationController에 새로운 뷰를 푸시
+          if let navController = tabController.viewControllers?[1] as? UINavigationController {
+            let newViewController = PurchaseListViewController() // 새로운 ViewController 생성
+            navController.pushViewController(newViewController, animated: true)
+          }
+        }
       }
       .disposed(by: disposeBag)
   }
