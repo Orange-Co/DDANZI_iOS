@@ -58,7 +58,7 @@ final class CustomNavigationBarView: UIView {
     $0.textColor = .black
   }
   
-  private let backButton = UIButton().then {
+  let backButton = UIButton().then {
     $0.setImage(.leftBtn, for: .normal)
     $0.imageView?.contentMode = .scaleAspectFit
   }

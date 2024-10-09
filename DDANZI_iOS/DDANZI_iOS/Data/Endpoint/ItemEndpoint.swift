@@ -15,6 +15,7 @@ enum ItemEndpoint {
   case itemCheck(body: ItemCheckRequestBody)
   case itemConfirmed(id: String)
   case registeItem(body: RegisteItemBody)
+  case deleteItem(id: String)
   case detailItem(id: String)
   case optionItem(id: String)
   
@@ -49,6 +50,8 @@ extension ItemEndpoint: BaseTargetType {
       return "/api/v1/item/product/\(id)"
     case .registeItem:
       return "/api/v1/item"
+    case .deleteItem(let id):
+      return "/api/v1/item/\(id)"
     case .detailItem(let id):
       return "/api/v1/item/\(id)"
     case .optionItem(let id):
@@ -68,6 +71,8 @@ extension ItemEndpoint: BaseTargetType {
       return .get
     case .registeItem:
       return .post
+    case .deleteItem:
+      return .delete
     case .detailItem:
       return .get
     case .optionItem:
@@ -87,6 +92,8 @@ extension ItemEndpoint: BaseTargetType {
       return .requestPlain
     case .registeItem(let body):
       return .requestJSONEncodable(body)
+    case .deleteItem:
+      return .requestPlain
     case .detailItem:
       return .requestPlain
     case .optionItem:
@@ -109,6 +116,8 @@ extension ItemEndpoint: BaseTargetType {
     case .detailItem:
       return APIConstants.hasAccessTokenHeader
     case .optionItem:
+      return APIConstants.hasAccessTokenHeader
+    case .deleteItem(id: let id):
       return APIConstants.hasAccessTokenHeader
     }
   }
