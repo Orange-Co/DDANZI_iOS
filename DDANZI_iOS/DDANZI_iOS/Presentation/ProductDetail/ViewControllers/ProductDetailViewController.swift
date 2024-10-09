@@ -305,8 +305,9 @@ final class ProductDetailViewController: UIViewController {
           return
         }
         if owner.optionList.isEmpty {
-          let purchaseVC = PurchaseViewController()
-          purchaseVC.orderModel = .init(productId: owner.productId, optionList: owner.optionList.map({ $0.optionID }))
+          let orderModel = OrderModel(productId: owner.productId, optionList: owner.optionList.map({ $0.optionID }))
+          
+          let purchaseVC = PurchaseViewController(orderModel: orderModel)
           self.navigationController?.pushViewController(purchaseVC, animated: true)
         } else {
           let optionViewController = OptionSelectViewController()
@@ -343,8 +344,8 @@ final class ProductDetailViewController: UIViewController {
 
 extension ProductDetailViewController: OptionViewControllerDelegate {
   func optionViewControllerDidFinish(_ viewController: OptionSelectViewController, optionList: [Int]) {
-    let purchaseVC = PurchaseViewController()
-    purchaseVC.orderModel = .init(productId: productId, optionList: optionList)
+    let orderModel = OrderModel(productId: productId, optionList: optionList)
+    let purchaseVC = PurchaseViewController(orderModel: orderModel)
     self.navigationController?.pushViewController(purchaseVC, animated: true)
   }
 }
