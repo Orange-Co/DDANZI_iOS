@@ -48,7 +48,7 @@ final class CustomNavigationBarView: UIView {
   var settingButtonTap: Observable<Void> { settingButtonSubject.asObservable() }
   var searchBarTextEdit: Observable<Void> { searchBarSubject.asObservable() }
   var alarmButtonTap: Observable<Void> { alarmButtonSubject.asObservable() }
-  var menuButtonTap: Observable<Void> { alarmButtonSubject.asObservable() }
+  var menuButtonTap: Observable<Void> { menuButtonSubject.asObservable() }
   
   // MARK: - componenets
   private var leftView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
@@ -274,7 +274,7 @@ final class CustomNavigationBarView: UIView {
       .bind(to: alarmButtonSubject)
       .disposed(by: disposeBag)
     
-    menuButtonTap.rx.tap
+    menuButton.rx.tap
       .observe(on: MainScheduler.instance)
       .bind(to: menuButtonSubject)
       .disposed(by: disposeBag)
