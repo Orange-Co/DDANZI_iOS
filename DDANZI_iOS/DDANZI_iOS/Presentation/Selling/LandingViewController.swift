@@ -170,19 +170,20 @@ final class LandingViewController: UIViewController {
   
   private func checkPhotoPermissionAndShowPicker() {
     // presigned URL 미리 생성
+    self.checkPermissionAndPresent()
     let query = PresignedURLQuery(fileName: UUID().uuidString + ".jpeg")
     Providers.ItemProvider.request(target: .requestPresignedURL(body: query), instance: BaseResponse<PresignedURLDTO>.self) { response in
       guard let data = response.data else { return }
       self.presignedURL = data.signedUrl
-      self.checkPermissionAndPresent()
     }
   }
   
   private func checkPermissionAndPresent(){
     PermissionManager.shared.checkPermission(for: .photo)
       .observe(on: MainScheduler.instance)
-      .flatMap { isGranted -> Observable<Bool> in
+      .flatMap { [weak self] isGranted -> Observable<Bool> in
         if !isGranted {
+          self?.showSettingsAlert()
           return PermissionManager.shared.requestPhotoPermission()
         }
         return Observable.just(isGranted)
@@ -224,5 +225,26 @@ final class LandingViewController: UIViewController {
         print("이미지 업로드에 실패했습니다.")
       }
     }
+  }
+  
+  private func showSettingsAlert() {
+    let alert = UIAlertController(
+      title: "사진 권한이 필요합니다.",
+      message: "앱 설정에서 사진 접근 권한을 허용해주세요.",
+      preferredStyle: .alert
+    )
+    
+    let settingsAction = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
+      guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+      if UIApplication.shared.canOpenURL(settingsURL) {
+        UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+      }
+    }
+    let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+    
+    alert.addAction(settingsAction)
+    alert.addAction(cancelAction)
+    
+    self.present(alert, animated: true, completion: nil)
   }
 }

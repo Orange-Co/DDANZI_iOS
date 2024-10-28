@@ -163,18 +163,8 @@ final class PurchaseCompleteViewController: UIViewController {
       .bind { owner, _ in
         // 구매 상세로 이동
         Amplitude.instance().logEvent("click_purchase_adjustment_check")
-        
-        // TabBarController의 두 번째 탭으로 이동
-        if let tabBarController = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
-           let tabController = tabBarController.window?.rootViewController as? DdanziTabBarController {
-          tabController.selectedIndex = 1  // 두 번째 탭으로 이동
-          
-          // 두 번째 탭의 NavigationController에 새로운 뷰를 푸시
-          if let navController = tabController.viewControllers?[1] as? UINavigationController {
-            let newViewController = PurchaseListViewController() // 새로운 ViewController 생성
-            navController.pushViewController(newViewController, animated: true)
-          }
-        }
+        let viewController = PurchaseDetailViewController(orderId: owner.orderId)
+        owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: disposeBag)
   }

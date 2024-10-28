@@ -33,7 +33,7 @@ class SalesDetailViewController: UIViewController {
   var PurchaseState: StatusType = .orderComplete
   
   
-  private let navigaitonBar = CustomNavigationBarView(navigationBarType: .cancel, title: "판매 상세")
+  private let navigaitonBar = CustomNavigationBarView(navigationBarType: .menu, title: "판매 상세")
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
     $0.backgroundColor = .white
     $0.register(DetailSectionHeaderView.self,
@@ -163,47 +163,47 @@ class SalesDetailViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    navigaitonBar.menuButtonTap
+      .subscribe (onNext: { [weak self] in
+        self?.showMenuAlert()
+      })
+      .disposed(by: disposeBag)
     
     sellStatus
       .withUnretained(self)
       .bind { owner, type in
         print("type: \(type)")
         switch type {
-          // 삭제가 가능한 시점
-        case .onSale:
-          owner.button.setEnable()
-          owner.isCancelable = true
-          owner.button.titleLabel?.text = "판매 취소하기"
-        case .inProgress, .orderComplete:
+        case .onSale, .inProgress:
           owner.button.titleLabel?.text = "판매 확정하기"
+          owner.isCancelable = true
+        case .orderComplete:
+          owner.button.titleLabel?.text = "판매 확정하기"
+          owner.isCancelable = false
         case .deposit, .notDeposit:
           owner.button.titleLabel?.text = "판매 확정하기"
           owner.toastImageView.isHidden = false
           owner.button.setEnable()
+          owner.isCancelable = false
         case .delivery, .delayedShipping, .warning:
           owner.button.titleLabel?.text = "배송 중인 상품입니다."
+          owner.isCancelable = false
         case .complete:
           owner.button.titleLabel?.text = "거래가 완료된 상품입니다."
+          owner.isCancelable = false
         case .cancel, .deleted:
           owner.button.titleLabel?.text = "거래가 취소된 상품입니다."
+          owner.isCancelable = false
         }
       }
       .disposed(by: disposeBag)
     
     button.rx.tap
       .subscribe(with: self) { owner, _ in
-        if owner.isCancelable {
-          Providers.ItemProvider.request(target: .deleteItem(id: owner.itemId)) { isDeleted in
-            print("삭제 완료: \(owner.itemId)")
-            owner.navigationController?.popViewController(animated: true)
-          }
-        } else {
-          let copyVC = KakaoCopyViewController(orderId: owner.orderId)
-          owner.navigationController?.pushViewController(copyVC, animated: true)
-        }
+        let copyVC = KakaoCopyViewController(orderId: owner.orderId)
+        owner.navigationController?.pushViewController(copyVC, animated: true)
       }
       .disposed(by: disposeBag)
-
   }
   
   private func configureCollectionView() {
@@ -294,6 +294,62 @@ class SalesDetailViewController: UIViewController {
     collectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
   }
+  
+  private func showCancelAlert() {
+    if isCancelable {
+      let alertVC = CustomAlertViewController(title: "판매 취소", content: "정말 판매 취소하겠습니까?", buttonText: "판매 취소하기", subButton: nil)
+      
+      alertVC.primaryButtonTap
+        .withUnretained(self)
+        .subscribe(onNext: { owner, _ in
+          owner.cancelSale()
+        })
+        .disposed(by: disposeBag)
+      
+      alertVC.modalPresentationStyle = .overFullScreen
+      self.present(alertVC, animated: false, completion: nil)
+    } else {
+      view.showToast(message: "삭제할 수 없는 상품 입니다.", at: 120.adjusted)
+    }
+    
+  }
+  
+  private func cancelSale() {
+    Providers.ItemProvider.request(target: .deleteItem(id: self.itemId)) { isDeleted in
+      self.navigationController?.popViewController(animated: true)
+    }
+  }
+  
+  private func showMenuAlert() {
+    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    
+    // 판매 취소 버튼
+    let cancelSaleAction = UIAlertAction(title: "판매 취소", style: .destructive) { [weak self] _ in
+      self?.showCancelAlert()
+    }
+    
+    // 취소 버튼
+    let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+    
+    alert.addAction(cancelSaleAction)
+    alert.addAction(cancelAction)
+    
+    // ViewController에 AlertController를 표시
+    if let viewController = self.findViewController() {
+      viewController.present(alert, animated: true, completion: nil)
+    }
+  }
+  
+  func findViewController() -> UIViewController? {
+    if let nextResponder = self.next as? UIViewController {
+      return nextResponder
+    } else if let nextResponder = self.next as? UIView {
+      return nextResponder.findViewController()
+    } else {
+      return nil
+    }
+  }
+  
   
   @objc private func updateStatus() {
     // 상태 업데이트 로직 (필요한 경우 API 다시 호출)

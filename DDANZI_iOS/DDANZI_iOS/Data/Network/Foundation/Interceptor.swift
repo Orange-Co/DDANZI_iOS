@@ -16,7 +16,6 @@ final class AuthInterceptor: RequestInterceptor {
   private var retryLimit = 2
   
   func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-    print("---adater 진입----")
     completion(.success(urlRequest))
   }
   
@@ -26,14 +25,17 @@ final class AuthInterceptor: RequestInterceptor {
       print("🚨status code 오류")
       return completion(.doNotRetry)
     }
-    
+    print("🚨Errpr Status Code: \(statusCode)")
+    print("🚨Error Message : \(error.localizedDescription)")
     if request.retryCount < retryLimit {
       if statusCode == 401 {
+        print("토큰 재발급 시작")
         refreshToken { success in
           switch success {
           case true:
             completion(.retry)
           case false:
+            print("토큰 재발급 실패")
             completion(.doNotRetry)
             self.handleTokenRefreshFailure()
           }
