@@ -23,6 +23,7 @@ enum NavigationBarType {
   case searching
   case logo
   case none
+  case menu
 }
 
 final class CustomNavigationBarView: UIView {
@@ -38,6 +39,7 @@ final class CustomNavigationBarView: UIView {
   private let settingButtonSubject = PublishSubject<Void>()
   private let alarmButtonSubject = PublishSubject<Void>()
   private let searchBarSubject = PublishSubject<Void>()
+  private let menuButtonSubject = PublishSubject<Void>()
   
   var backButtonTap: Observable<Void> { backButtonSubject.asObservable() }
   var cancelButtonTap: Observable<Void> { cancelButtonSubject.asObservable() }
@@ -46,6 +48,7 @@ final class CustomNavigationBarView: UIView {
   var settingButtonTap: Observable<Void> { settingButtonSubject.asObservable() }
   var searchBarTextEdit: Observable<Void> { searchBarSubject.asObservable() }
   var alarmButtonTap: Observable<Void> { alarmButtonSubject.asObservable() }
+  var menuButtonTap: Observable<Void> { alarmButtonSubject.asObservable() }
   
   // MARK: - componenets
   private var leftView = UIView(frame: .init(x: 0, y: 0, width: 25, height: 25))
@@ -90,6 +93,11 @@ final class CustomNavigationBarView: UIView {
   
   private let settingButton = UIButton().then {
     $0.setImage(.icSetting, for: .normal)
+    $0.imageView?.contentMode = .scaleAspectFit
+  }
+  
+  private let menuButton = UIButton().then {
+    $0.setImage(.icMenu, for: .normal)
     $0.imageView?.contentMode = .scaleAspectFit
   }
   
@@ -185,8 +193,21 @@ final class CustomNavigationBarView: UIView {
       logoButton.snp.makeConstraints {
         $0.edges.equalToSuperview()
       }
+    case .menu:
+      leftView.addSubview(cancelButton)
+      rightView.addSubview(menuButton)
+      
+      cancelButton.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      
+      menuButton.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      
     case .none:
       break
+
     }
   }
   
@@ -227,30 +248,35 @@ final class CustomNavigationBarView: UIView {
       .observe(on: MainScheduler.instance) // 메인 스레드에서 작업 실행
       .bind(to: backButtonSubject)
       .disposed(by: disposeBag)
-
+    
     cancelButton.rx.tap
       .observe(on: MainScheduler.instance) // 메인 스레드에서 작업 실행
       .bind(to: cancelButtonSubject)
       .disposed(by: disposeBag)
-
+    
     homeButton.rx.tap
       .observe(on: MainScheduler.instance) // 메인 스레드에서 작업 실행
       .bind(to: homeButtonSubject)
       .disposed(by: disposeBag)
-
+    
     searchButton.rx.tap
       .observe(on: MainScheduler.instance) // 메인 스레드에서 작업 실행
       .bind(to: searchButtonSubject)
       .disposed(by: disposeBag)
-
+    
     settingButton.rx.tap
       .observe(on: MainScheduler.instance) // 메인 스레드에서 작업 실행
       .bind(to: settingButtonSubject)
       .disposed(by: disposeBag)
-
+    
     alarmButton.rx.tap
       .observe(on: MainScheduler.instance) // 메인 스레드에서 작업 실행
       .bind(to: alarmButtonSubject)
+      .disposed(by: disposeBag)
+    
+    menuButtonTap.rx.tap
+      .observe(on: MainScheduler.instance)
+      .bind(to: menuButtonSubject)
       .disposed(by: disposeBag)
   }
 }

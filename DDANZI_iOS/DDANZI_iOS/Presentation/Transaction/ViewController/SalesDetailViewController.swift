@@ -33,7 +33,7 @@ class SalesDetailViewController: UIViewController {
   var PurchaseState: StatusType = .orderComplete
   
   
-  private let navigaitonBar = CustomNavigationBarView(navigationBarType: .cancel, title: "판매 상세")
+  private let navigaitonBar = CustomNavigationBarView(navigationBarType: .menu, title: "판매 상세")
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
     $0.backgroundColor = .white
     $0.register(DetailSectionHeaderView.self,
