@@ -134,5 +134,21 @@ iOSInjectionProject/
 # End of https://www.toptal.com/developers/gitignore/api/xcode,macos,swift
 
 *.xcconfig
+*.appiconset
+*.p8
 
 DDANZI_iOS/DDANZI_iOS/GoogleService-Info.plist
+
+# fastLane
+
+*.cer
+*.mobileprovision
+*.ipa
+*.app.dSYM.zip
+.env
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+fastlane/devices.txt
+fastlane/report.xml
