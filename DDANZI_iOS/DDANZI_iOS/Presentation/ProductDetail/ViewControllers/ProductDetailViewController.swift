@@ -16,16 +16,18 @@ import Amplitude
 
 // MARK: - OptionDelegate
 protocol OptionViewControllerDelegate: AnyObject {
-  func optionViewControllerDidFinish(_ viewController: OptionSelectViewController, optionList: [Int])
+  func optionViewControllerDidFinish(_ viewController: OptionSelectViewController, optionList: [Int], isInterest: Bool)
 }
 
 final class ProductDetailViewController: UIViewController {
   // MARK: Properties
   
   private let disposeBag = DisposeBag()
+  
+  private var isInterest = BehaviorRelay<Bool>(value: false)
+  
   private var productId: String
   private var optionList: [OptionList] = []
-  private var isInterest: Bool = false
   private var interestCount = 0
   private var moreLink = ""
   private var isOptionExist = false
@@ -241,7 +243,7 @@ final class ProductDetailViewController: UIViewController {
       )
       )
       self.moreLink = data.infoURL
-      self.isInterest = data.isInterested ?? false
+      self.isInterest.accept(data.isInterested ?? false)
       self.interestCount = data.interestCount
       self.optionList = data.optionList
     }
@@ -282,7 +284,7 @@ final class ProductDetailViewController: UIViewController {
       .subscribe(with: self) { owner, _ in
         Amplitude.instance().logEvent("click_detail_heart")
         let id = owner.productId
-        owner.isInterest ? owner.deleteInterest(id: id) : owner.addInterest(id: id)
+        owner.isInterest.value ? owner.deleteInterest(id: id) : owner.addInterest(id: id)
       }
       .disposed(by: disposeBag)
     
@@ -310,10 +312,17 @@ final class ProductDetailViewController: UIViewController {
           let purchaseVC = PurchaseViewController(orderModel: orderModel)
           self.navigationController?.pushViewController(purchaseVC, animated: true)
         } else {
-          let optionViewController = OptionSelectViewController()
-          optionViewController.option = self.optionList.map { option in
-              .init(optionId: option.optionID, type: option.type, optionDetailList: option.optionDetailList)
+          let options = owner.optionList.map { option in
+            OptionModel(optionId: option.optionID, type: option.type, optionDetailList: option.optionDetailList)
           }
+          
+          let optionViewController = OptionSelectViewController(
+            interestCount: owner.interestCount,
+            productId: owner.productId,
+            isInterest: owner.isInterest.value,
+            option: options
+          )
+          
           if let sheet = optionViewController.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
           }
@@ -323,6 +332,8 @@ final class ProductDetailViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    isInterest.bind(to: bottomButtonView.heartButton.rx.isSelected)
+      .disposed(by: disposeBag)
   }
   
   private func addInterest(id: String) {
@@ -343,9 +354,12 @@ final class ProductDetailViewController: UIViewController {
 }
 
 extension ProductDetailViewController: OptionViewControllerDelegate {
-  func optionViewControllerDidFinish(_ viewController: OptionSelectViewController, optionList: [Int]) {
+  func optionViewControllerDidFinish(_ viewController: OptionSelectViewController, optionList: [Int], isInterest: Bool) {
     let orderModel = OrderModel(productId: productId, optionList: optionList)
     let purchaseVC = PurchaseViewController(orderModel: orderModel)
+    self.isInterest.accept(isInterest)
+    self.interestCount = isInterest ? interestCount : interestCount - 1
+    
     self.navigationController?.pushViewController(purchaseVC, animated: true)
   }
 }

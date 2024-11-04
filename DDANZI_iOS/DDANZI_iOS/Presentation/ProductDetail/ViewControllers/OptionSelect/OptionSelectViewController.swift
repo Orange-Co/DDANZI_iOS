@@ -20,6 +20,11 @@ typealias StrOption = StringLiterals.ProductDetail.Option
 final class OptionSelectViewController: UIViewController {
   // MARK: Properties
   private let disposeBag = DisposeBag()
+  
+  private var interestCount: Int = 0
+  private var productId: String = ""
+  private var isInterest: Bool = false
+  
   var option: [OptionModel] = []
   private var selectedOptions: [Int?] = []
   
@@ -58,6 +63,23 @@ final class OptionSelectViewController: UIViewController {
   }
   
   private let bottomButton = BottomButtonView(buttonText: "구매하기")
+  
+  // MARK: Init
+  
+  init(interestCount: Int, productId: String, isInterest: Bool, option: [OptionModel]) {
+    self.interestCount = interestCount
+    self.productId = productId
+    self.isInterest = isInterest
+    self.option = option
+    
+    bottomButton.configure(heartCount: interestCount, isInterest: isInterest)
+    
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: LifeCycles
   override func viewWillAppear(_ animated: Bool) {
@@ -116,11 +138,20 @@ final class OptionSelectViewController: UIViewController {
       .bind {
         self.dismiss(animated: true) {
           let unwrappedOptions = self.selectedOptions.compactMap { $0 }
-          self.delegate?.optionViewControllerDidFinish(self, optionList: unwrappedOptions)
+          self.delegate?.optionViewControllerDidFinish(self, optionList: unwrappedOptions, isInterest: self.isInterest)
           Amplitude.instance().logEvent("click_option_next")
         }
       }
       .disposed(by: disposeBag)
+      
+      
+      bottomButton.heartButton.rx.tap
+          .bind(with: self) { owner, _ in
+              Amplitude.instance().logEvent("click_detail_heart")
+              let id = owner.productId
+              owner.isInterest ? owner.deleteInterest(id: id) : owner.addInterest(id: id)
+          }
+          .disposed(by: disposeBag)
   }
   
   private func configureCollectionView() {
@@ -189,6 +220,22 @@ final class OptionSelectViewController: UIViewController {
     let allSectionsSelected = selectedOptions.allSatisfy { $0 != nil }
     bottomButton.button.isEnabled = allSectionsSelected
     bottomButton.button.backgroundColor = allSectionsSelected ? .black : .gray2
+  }
+  
+  private func addInterest(id: String) {
+    Providers.InterestProvider.request(target: .addInterest(id),
+                                       instance: BaseResponse<InterestResponseDTO>.self) { result in
+      self.bottomButton.heartButton.isSelected = true
+      self.bottomButton.heartCountLabel.text = "\(self.interestCount + 1)"
+    }
+  }
+  
+  private func deleteInterest(id: String) {
+    Providers.InterestProvider.request(target: .deleteInterest(id),
+                                       instance: BaseResponse<InterestResponseDTO>.self) { result in
+      self.bottomButton.heartButton.isSelected = false
+      self.bottomButton.heartCountLabel.text = "\(self.interestCount - 1)"
+    }
   }
 }
 

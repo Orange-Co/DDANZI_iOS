@@ -21,6 +21,9 @@ final class LoginViewController: UIViewController {
   private let disposeBag = DisposeBag()
   private var signUpFrom: String
   
+  private let backButton = UIButton().then {
+    $0.setImage(.icCancel, for: .normal)
+  }
   private let imageView = UIImageView().then {
     $0.image = .onboarding
   }
@@ -61,11 +64,17 @@ final class LoginViewController: UIViewController {
   private func setHierarchy() {
     view.backgroundColor = .white
     view.addSubviews(imageView,
+                     backButton,
                      kakaoLoginButton,
                      appleLoginButton)
   }
   
   private func setConstraints() {
+    backButton.snp.makeConstraints {
+      $0.top.equalToSuperview().inset(70.adjusted)
+      $0.trailing.equalToSuperview().inset(20.adjusted)
+    }
+    
     imageView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(80.adjusted)
     }
@@ -82,6 +91,11 @@ final class LoginViewController: UIViewController {
   }
   
   private func bind() {
+    backButton.rx.tap
+      .bind(with: self) { owner, void in
+        self.navigationController?.popViewController(animated: true)
+      }
+      .disposed(by: disposeBag)
     
     kakaoLoginButton.rx.tap
       .bind(with: self) { owner, void in

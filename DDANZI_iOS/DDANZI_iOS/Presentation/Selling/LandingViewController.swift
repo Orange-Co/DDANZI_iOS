@@ -203,10 +203,18 @@ final class LandingViewController: UIViewController {
     let body = ItemCheckRequestBody(image_url: imageURL)
     Providers.ItemProvider.request(target: .itemCheck(body: body), instance: BaseResponse<ItemCheckDTO>.self) { response in
       guard let data = response.data else { return }
-      let checkVC = CheckItemViewController(responseData: data, productId: data.productId)
-      checkVC.response.accept(data)
+
+      let isDataValid = !data.imgUrl.isEmpty && !data.productId.isEmpty && !data.productName.isEmpty
+
       DdanziLoadingView.shared.stopAnimating()
-      self.navigationController?.pushViewController(checkVC, animated: false)
+
+      if isDataValid {
+          let checkVC = CheckItemViewController(responseData: data, productId: data.productId)
+          checkVC.response.accept(data)
+          self.navigationController?.pushViewController(checkVC, animated: false)
+      } else {
+          self.view.showToast(message: "올바른 이미지를 선택해주세요", at: 120.adjusted)
+      }
     }
   }
   
@@ -222,6 +230,7 @@ final class LandingViewController: UIViewController {
         }
       } else {
         DdanziLoadingView.shared.stopAnimating()
+        self.view.showToast(message: "이미지 업로드에 실패 했습니다.", at: 120.adjusted)
         print("이미지 업로드에 실패했습니다.")
       }
     }
