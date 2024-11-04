@@ -182,7 +182,7 @@ final class KakaoCopyViewController: UIViewController {
     
     completeButton.rx.tap
       .subscribe(with: self) { owner, _ in
-        owner.conformedSale(id: self.orderId)
+        owner.presentCheckAlert()
       }
       .disposed(by: disposeBag)
     
@@ -193,6 +193,31 @@ final class KakaoCopyViewController: UIViewController {
         }
       }
       .disposed(by: disposeBag)
+  }
+  
+  private func presentCheckAlert() {
+    let checkAlert = CustomAlertViewController(
+      title: "판매 확정하시겠습니까?",
+      content: "카카오톡 선물하기에 모든 정보를\n정확히 입력하셨나요?",
+      buttonText: "네 입력했습니다.",
+      subButton: "판매 확정 취소"
+    )
+    
+    checkAlert.primaryButtonTap
+      .subscribe(with: self) { owner, _ in
+        owner.conformedSale(id: self.orderId)
+      }
+      .disposed(by: disposeBag)
+    
+    checkAlert.primaryButtonTap
+      .subscribe(with: self) { owner, _ in
+        owner.navigationController?.popViewController(animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // 알럿뷰 present
+    checkAlert.modalPresentationStyle = .overFullScreen
+    checkAlert.present(self, animated: false)
   }
   
   private func fetchDelivery(id: String) {
