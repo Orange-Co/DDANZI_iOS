@@ -88,6 +88,8 @@ final class RegisteCompleteViewController: UIViewController {
     super.viewDidLoad()
     setUI()
     bind()
+    
+    checkPermission()
   }
   
   private func setUI() {
@@ -171,5 +173,18 @@ final class RegisteCompleteViewController: UIViewController {
         owner.navigationController?.popToRootViewController(animated: true)
       }
       .disposed(by: disposeBag)
+  }
+  
+  private func checkPermission() {
+    PermissionManager.shared.checkPermission(for: .notification)
+      .observe(on: MainScheduler.instance)
+      .subscribe { [weak self] isAllow in
+        if !isAllow {
+          let alertVC = CustomAlertViewController(title: "알림 설정", content: "설정 > 딴지 > 알림에서 설정을 변경할 수 있습니다.", buttonText: "확인", subButton: nil)
+          alertVC.modalPresentationStyle = .overFullScreen
+          self?.present(alertVC, animated: false)
+        }
+      }
+      .disposed(by: self.disposeBag)
   }
 }
