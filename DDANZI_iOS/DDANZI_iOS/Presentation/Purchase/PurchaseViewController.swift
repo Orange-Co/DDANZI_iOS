@@ -235,15 +235,13 @@ final class PurchaseViewController: UIViewController {
       .subscribe(onSuccess: { [weak self] isSuccess, orderId in
         guard let self = self else { return }
         DdanziLoadingView.shared.stopAnimating()
+        
         if isSuccess, let orderId = orderId {
-          PermissionManager.shared.checkPermission(for: .notification)
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] isAllow in
-              Amplitude.instance().logEvent("complete_purchase_adjustment", withEventProperties: ["item_id" : self?.payment.productId])
-              let nextVC = isAllow ? PurchaseCompleteViewController(orderId: orderId) : PushSettingViewController(orderId: orderId, response: .init(itemId: "", productName: "", imgUrl: "", salePrice: 0))
-              self?.navigationController?.pushViewController(nextVC, animated: true)
-            }
-            .disposed(by: self.disposeBag)
+          Amplitude.instance().logEvent("complete_purchase_adjustment", withEventProperties: ["item_id" : self.payment.productId])
+          
+          let nextVC = PurchaseCompleteViewController(orderId: orderId)
+          self.navigationController?.pushViewController(nextVC, animated: true)
+          
         } else {
           self.showAlert(title: "결제 실패", message: "알 수 없는 원인으로 결제 실패입니다.")
         }
