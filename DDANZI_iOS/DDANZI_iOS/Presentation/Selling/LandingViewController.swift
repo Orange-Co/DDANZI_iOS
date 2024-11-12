@@ -226,6 +226,7 @@ final class LandingViewController: UIViewController {
           let imageURL = String(self.presignedURL[..<index])
           DdanziLoadingView.shared.startAnimating()
           self.imageURL = imageURL
+          UserDefaults.standard.set(imageURL, forKey: .uploadImgURL)
           self.checkItem(imageURL: imageURL)
         }
       } else {
