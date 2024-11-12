@@ -121,7 +121,6 @@
 		36607DAD2C4F85F2003803F4 /* CertificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36607DAC2C4F85F2003803F4 /* CertificationViewController.swift */; };
 		3664CFCF2C6E056A007FB5DF /* Adjusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3664CFCE2C6E056A007FB5DF /* Adjusted.swift */; };
 		3664CFD42C6E1B98007FB5DF /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3664CFD22C6E1B98007FB5DF /* SplashViewController.swift */; };
-		3664CFD72C6E1BC6007FB5DF /* splash.json in Resources */ = {isa = PBXBuildFile; fileRef = 3664CFD52C6E1BC6007FB5DF /* splash.json */; };
 		3664CFDA2C6E2179007FB5DF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 3664CFD92C6E2179007FB5DF /* Lottie */; };
 		3664CFDC2C6E420B007FB5DF /* Keychainwrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3664CFDB2C6E420B007FB5DF /* Keychainwrapper.swift */; };
 		3664CFE02C6F4642007FB5DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3664CFDF2C6F4642007FB5DF /* LaunchScreen.storyboard */; };
@@ -132,6 +131,7 @@
 		3673CA322C287BD2009411A4 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3673CA312C287BD2009411A4 /* SectionHeaderView.swift */; };
 		36774A662C466C8300F32637 /* PurchaseCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36774A652C466C8300F32637 /* PurchaseCompleteViewController.swift */; };
 		36774A682C466E4000F32637 /* CompleteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36774A672C466E4000F32637 /* CompleteCollectionViewCell.swift */; };
+		367A79AD2CE3D8200055771B /* splash.json in Resources */ = {isa = PBXBuildFile; fileRef = 367A79AC2CE3D8200055771B /* splash.json */; };
 		3688333A2C1EEA01000F3A45 /* DdanziTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */; };
 		368833782C1F0DE3000F3A45 /* DdanziTabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */; };
 		3688337D2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */; };
@@ -362,7 +362,6 @@
 		36607DAC2C4F85F2003803F4 /* CertificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationViewController.swift; sourceTree = "<group>"; };
 		3664CFCE2C6E056A007FB5DF /* Adjusted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adjusted.swift; sourceTree = "<group>"; };
 		3664CFD22C6E1B98007FB5DF /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "\U0010SplashViewController.swift"; sourceTree = "<group>"; };
-		3664CFD52C6E1BC6007FB5DF /* splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = splash.json; sourceTree = "<group>"; };
 		3664CFDB2C6E420B007FB5DF /* Keychainwrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychainwrapper.swift; sourceTree = "<group>"; };
 		3664CFDF2C6F4642007FB5DF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3673CA262C2834D4009411A4 /* OptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -372,6 +371,7 @@
 		3673CA312C287BD2009411A4 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		36774A652C466C8300F32637 /* PurchaseCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseCompleteViewController.swift; sourceTree = "<group>"; };
 		36774A672C466E4000F32637 /* CompleteCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteCollectionViewCell.swift; sourceTree = "<group>"; };
+		367A79AC2CE3D8200055771B /* splash.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = splash.json; sourceTree = "<group>"; };
 		368833392C1EEA01000F3A45 /* DdanziTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarController.swift; sourceTree = "<group>"; };
 		368833772C1F0DE3000F3A45 /* DdanziTabBarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziTabBarItems.swift; sourceTree = "<group>"; };
 		3688337C2C1F2F81000F3A45 /* HeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -837,8 +837,8 @@
 		3664CFD62C6E1BC6007FB5DF /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				367A79AC2CE3D8200055771B /* splash.json */,
 				36A5947B2C87F8030097DE70 /* loading.json */,
-				3664CFD52C6E1BC6007FB5DF /* splash.json */,
 			);
 			path = Lottie;
 			sourceTree = "<group>";
@@ -1502,12 +1502,12 @@
 				369C63DB2C1A7E320021E2E0 /* Pretendard-ExtraBold.otf in Resources */,
 				363F1A2B2CA09C5E007527E2 /* PrivacyInfo.xcprivacy in Resources */,
 				369C63D72C1A7E320021E2E0 /* Pretendard-Bold.otf in Resources */,
-				3664CFD72C6E1BC6007FB5DF /* splash.json in Resources */,
 				369C63DA2C1A7E320021E2E0 /* Pretendard-Medium.otf in Resources */,
 				36A5947C2C87F8030097DE70 /* loading.json in Resources */,
 				369C63D62C1A7E320021E2E0 /* Pretendard-Light.otf in Resources */,
 				369C63D52C1A7E320021E2E0 /* Pretendard-Regular.otf in Resources */,
 				369C63DC2C1A7E320021E2E0 /* Pretendard-SemiBold.otf in Resources */,
+				367A79AD2CE3D8200055771B /* splash.json in Resources */,
 				3664CFE02C6F4642007FB5DF /* LaunchScreen.storyboard in Resources */,
 				369C63D82C1A7E320021E2E0 /* Pretendard-Black.otf in Resources */,
 				369C63D42C1A7E320021E2E0 /* Pretendard-Thin.otf in Resources */,

@@ -80,12 +80,6 @@ final class SellListViewController: UIViewController {
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
-    
-    headerView.editButton.rx.tap
-      .withLatestFrom(isEditingMode)
-      .map { !$0 }
-      .bind(to: isEditingMode)
-      .disposed(by: disposeBag)
   }
   
   private func configureCollectionView() {

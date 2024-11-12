@@ -158,10 +158,12 @@ final class HomeViewController: UIViewController, UIScrollViewDelegate {
               isInterest: product.isInterested,
               itemID: product.productID
             )
+            
             cell.isLogoutInterest
               .subscribe(with: self) { owner, isLogout in
                 if isLogout {
                   owner.view.showToast(message: "로그인 이후 이용 가능합니다.", at: 130.adjusted)
+                  owner.navigationController?.pushViewController(LoginViewController(signUpFrom: "like"), animated: false)
                 }
               }
               .disposed(by: cell.disposeBag)

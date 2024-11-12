@@ -283,8 +283,14 @@ final class ProductDetailViewController: UIViewController {
     bottomButtonView.heartButtonTap
       .subscribe(with: self) { owner, _ in
         Amplitude.instance().logEvent("click_detail_heart")
-        let id = owner.productId
-        owner.isInterest.value ? owner.deleteInterest(id: id) : owner.addInterest(id: id)
+        
+        if !(UserDefaults.standard.bool(forKey: .isLogin)) {
+            owner.view.showToast(message: "로그인 이후 이용 가능합니다.", at: 130.adjusted)
+            owner.navigationController?.pushViewController(LoginViewController(signUpFrom: "like"), animated: false)
+        } else {
+          let id = owner.productId
+          owner.isInterest.value ? owner.deleteInterest(id: id) : owner.addInterest(id: id)
+        }
       }
       .disposed(by: disposeBag)
     
@@ -341,6 +347,7 @@ final class ProductDetailViewController: UIViewController {
                                        instance: BaseResponse<InterestResponseDTO>.self) { result in
       self.bottomButtonView.heartButton.isSelected = true
       self.bottomButtonView.heartCountLabel.text = "\(self.interestCount + 1)"
+      self.isInterest.accept(true)
     }
   }
   
@@ -349,6 +356,7 @@ final class ProductDetailViewController: UIViewController {
                                        instance: BaseResponse<InterestResponseDTO>.self) { result in
       self.bottomButtonView.heartButton.isSelected = false
       self.bottomButtonView.heartCountLabel.text = "\(self.interestCount - 1)"
+      self.isInterest.accept(false)
     }
   }
 }
