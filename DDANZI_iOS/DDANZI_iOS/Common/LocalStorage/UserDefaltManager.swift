@@ -18,6 +18,7 @@ enum UserDefaultsKeyType: String {
   case name = "name"
   case phone = "phone"
   case fcmToken = "fcmToken"
+  case uploadImgURL = "uploadImgURL"
 }
 
 extension UserDefaults {
