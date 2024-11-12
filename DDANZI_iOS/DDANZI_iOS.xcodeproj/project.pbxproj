@@ -294,7 +294,7 @@
 		363152A62C3DC19500DF689E /* NSObject+ClassName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+ClassName.swift"; sourceTree = "<group>"; };
 		363152AA2C3DC57800DF689E /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		363152AC2C3E767F00DF689E /* StatusCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCollectionViewCell.swift; sourceTree = "<group>"; };
-		363152F02C44F80900DF689E /* SalesDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesDetailViewController.swift; sourceTree = "<group>"; };
+		363152F02C44F80900DF689E /* SalesDetailViewController.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SalesDetailViewController.swift; sourceTree = "<group>"; };
 		363152F22C44F8BE00DF689E /* AddressSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSettingViewController.swift; sourceTree = "<group>"; };
 		363C24202C6512E60097FCB7 /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 		363C24222C6515BF0097FCB7 /* DdanziMiniButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DdanziMiniButton.swift; sourceTree = "<group>"; };
@@ -454,7 +454,7 @@
 		36D514512C74846E003E1B65 /* PaymentCompletedDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCompletedDTO.swift; sourceTree = "<group>"; };
 		36D514562C74AB9A003E1B65 /* PaymentCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardCell.swift; sourceTree = "<group>"; };
 		36D5145C2C75D15A003E1B65 /* Purchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
-		36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
+		36EB5F972C1D35B900FAF995 /* CustomNavigationBarView.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = CustomNavigationBarView.swift; sourceTree = "<group>"; };
 		36EB5FA02C1EC9E900FAF995 /* HomeViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewReactor.swift; sourceTree = "<group>"; };
 		36EB5FA22C1ECB1900FAF995 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		36EB5FA42C1ECDED00FAF995 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
