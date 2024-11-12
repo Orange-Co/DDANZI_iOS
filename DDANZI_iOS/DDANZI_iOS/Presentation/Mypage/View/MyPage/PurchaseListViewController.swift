@@ -83,8 +83,6 @@ final class PurchaseListViewController: UIViewController {
   }
   
   private func bind() {
-    headerView.bind(to: viewModel)
-    
     navigationBar.backButtonTap
       .subscribe(onNext: { [weak self] in
         self?.navigationController?.popViewController(animated: true)
