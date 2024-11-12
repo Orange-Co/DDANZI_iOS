@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     let tabBarVC = DdanziTabBarController()
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.3) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
       let navigationController = UINavigationController(rootViewController: tabBarVC)
       
       self.window?.rootViewController = navigationController
