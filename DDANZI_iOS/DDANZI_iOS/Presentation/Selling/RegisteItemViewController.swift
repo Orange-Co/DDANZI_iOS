@@ -148,23 +148,12 @@ final class RegisteItemViewController: UIViewController {
   }
   
   private func registeItem(due: String) {
-    let body = RegisteItemBody(productId: info.productID, productName: info.productName, receivedDate: due, registeredImage: info.imgURL)
+    let uploadImageURL = UserDefaults.standard.string(forKey: .uploadImgURL)
+    let body = RegisteItemBody(productId: info.productID, productName: info.productName, receivedDate: due, registeredImage: uploadImageURL ?? info.imgURL)
     Providers.ItemProvider.request(target: .registeItem(body: body), instance: BaseResponse<RegisteItemDTO>.self) { response in
       guard let data = response.data else { return }
       let registeCompleteVC = RegisteCompleteViewController(response: data)
-      let pushVC = PushSettingViewController(isSelling: true, orderId: "", response: data)
-      
-      PermissionManager.shared.checkPermission(for: .notification)
-        .observe(on: MainScheduler.instance)
-        .bind(with: self, onNext: { owner, isAllow in
-          Amplitude.instance().logEvent("complete_sell_adjustment", withEventProperties: ["item_id": data.itemId])
-          if isAllow {
-            self.navigationController?.pushViewController(registeCompleteVC, animated: true)
-          } else  {
-            self.navigationController?.pushViewController(pushVC, animated: true)
-          }
-        })
-        .disposed(by: self.disposeBag)
+      self.navigationController?.pushViewController(registeCompleteVC, animated: true)
     }
   }
 }
